@@ -352,6 +352,11 @@ bool Running = true;
 
 uint8_t marlin_debug_flags = DEBUG_NONE;
 
+#undef  SYSTEM_SECTION
+#define SYSTEM_SECTION MARLIN_MAIN_GLOBAL
+
+#include SYSTEM_CODE
+
 /**
  * Cartesian Current Position
  *   Used to track the native machine position as moves are queued.
@@ -14012,11 +14017,15 @@ void disable_all_steppers() {
  *  - Check if cooling fan needs to be switched on
  *  - Check if an idle but hot extruder needs filament extruded (EXTRUDER_RUNOUT_PREVENT)
  */
+ 
 void manage_inactivity(bool ignore_stepper_queue/*=false*/) {
-
   #if ENABLED(FILAMENT_RUNOUT_SENSOR)
-    if ((IS_SD_PRINTING || print_job_timer.isRunning()) && (READ(FIL_RUNOUT_PIN) == FIL_RUNOUT_INVERTING))
+//     if (READ(FIL_RUNOUT_PIN) == FIL_RUNOUT_INVERTING) SERIAL_ECHOLNPGM("+++ detected");
+    if (/*(IS_SD_PRINTING || print_job_timer.isRunning()) &&*/ (READ(FIL_RUNOUT_PIN) == FIL_RUNOUT_INVERTING))
+    {
+//      SERIAL_ECHOLNPGM("+++ detected");
       handle_filament_runout();
+    }
   #endif
 
   if (commands_in_queue < BUFSIZE) get_available_commands();
@@ -14326,6 +14335,11 @@ void setup() {
 
   setup_powerhold();
 
+  #undef  SYSTEM_SECTION
+  #define SYSTEM_SECTION MARLIN_MAIN_SETUP
+
+  #include SYSTEM_CODE
+  
   #if HAS_STEPPER_RESET
     disableStepperDrivers();
   #endif
@@ -14603,5 +14617,11 @@ void loop() {
     }
   }
   endstops.report_state();
+
+  #undef  SYSTEM_SECTION
+  #define SYSTEM_SECTION MARLIN_MAIN_LOOP
+
+  #include SYSTEM_CODE
+  
   idle();
 }

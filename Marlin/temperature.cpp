@@ -940,7 +940,11 @@ float Temperature::analog2temp(const int raw, const uint8_t e) {
 
     #elif defined(BED_USES_AD595)
 
-      return ((raw * ((5.0 * 100.0) / 1024.0) / OVERSAMPLENR) * (TEMP_SENSOR_AD595_GAIN)) + TEMP_SENSOR_AD595_OFFSET;
+    return ((raw * ((5.0 * 100.0) / 1024.0) / OVERSAMPLENR) * (TEMP_SENSOR_AD595_GAIN)) + TEMP_SENSOR_AD595_OFFSET;
+
+    #elif defined(BED_USES_AD495)
+
+    return ((raw * ((5.0 * 100.0) / 1024.0) / OVERSAMPLENR) * (TEMP_SENSOR_AD8495_GAIN)) + TEMP_SENSOR_AD8495_OFFSET;
 
     #else
 

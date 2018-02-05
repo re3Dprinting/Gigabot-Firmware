@@ -66,8 +66,8 @@
   #define CPU_ST7565_DELAY_3 DELAY_0_NOP
 #elif F_CPU == 16000000
   #define CPU_ST7565_DELAY_1 DELAY_0_NOP
-  #define CPU_ST7565_DELAY_2 DELAY_0_NOP
-  #define CPU_ST7565_DELAY_3 DELAY_1_NOP
+  #define CPU_ST7565_DELAY_2 DELAY_1_NOP
+  #define CPU_ST7565_DELAY_3 DELAY_2_NOP
 #else
   #error "No valid condition for delays in 'ultralcd_st7565_u8glib_VIKI.h'"
 #endif

@@ -34,6 +34,11 @@
 #define CONFIGURATION_ADV_H
 #define CONFIGURATION_ADV_H_VERSION 010107
 
+#include "systems.h"
+
+#undef  SYSTEM_SECTION
+#define SYSTEM_SECTION SUBSECTION(TEMPERATURE, 3)
+
 // @section temperature
 
 //===========================================================================
@@ -156,6 +161,8 @@
 // This shouldn't need to be more than 30 seconds (30000)
 //#define MILLISECONDS_PREHEAT_TIME 0
 
+#include SYSTEM_SETTINGS
+
 // @section extruder
 
 // Extruder runout prevention.
@@ -168,6 +175,9 @@
   #define EXTRUDER_RUNOUT_SPEED 1500  // mm/m
   #define EXTRUDER_RUNOUT_EXTRUDE 5   // mm
 #endif
+
+#undef  SYSTEM_SECTION
+#define SYSTEM_SECTION SUBSECTION(TEMPERATURE, 4)
 
 // @section temperature
 
@@ -200,6 +210,11 @@
 // if fan speed is [1 - (FAN_MIN_PWM-1)] it is set to FAN_MIN_PWM
 //#define FAN_MIN_PWM 50
 
+#include SYSTEM_SETTINGS
+
+#undef  SYSTEM_SECTION
+#define SYSTEM_SECTION SUBSECTION(EXTRUDER, 5)
+
 // @section extruder
 
 /**
@@ -214,6 +229,7 @@
  * Multiple extruders can be assigned to the same pin in which case
  * the fan will turn on when any selected extruder is above the threshold.
  */
+ 
 #define E0_AUTO_FAN_PIN -1
 #define E1_AUTO_FAN_PIN -1
 #define E2_AUTO_FAN_PIN -1
@@ -245,6 +261,8 @@
   //#define MENU_ITEM_CASE_LIGHT              // Add a Case Light option to the LCD main menu
 #endif
 
+#include SYSTEM_SETTINGS
+
 //===========================================================================
 //============================ Mechanical Settings ==========================
 //===========================================================================
@@ -254,6 +272,9 @@
 // If you want endstops to stay on (by default) even when not homing
 // enable this option. Override at any time with M120, M121.
 //#define ENDSTOPS_ALWAYS_ON_DEFAULT
+
+#undef  SYSTEM_SECTION
+#define SYSTEM_SECTION SUBSECTION(EXTRAS, 3)
 
 // @section extras
 
@@ -346,6 +367,8 @@
 // Define SOL0_PIN, SOL1_PIN, etc., for each extruder that has a solenoid.
 //#define EXT_SOLENOID
 
+#include SYSTEM_SETTINGS
+
 // @section homing
 
 // Homing hits each endstop, retracts by these distances, then does a slower bump.
@@ -391,6 +414,9 @@
   #define MANUAL_FEEDRATE {50*60, 50*60, 4*60, 60} // Feedrates for manual moves along X, Y, Z, E from panel
   #define ULTIPANEL_FEEDMULTIPLY  // Comment to disable setting feedrate multiplier via encoder
 #endif
+
+#undef  SYSTEM_SECTION
+#define SYSTEM_SECTION SUBSECTION(EXTRAS, 4)
 
 // @section extras
 
@@ -467,6 +493,11 @@
 
 //#define CHDK 4        //Pin for triggering CHDK to take a picture see how to use it here http://captain-slow.dk/2014/03/09/3d-printing-timelapses/
 #define CHDK_DELAY 50 //How long in ms the pin should stay HIGH before going LOW again
+
+#include SYSTEM_SETTINGS
+
+#undef  SYSTEM_SECTION
+#define SYSTEM_SECTION LCD
 
 // @section lcd
 
@@ -633,6 +664,8 @@
 
 #endif // DOGLCD
 
+#include SYSTEM_SETTINGS
+
 // @section safety
 
 // The hardware watchdog should reset the microcontroller disabling all outputs,
@@ -645,6 +678,9 @@
   //  However, THIS FEATURE IS UNSAFE!, as it will only work if interrupts are disabled. And the code could hang in an interrupt routine with interrupts disabled.
   //#define WATCHDOG_RESET_MANUAL
 #endif
+
+#undef  SYSTEM_SECTION
+#define SYSTEM_SECTION LCD
 
 // @section lcd
 
@@ -666,6 +702,8 @@
                                         // Note: Extra time may be added to mitigate controller latency.
   //#define BABYSTEP_ZPROBE_GFX_OVERLAY // Enable graphical overlay on Z-offset editor
 #endif
+
+#include SYSTEM_SETTINGS
 
 // @section extruder
 

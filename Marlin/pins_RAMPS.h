@@ -425,8 +425,8 @@
       #define LCD_SCREEN_ROT_180
 
       #define BEEPER_PIN        33
-      #define STAT_LED_RED_PIN  32
-      #define STAT_LED_BLUE_PIN 35
+      #define STAT_LED_RED_PIN  64//32
+      #define STAT_LED_BLUE_PIN 63//35
 
       #define BTN_EN1           22
       #define BTN_EN2            7

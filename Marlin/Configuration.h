@@ -1,4 +1,4 @@
-/**
+ /**
  * Marlin 3D Printer Firmware
  * Copyright (C) 2016 MarlinFirmware [https://github.com/MarlinFirmware/Marlin]
  *
@@ -39,6 +39,8 @@
 #define CONFIGURATION_H
 #define CONFIGURATION_H_VERSION 010107
 
+#include "systems.h"
+
 //===========================================================================
 //============================= Getting Started =============================
 //===========================================================================
@@ -69,6 +71,9 @@
 // example_configurations/SCARA and customize for your machine.
 //
 
+#undef  SYSTEM_SECTION
+#define SYSTEM_SECTION SECTION(INFO)
+
 // @section info
 
 // User-specified version info of this build to display in [Pronterface, etc] terminal window during
@@ -76,6 +81,7 @@
 // build by the user have been successfully uploaded into firmware.
 #define STRING_CONFIG_H_AUTHOR "(none, default config)" // Who made the changes.
 #define SHOW_BOOTSCREEN
+
 #define STRING_SPLASH_LINE1 SHORT_BUILD_VERSION // will be shown during bootup in line 1
 #define STRING_SPLASH_LINE2 WEBSITE_URL         // will be shown during bootup in line 2
 
@@ -91,6 +97,12 @@
 // example configuration folder.
 //
 //#define SHOW_CUSTOM_BOOTSCREEN
+
+#include SYSTEM_SETTINGS
+
+#undef  SYSTEM_SECTION
+#define SYSTEM_SECTION SUBSECTION(MACHINE, 1)
+
 // @section machine
 
 /**
@@ -130,10 +142,16 @@
 // You can use an online service to generate a random UUID. (eg http://www.uuidgenerator.net/version4)
 //#define MACHINE_UUID "00000000-0000-0000-0000-000000000000"
 
+#include SYSTEM_SETTINGS
+
+#undef  SYSTEM_SECTION
+#define SYSTEM_SECTION SUBSECTION(EXTRUDER, 1)
+
 // @section extruder
 
 // This defines the number of extruders
 // :[1, 2, 3, 4, 5]
+
 #define EXTRUDERS 1
 
 // Generally expected filament diameter (1.75, 2.85, 3.0, ...). Used for Volumetric, Filament Width Sensor, etc.
@@ -215,6 +233,11 @@
 //#define HOTEND_OFFSET_X {0.0, 20.00} // (in mm) for each extruder, offset of the hotend on the X axis
 //#define HOTEND_OFFSET_Y {0.0, 5.00}  // (in mm) for each extruder, offset of the hotend on the Y axis
 
+#include SYSTEM_SETTINGS
+
+#undef  SYSTEM_SECTION
+#define SYSTEM_SECTION SUBSECTION(MACHINE, 2)
+
 // @section machine
 
 /**
@@ -233,6 +256,11 @@
   // Power to steppers and heaters will need to be turned on with M80.
   //#define PS_DEFAULT_OFF
 #endif
+
+#include SYSTEM_SETTINGS
+
+#undef  SYSTEM_SECTION
+#define SYSTEM_SECTION SUBSECTION(TEMPERATURE, 1)
 
 // @section temperature
 
@@ -342,6 +370,7 @@
 #define BANG_MAX 255     // Limits current to nozzle while in bang-bang mode; 255=full current
 #define PID_MAX BANG_MAX // Limits current to nozzle while PID is active (see PID_FUNCTIONAL_RANGE below); 255=full current
 #define PID_K1 0.95      // Smoothing factor within the PID
+
 #if ENABLED(PIDTEMP)
   //#define PID_AUTOTUNE_MENU // Add PID Autotune to the LCD "Temperature" menu to run M303 and apply the result.
   //#define PID_DEBUG // Sends debug data to the serial port.
@@ -412,6 +441,11 @@
   // FIND YOUR OWN: "M303 E-1 C8 S90" to run autotune on the bed at 90 degreesC for 8 cycles.
 #endif // PIDTEMPBED
 
+#include SYSTEM_SETTINGS
+
+#undef  SYSTEM_SECTION
+#define SYSTEM_SECTION SUBSECTION(EXTRUDER, 2)
+
 // @section extruder
 
 // This option prevents extrusion if the temperature is below EXTRUDE_MINTEMP.
@@ -446,9 +480,14 @@
 #define THERMAL_PROTECTION_HOTENDS // Enable thermal protection for all extruders
 #define THERMAL_PROTECTION_BED     // Enable thermal protection for the heated bed
 
+#include SYSTEM_SETTINGS
+
 //===========================================================================
 //============================= Mechanical Settings =========================
 //===========================================================================
+
+#undef  SYSTEM_SECTION
+#define SYSTEM_SECTION SUBSECTION(MACHINE, 3)
 
 // @section machine
 
@@ -461,9 +500,14 @@
 //#define COREZX
 //#define COREZY
 
+#include SYSTEM_SETTINGS
+
 //===========================================================================
 //============================== Endstop Settings ===========================
 //===========================================================================
+
+#undef  SYSTEM_SECTION
+#define SYSTEM_SECTION SUBSECTION(HOMING, 1)
 
 // @section homing
 
@@ -504,9 +548,15 @@
 // This will remove the need to poll the interrupt pins, saving many CPU cycles.
 //#define ENDSTOP_INTERRUPTS_FEATURE
 
+#include SYSTEM_SETTINGS
+
 //=============================================================================
 //============================== Movement Settings ============================
 //=============================================================================
+
+#undef  SYSTEM_SECTION
+#define SYSTEM_SECTION SUBSECTION(MOTION, 1)
+
 // @section motion
 
 /**
@@ -571,9 +621,15 @@
 #define DEFAULT_ZJERK                  0.3
 #define DEFAULT_EJERK                  5.0
 
+#include SYSTEM_SETTINGS
+
 //===========================================================================
 //============================= Z Probe Options =============================
 //===========================================================================
+
+#undef  SYSTEM_SECTION
+#define SYSTEM_SECTION PROBES
+
 // @section probes
 
 //
@@ -740,10 +796,20 @@
 // Warn on display about possibly reduced accuracy
 //#define DISABLE_REDUCED_ACCURACY_WARNING
 
+#include SYSTEM_SETTINGS
+
 // @section extruder
+
+#undef  SYSTEM_SECTION
+#define SYSTEM_SECTION SUBSECTION(EXTRUDER, 3)
 
 #define DISABLE_E false // For all extruders
 #define DISABLE_INACTIVE_EXTRUDER true // Keep only the active extruder enabled.
+
+#include SYSTEM_SETTINGS
+
+#undef  SYSTEM_SECTION
+#define SYSTEM_SECTION SUBSECTION(MACHINE, 4)
 
 // @section machine
 
@@ -755,6 +821,11 @@
 // Enable this option for Toshiba stepper drivers
 //#define CONFIG_STEPPERS_TOSHIBA
 
+#include SYSTEM_SETTINGS
+
+#undef  SYSTEM_SECTION
+#define SYSTEM_SECTION SUBSECTION(EXTRUDER, 4)
+
 // @section extruder
 
 // For direct drive extruder v9 set to true, for geared extruder set to false.
@@ -763,6 +834,11 @@
 #define INVERT_E2_DIR false
 #define INVERT_E3_DIR false
 #define INVERT_E4_DIR false
+
+#include SYSTEM_SETTINGS
+
+#undef  SYSTEM_SECTION
+#define SYSTEM_SECTION SUBSECTION(HOMING, 2)
 
 // @section homing
 
@@ -776,6 +852,11 @@
 #define X_HOME_DIR -1
 #define Y_HOME_DIR -1
 #define Z_HOME_DIR -1
+
+#include SYSTEM_SETTINGS
+
+#undef  SYSTEM_SECTION
+#define SYSTEM_SECTION SUBSECTION(MACHINE, 5)
 
 // @section machine
 
@@ -831,9 +912,15 @@
   #define FILAMENT_RUNOUT_SCRIPT "M600"
 #endif
 
+#include SYSTEM_SETTINGS
+
 //===========================================================================
 //=============================== Bed Leveling ==============================
 //===========================================================================
+
+#undef  SYSTEM_SECTION
+#define SYSTEM_SECTION CALIBRATE
+
 // @section calibrate
 
 /**
@@ -1010,6 +1097,10 @@
  */
 //#define Z_PROBE_END_SCRIPT "G1 Z10 F12000\nG1 X15 Y330\nG1 Z0.5\nG1 Z10"
 
+#include SYSTEM_SETTINGS
+
+#undef  SYSTEM_SECTION
+#define SYSTEM_SECTION HOMING
 
 // @section homing
 
@@ -1041,6 +1132,11 @@
 // Homing speeds (mm/m)
 #define HOMING_FEEDRATE_XY (50*60)
 #define HOMING_FEEDRATE_Z  (4*60)
+
+#include SYSTEM_SETTINGS
+
+#undef  SYSTEM_SECTION
+#define SYSTEM_SECTION CALIBRATE
 
 // @section calibrate
 
@@ -1099,9 +1195,14 @@
   //#define SKEW_CORRECTION_GCODE
 #endif
 
+#include SYSTEM_SETTINGS
+
 //=============================================================================
 //============================= Additional Features ===========================
 //=============================================================================
+
+#undef  SYSTEM_SECTION
+#define SYSTEM_SECTION SUBSECTION(EXTRAS, 1)
 
 // @section extras
 
@@ -1141,6 +1242,12 @@
 // M149 Set temperature units support
 //
 //#define TEMPERATURE_UNITS_SUPPORT
+
+
+#include SYSTEM_SETTINGS
+
+#undef  SYSTEM_SECTION
+#define SYSTEM_SECTION SUBSECTION(TEMPERATURE, 2)
 
 // @section temperature
 
@@ -1266,9 +1373,14 @@
  */
 //#define PRINTCOUNTER
 
+#include SYSTEM_SETTINGS
+
 //=============================================================================
 //============================= LCD and SD support ============================
 //=============================================================================
+
+#undef  SYSTEM_SECTION
+#define SYSTEM_SECTION LCD
 
 // @section lcd
 
@@ -1641,9 +1753,14 @@
 //
 //#define SILVER_GATE_GLCD_CONTROLLER
 
+#include SYSTEM_SETTINGS
+
 //=============================================================================
 //=============================== Extra Features ==============================
 //=============================================================================
+
+#undef  SYSTEM_SECTION
+#define SYSTEM_SECTION SUBSECTION(EXTRAS, 2)
 
 // @section extras
 
@@ -1769,5 +1886,7 @@
 //
 // With this option servos are powered only during movement, then turned off to prevent jitter.
 //#define DEACTIVATE_SERVOS_AFTER_MOVE
+
+#include SYSTEM_SETTINGS
 
 #endif // CONFIGURATION_H

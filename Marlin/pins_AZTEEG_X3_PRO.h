@@ -41,6 +41,9 @@
   #error "Oops! Make sure you have 'Arduino Mega 2560' selected from the 'Tools -> Boards' menu."
 #endif
 
+#undef  SYSTEM_SECTION
+#define SYSTEM_SECTION AZTEEG_X3_PRO
+
 //
 // Servos
 //
@@ -168,3 +171,4 @@
   #define SPINDLE_DIR_PIN          21
 #endif
 
+#include SYSTEM_SETTINGS
