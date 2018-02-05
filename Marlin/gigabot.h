@@ -1,5 +1,8 @@
-//#ifndef GIGABOT_H
-//#define GIGABOT_H
+// gigabot.h
+//
+// This include file is intended to isolate configuration settings for Marlin by 
+// separating them into sections
+//
 
 #if SYSTEM_SECTION == INFO
   #undef  STRING_CONFIG_H_AUTHOR
@@ -122,9 +125,9 @@
   #undef  DEFAULT_XJERK
   #undef  DEFAULT_YJERK
 
-  #define DEFAULT_AXIS_STEPS_PER_UNIT { 118.52, 118.52, 4031.5, 1000 }
-  #define DEFAULT_MAX_FEEDRATE { 150, 150, 4, 60 }
-  #define DEFAULT_MAX_ACCELERATION { 3000, 3000, 100, 1000 }
+  #define DEFAULT_AXIS_STEPS_PER_UNIT   { 118.52, 118.52, 4031.5, 1000 }
+  #define DEFAULT_MAX_FEEDRATE          { 150, 150, 4, 60 }
+  #define DEFAULT_MAX_ACCELERATION      { 3000, 3000, 100, 1000 }
   #define DEFAULT_ACCELERATION          2000    // X, Y, Z and E acceleration for printing moves
   #define DEFAULT_RETRACT_ACCELERATION  1500  
   #define DEFAULT_XJERK                 15.0
@@ -151,20 +154,21 @@
   #define Y_BED_SIZE   610
   #define Z_MAX_POS    609
 
-#define ADVANCED_PAUSE_FEATURE
-#define NOZZLE_PARK_FEATURE
+  #define ADVANCED_PAUSE_FEATURE
+  #define NOZZLE_PARK_FEATURE
   #define FILAMENT_RUNOUT_SENSOR
+  
   #if ENABLED(FILAMENT_RUNOUT_SENSOR)
-    #define FIL_RUNOUT_INVERTING true // set to true to invert the logic of the sensor.
-    #define ENDSTOPPULLUP_FIL_RUNOUT // Uncomment to use internal pullup for filament runout pins if the sensor is defined.
-    #define FILAMENT_RUNOUT_SCRIPT "M600"
+    #define FIL_RUNOUT_INVERTING      true  // set to true to invert the logic of the sensor.
+    #define ENDSTOPPULLUP_FIL_RUNOUT        // Uncomment to use internal pullup for filament runout pins if the sensor is defined.
+    #define FILAMENT_RUNOUT_SCRIPT    "M600"
   #endif
 #endif
 
+#undef  FIL_RUNOUT_PIN
+#define FIL_RUNOUT_PIN 47
 
-    #define FIL_RUNOUT_PIN 47 //SERVO0_PIN 
-
-#define PINS_DEBUGGING
+//#define PINS_DEBUGGING
 
 #if SYSTEM_SECTION == SUBSECTION(EXTRAS, 1)
   #undef  EEPROM_SETTINGS
@@ -211,12 +215,12 @@
   #undef  TEMP_1_PIN
 
   #define HEATER_BED_PIN      8
-//  #define TEMP_BED_PIN        14
   #define FAN_PIN             17 // Part Cooling System
 
-  #define TEMP_0_PIN         4   // Analog Input
-  #define TEMP_1_PIN         5   // Analog Input
-  #define TEMP_BED_PIN       3   // Analog Input
+  #define TEMP_0_PIN          4   // Analog Input
+  #define TEMP_1_PIN          5   // Analog Input
+  #define TEMP_BED_PIN        3   // Analog Input
+
 /*
 #define VIKI2 true 
 
@@ -236,15 +240,17 @@
   #if ENABLED(THERMAL_PROTECTION_HOTENDS)
     #undef THERMAL_PROTECTION_PERIOD
     #undef THERMAL_PROTECTION_HYSTERESIS
-    #define THERMAL_PROTECTION_PERIOD 60        // Seconds
-    #define THERMAL_PROTECTION_HYSTERESIS 15     // Degrees Celsius
+    
+    #define THERMAL_PROTECTION_PERIOD 60          // Seconds
+    #define THERMAL_PROTECTION_HYSTERESIS 15      // Degrees Celsius
   #endif
 
   #if ENABLED(THERMAL_PROTECTION_BED)
     #undef THERMAL_PROTECTION_BED_PERIOD
     #undef THERMAL_PROTECTION_BED_HYSTERESIS
-    #define THERMAL_PROTECTION_BED_PERIOD 60    // Seconds
-    #define THERMAL_PROTECTION_BED_HYSTERESIS 15 // Degrees Celsius
+    
+    #define THERMAL_PROTECTION_BED_PERIOD 60      // Seconds
+    #define THERMAL_PROTECTION_BED_HYSTERESIS 15  // Degrees Celsius
   #endif
 
   #undef  TEMP_SENSOR_AD595_GAIN
@@ -255,10 +261,6 @@
   #undef  TEMP_SENSOR_AD8495_GAIN 
   #define TEMP_SENSOR_AD8495_GAIN 2.0 
 #endif
-
-//#if !defined(SYSTEM_SECTION)
-//#pragma WARNING ("SECTION = " STRINGIFY(SYSTEM_SECTION))
-//#endif
 
 #if SYSTEM_SECTION == SUBSECTION(EXTRUDER, 5)
   #undef  E0_AUTO_FAN_PIN 
@@ -273,8 +275,8 @@
 
   #define Y_DUAL_STEPPER_DRIVERS true
   #define Z_DUAL_STEPPER_DRIVERS true
-  #define Y_DUAL_ENDSTOPS         true
-  #define Y2_USE_ENDSTOP          true
+  #define Y_DUAL_ENDSTOPS        true
+  #define Y2_USE_ENDSTOP         true
 
   #define Y_DUAL_STEPPER_DRIVERS
   #if ENABLED(Y_DUAL_STEPPER_DRIVERS)
@@ -288,117 +290,81 @@
 #endif
 
 //#if SYSTEM_SECTION == PINS
+
   #define Y_STEP_PIN         60
   #define Y_DIR_PIN          61
   #define Y_ENABLE_PIN       56
   #define Y_CS_PIN           49
 
-  #define Y2_STEP_PIN         46
-  #define Y2_DIR_PIN          48
-  #define Y2_ENABLE_PIN       62
+  #define Y2_STEP_PIN        46
+  #define Y2_DIR_PIN         48
+  #define Y2_ENABLE_PIN      62
+
+  #undef  Z_STEP_PIN
+  #undef  Z_DIR_PIN
+  #undef  Z_ENABLE_PIN
 
   #define Z_STEP_PIN         26
   #define Z_DIR_PIN          28
   #define Z_ENABLE_PIN       24
 
-  #define Z2_STEP_PIN         36
-  #define Z2_DIR_PIN          34
-  #define Z2_ENABLE_PIN       30
+  #undef  Z2_STEP_PIN
+  #undef  Z2_DIR_PIN
+  #undef  Z2_ENABLE_PIN
+
+  #define Z2_STEP_PIN        36
+  #define Z2_DIR_PIN         34
+  #define Z2_ENABLE_PIN      30
+
+  #undef  E0_STEP_PIN
+  #undef  E0_DIR_PIN
+  #undef  E0_ENABLE_PIN
 
   #define E0_STEP_PIN        23 
   #define E0_DIR_PIN         25
   #define E0_ENABLE_PIN      40
-  //#define E0_CS_PIN          42
+
+  #undef  E1_STEP_PIN
+  #undef  E1_DIR_PIN
+  #undef  E1_ENABLE_PIN
 
   #define E1_STEP_PIN        43
   #define E1_DIR_PIN         37
   #define E1_ENABLE_PIN      42
-  //#define E1_CS_PIN          44
 
-  #define Y_MAX_PIN       63
 
-           #define BEEPER_PIN 33         
-           // Pins for DOGM SPI LCD Support
-           #define DOGLCD_A0  44
-           #define DOGLCD_CS  45
-           #define LCD_SCREEN_ROT_180
+  #undef  Y_MAX_PIN
+  #define Y_MAX_PIN         63
+
+  #undef  BEEPER_PIN
+  #define BEEPER_PIN 33         
+  
+  // Pins for DOGM SPI LCD Support
+  #define DOGLCD_A0         44
+  #define DOGLCD_CS         45
+  #define LCD_SCREEN_ROT_180
         
-           //The encoder and click button
-           #define BTN_EN1 22
-           #define BTN_EN2 7
-           #define BTN_ENC 39  //the click switch
-      
-           #define SD_DETECT_PIN -1
+  // The encoder and click button
+  #define BTN_EN1           22
+  #define BTN_EN2           7
+  #define BTN_ENC           39  //the click switch
 
-                 #define STAT_LED_RED_PIN  32
-      #define STAT_LED_BLUE_PIN 35
+  #undef  SD_DETECT_PIN
+  #define SD_DETECT_PIN     -1
 
-/*
-#define VIKI2
+  #undef  STAT_LED_RED_PIN
+  #undef  STAT_LED_BLUE_PIN
+  
+  #define STAT_LED_RED_PIN  32
+  #define STAT_LED_BLUE_PIN 35
 
-    #if ENABLED(VIKI2)
-      #define DOGLCD_CS         45
-      #define DOGLCD_A0         44
-      #define LCD_SCREEN_ROT_180
-
-      #define BEEPER_PIN        33
-      #define STAT_LED_RED_PIN  32
-      #define STAT_LED_BLUE_PIN 35
-
-      #define BTN_EN1           22
-      #define BTN_EN2            7
-      #define BTN_ENC           39
-
-      #define SDSS              53
-      #define SD_DETECT_PIN     -1 // Pin 49 for display sd interface, 72 for easy adapter board
-      #define KILL_PIN          31
-   #endif*/
 //#endif
 
 #if SYSTEM_SECTION == SUBSECTION(EXTRAS, 4)
   #undef  DIGIPOT_I2C_NUM_CHANNELS
-  #define DIGIPOT_I2C_NUM_CHANNELS 7 // AZTEEG_X3_PRO: 8 (Not sure why this was set to 7 at some point)
+  #define DIGIPOT_I2C_NUM_CHANNELS    7 // AZTEEG_X3_PRO: 8 (Not sure why this was set to 7 at some point)
   #undef  DIGIPOT_I2C_MOTOR_CURRENTS
-  #define DIGIPOT_I2C_MOTOR_CURRENTS { 2.0, 2.0, 2.0, 1.68, 1.68, 1.8, 1.8 }  //  AZTEEG_X3_PRO
+  #define DIGIPOT_I2C_MOTOR_CURRENTS  { 2.0, 2.0, 2.0, 1.68, 1.68, 1.8, 1.8 }  //  AZTEEG_X3_PRO
 #endif
-
-//
-//  #define HEATER_BED_PIN      8
-//  #define TEMP_BED_PIN        14
- // #define FAN_PIN             17 // Part Cooling System
-
-  //#define TEMP_0_PIN         4   // Analog Input
-  
-#pragma message ("VIKI2 = " STRINGIFY(VIKI2))
-#pragma message ("BEEPER_PIN = " STRINGIFY(BEEPER_PIN))       
-           // Pins for DOGM SPI LCD Support
-#pragma message ("DOGLCD_A0 = " STRINGIFY(DOGLCD_A0))
-#pragma message ("DOGLCD_CS = " STRINGIFY(DOGLCD_CS))
-#pragma message ("LCD_SCREEN_ROT_180 = " STRINGIFY(LCD_SCREEN_ROT_180))
-        
-           //The encoder and click button
-#pragma message ("BTN_EN1 = " STRINGIFY(BTN_EN1))
-#pragma message ("BTN_EN2 = " STRINGIFY(BTN_EN2))
-#pragma message ("BTN_ENC = " STRINGIFY(BTN_ENC))
-  //the click switch
-      
-#pragma message ("SD_DETECT_PIN = " STRINGIFY(SD_DETECT_PIN))
-
-#pragma message ("STAT_LED_RED_PIN = " STRINGIFY(STAT_LED_RED_PIN))
-#pragma message ("STAT_LED_BLUE_PIN = " STRINGIFY(STAT_LED_BLUE_PIN))
-
-#pragma message ("HEATER_BED_PIN = " STRINGIFY(HEATER_BED_PIN))
-#pragma message ("TEMP_BED_PIN = " STRINGIFY(TEMP_BED_PIN))
-
-#pragma message ("DEFAULT_LCD_CONTRAST = " STRINGIFY(DEFAULT_LCD_CONTRAST))
-#pragma message ("LCD_CONTRAST_MIN = " STRINGIFY(LCD_CONTRAST_MIN))
-#pragma message ("LCD_CONTRAST_MAX = " STRINGIFY(LCD_CONTRAST_MAX))
-
-#pragma message ("TEMP_BED_PIN = " STRINGIFY(TEMP_BED_PIN))
-#pragma message ("Y_MAX_PIN = " STRINGIFY(Y_MAX_PIN))
-
-//#pragma message ("DIGIPOT_I2C_NUM_CHANNELS = " STRINGIFY(DIGIPOT_I2C_NUM_CHANNELS))
-
-//#endif
 
 

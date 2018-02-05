@@ -1,3 +1,9 @@
+// gigabot.cpp
+//
+// This source file is intended to isolate customized code for Marlin by 
+// separating them into sections
+//
+
 #include "systems.h"
 
 #if 0
@@ -108,10 +114,10 @@ inline bool _enqueuecommand(const char* cmd, bool say_ok);
  
 void pause()
 {
-_enqueuecommand("M600", false);
-_enqueuecommand("G4 P0", false);
-_enqueuecommand("G4 P0", false);
-_enqueuecommand("G4 P0", false);
+  _enqueuecommand("M600", false);
+  _enqueuecommand("G4 P0", false);
+  _enqueuecommand("G4 P0", false);
+  _enqueuecommand("G4 P0", false);
 }
 #endif
 
