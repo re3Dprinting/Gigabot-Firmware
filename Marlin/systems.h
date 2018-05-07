@@ -41,6 +41,8 @@
 #define EXTRAS          9
 #define AZTEEG_X3_PRO   10
 #define PINS            11
+#define HIDDEN          12
+#define SERIAL_BUF      13
 
 #define SYSTEM_SECTION SYSTEM_UNKNOWN
 

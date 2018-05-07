@@ -6708,6 +6708,14 @@ inline void gcode_M17() {
       lcd_advanced_pause_show_message(ADVANCED_PAUSE_MESSAGE_RESUME);
     #endif
 
+    #if ENABLED(HOME_AFTER_FILAMENT_CHANGE)
+      if (axis_unhomed_error())
+      {
+        homeaxis(X_AXIS);
+        homeaxis(Y_AXIS);
+      }
+    #endif
+
     // Set extruder to saved position
     destination[E_AXIS] = current_position[E_AXIS] = resume_position[E_AXIS];
     planner.set_e_position_mm(current_position[E_AXIS]);

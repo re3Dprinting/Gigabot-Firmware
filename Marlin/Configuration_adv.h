@@ -369,6 +369,9 @@
 
 #include SYSTEM_SETTINGS
 
+#undef  SYSTEM_SECTION
+#define SYSTEM_SECTION SUBSECTION(HOMING, 4)
+
 // @section homing
 
 // Homing hits each endstop, retracts by these distances, then does a slower bump.
@@ -380,6 +383,8 @@
 
 // When G28 is called, this option will make Y home before X
 //#define HOME_Y_BEFORE_X
+
+#include SYSTEM_SETTINGS
 
 // @section machine
 
@@ -408,12 +413,17 @@
 
 //#define HOME_AFTER_DEACTIVATE  // Require rehoming after steppers are deactivated
 
+#undef  SYSTEM_SECTION
+#define SYSTEM_SECTION SUBSECTION(LCD, 2)
+
 // @section lcd
 
 #if ENABLED(ULTIPANEL)
   #define MANUAL_FEEDRATE {50*60, 50*60, 4*60, 60} // Feedrates for manual moves along X, Y, Z, E from panel
   #define ULTIPANEL_FEEDMULTIPLY  // Comment to disable setting feedrate multiplier via encoder
 #endif
+
+#include SYSTEM_SETTINGS
 
 #undef  SYSTEM_SECTION
 #define SYSTEM_SECTION SUBSECTION(EXTRAS, 4)
@@ -680,7 +690,7 @@
 #endif
 
 #undef  SYSTEM_SECTION
-#define SYSTEM_SECTION LCD
+#define SYSTEM_SECTION SUBSECTION(LCD, 1)
 
 // @section lcd
 
@@ -802,6 +812,9 @@
 //================================= Buffers =================================
 //===========================================================================
 
+#undef  SYSTEM_SECTION
+#define SYSTEM_SECTION SUBSECTION(HIDDEN, 1)
+
 // @section hidden
 
 // The number of linear motions that can be in the plan at any give time.
@@ -811,6 +824,11 @@
 #else
   #define BLOCK_BUFFER_SIZE 16 // maximize block buffer
 #endif
+
+#include SYSTEM_SETTINGS
+
+#undef  SYSTEM_SECTION
+#define SYSTEM_SECTION SUBSECTION(SERIAL_BUF, 1)
 
 // @section serial
 
@@ -863,6 +881,8 @@
 
 // Some clients will have this feature soon. This could make the NO_TIMEOUTS unnecessary.
 //#define ADVANCED_OK
+
+#include SYSTEM_SETTINGS
 
 // @section extras
 
@@ -939,6 +959,7 @@
                                               // even if it takes longer than DEFAULT_STEPPER_DEACTIVE_TIME.
   //#define PARK_HEAD_ON_PAUSE                // Go to filament change position on pause, return to print position on resume
   //#define HOME_BEFORE_FILAMENT_CHANGE       // Ensure homing has been completed prior to parking for filament change
+  #define HOME_AFTER_FILAMENT_CHANGE
 #endif
 
 // @section tmc

@@ -1100,7 +1100,7 @@
 #include SYSTEM_SETTINGS
 
 #undef  SYSTEM_SECTION
-#define SYSTEM_SECTION HOMING
+#define SYSTEM_SECTION SUBSECTION(HOMING, 3)
 
 // @section homing
 

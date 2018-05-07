@@ -79,7 +79,11 @@
       #define LCD_CONTRAST_MIN       0
       #define LCD_CONTRAST_MAX     75//255
       #define DEFAULT_LCD_CONTRAST 35//140
+      //#define U8GLIB_ST7565_64128N
 //      #define U8GLIB_ST7565_64128N
+  #define ST7565_DELAY_1 DELAY_0_NOP
+  #define ST7565_DELAY_2 DELAY_1_NOP
+  #define ST7565_DELAY_3 DELAY_2_NOP
     #elif ENABLED(ELB_FULL_GRAPHIC_CONTROLLER)
       #define LCD_CONTRAST_MIN      90
       #define LCD_CONTRAST_MAX     130

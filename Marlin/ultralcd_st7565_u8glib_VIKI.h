@@ -66,8 +66,8 @@
   #define CPU_ST7565_DELAY_3 DELAY_0_NOP
 #elif F_CPU == 16000000
   #define CPU_ST7565_DELAY_1 DELAY_0_NOP
-  #define CPU_ST7565_DELAY_2 DELAY_1_NOP
-  #define CPU_ST7565_DELAY_3 DELAY_2_NOP
+  #define CPU_ST7565_DELAY_2 DELAY_0_NOP
+  #define CPU_ST7565_DELAY_3 DELAY_1_NOP
 #else
   #error "No valid condition for delays in 'ultralcd_st7565_u8glib_VIKI.h'"
 #endif
@@ -184,7 +184,7 @@ uint8_t u8g_dev_st7565_64128n_2x_VIKI_fn(u8g_t *u8g, u8g_dev_t *dev, uint8_t msg
       ST7565_NA0();                     /* instruction mode */
       ST7565_NCS();                     /* enable chip */
       ST7565_WRITE_BYTE(0x010);         /* set upper 4 bit of the col adr to 0x10 */
-      ST7565_WRITE_BYTE(0x000);         /* set lower 4 bit of the col adr to 0x00. Changed for DisplayTech 64128N */
+      ST7565_WRITE_BYTE(0x004);         /* set lower 4 bit of the col adr to 0x00. Changed for DisplayTech 64128N */
                                         /* end of sequence */
       ST7565_WRITE_BYTE(0x0B0 | (2*pb->p.page));; /* select current page (ST7565R) */
       ST7565_A0();                      /* data mode */
@@ -193,7 +193,7 @@ uint8_t u8g_dev_st7565_64128n_2x_VIKI_fn(u8g_t *u8g, u8g_dev_t *dev, uint8_t msg
       ST7565_NA0();                     /* instruction mode */
       ST7565_NCS();                     /* enable chip */
       ST7565_WRITE_BYTE(0x010);         /* set upper 4 bit of the col adr to 0x10 */
-      ST7565_WRITE_BYTE(0x000);         /* set lower 4 bit of the col adr to 0x00. Changed for DisplayTech 64128N */
+      ST7565_WRITE_BYTE(0x004);         /* set lower 4 bit of the col adr to 0x00. Changed for DisplayTech 64128N */
                                         /* end of sequence */
       ST7565_WRITE_BYTE(0x0B0 | (2*pb->p.page+1)); /* select current page (ST7565R) */
       ST7565_A0();                      /* data mode */

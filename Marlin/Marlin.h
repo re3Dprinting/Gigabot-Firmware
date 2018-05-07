@@ -482,6 +482,7 @@ void do_blocking_move_to_xy(const float &x, const float &y, const float &fr_mm_s
       || ENABLED(NOZZLE_CLEAN_FEATURE)                                             \
       || ENABLED(NOZZLE_PARK_FEATURE)                                              \
       || (ENABLED(ADVANCED_PAUSE_FEATURE) && ENABLED(HOME_BEFORE_FILAMENT_CHANGE)) \
+      || (ENABLED(ADVANCED_PAUSE_FEATURE) && ENABLED(HOME_AFTER_FILAMENT_CHANGE))  \
       || HAS_M206_COMMAND                                                          \
     ) || ENABLED(NO_MOTION_BEFORE_HOMING)
 

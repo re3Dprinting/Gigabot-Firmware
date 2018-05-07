@@ -2813,7 +2813,7 @@ void kill_screen(const char* lcd_msg) {
       #endif
           manual_move_e_index = eindex >= 0 ? eindex : active_extruder;
     #endif
-    manual_move_start_time = millis() + (move_menu_scale < 0.99 ? 0UL : 250UL); // delay for bigger moves
+    manual_move_start_time = millis() + (move_menu_scale < 0.99 ? 0UL : /*25*/0UL); // delay for bigger moves
     manual_move_axis = (int8_t)axis;
   }
 

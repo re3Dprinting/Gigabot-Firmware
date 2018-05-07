@@ -915,6 +915,13 @@ float Temperature::analog2temp(const int raw, const uint8_t e) {
   return ((raw * ((5.0 * 100.0) / 1024.0) / OVERSAMPLENR) * (TEMP_SENSOR_AD595_GAIN)) + TEMP_SENSOR_AD595_OFFSET;
 }
 
+#undef  SYSTEM_SECTION
+#define SYSTEM_SECTION SUBSECTION(TEMPERATURE, 5)
+
+#include SYSTEM_CODE
+
+#ifndef SECTION_OVERRIDE
+
 #if HAS_TEMP_BED
   // Derived from RepRap FiveD extruder::getTemperature()
   // For bed temperature measurement.
@@ -940,11 +947,7 @@ float Temperature::analog2temp(const int raw, const uint8_t e) {
 
     #elif defined(BED_USES_AD595)
 
-    return ((raw * ((5.0 * 100.0) / 1024.0) / OVERSAMPLENR) * (TEMP_SENSOR_AD595_GAIN)) + TEMP_SENSOR_AD595_OFFSET;
-
-    #elif defined(BED_USES_AD495)
-
-    return ((raw * ((5.0 * 100.0) / 1024.0) / OVERSAMPLENR) * (TEMP_SENSOR_AD8495_GAIN)) + TEMP_SENSOR_AD8495_OFFSET;
+      return ((raw * ((5.0 * 100.0) / 1024.0) / OVERSAMPLENR) * (TEMP_SENSOR_AD595_GAIN)) + TEMP_SENSOR_AD595_OFFSET;
 
     #else
 
@@ -953,7 +956,11 @@ float Temperature::analog2temp(const int raw, const uint8_t e) {
 
     #endif
   }
+  
 #endif // HAS_TEMP_BED
+
+#undef    SECTION_OVERRIDE
+#endif // SECTION_OVERRIDE
 
 /**
  * Get the raw values into the actual temperatures.

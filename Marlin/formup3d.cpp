@@ -1,4 +1,4 @@
-// gigabot.cpp
+// formup3d.cpp
 //
 // This source file is intended to isolate customized code for Marlin by 
 // separating them into sections
@@ -34,7 +34,7 @@ float Temperature::analog2tempBed(const int raw) {
 
   #elif defined(BED_USES_AD595)
 
-    return (((((raw * 5.0) / 1024.0) / .005) / OVERSAMPLENR) * TEMP_SENSOR_AD8495_GAIN) + TEMP_SENSOR_AD8495_OFFSET;
+    return ((raw * ((5.0 * 100.0) / 1024.0) / OVERSAMPLENR) * (TEMP_SENSOR_AD8495_GAIN)) + TEMP_SENSOR_AD8495_OFFSET;
 
   #else
 

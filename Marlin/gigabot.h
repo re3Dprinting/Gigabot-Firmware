@@ -6,11 +6,18 @@
 
 #if SYSTEM_SECTION == INFO
   #undef  STRING_CONFIG_H_AUTHOR
-  #define STRING_CONFIG_H_AUTHOR "(GB3 V4.x.x - Marlin 1.1.8)"
+//  #define STRING_CONFIG_H_AUTHOR "(GB3 V4.x.x - Marlin 1.1.8)"
+  
+  #define STRING_CONFIG_H_AUTHOR "(GB3, V4.x.x)" // Who made the changes.
+  #define SHOW_BOOTSCREEN
 
+//#define STRING_SPLASH_LINE1 SHORT_BUILD_VERSION // will be shown during bootup in line 1
+//#define STRING_SPLASH_LINE2 WEBSITE_URL         // will be shown during bootup in line 2
   #define SHOW_CUSTOM_BOOTSCREEN
 #endif
 
+  #define VIKI2
+  
 #if SYSTEM_SECTION == SUBSECTION(MACHINE, 1)
   #undef  MOTHERBOARD
   #define MOTHERBOARD BOARD_AZTEEG_X3_PRO
@@ -116,6 +123,21 @@
   #define Z_MIN_ENDSTOP_INVERTING true // set to true to invert the logic of the endstop.
 #endif
 
+#if SYSTEM_SECTION == SUBSECTION(HOMING, 2)
+  #define Y_HOME_DIR -1
+#endif
+
+#if SYSTEM_SECTION == SUBSECTION(HOMING, 3)
+  #define MANUAL_X_HOME_POS 0
+  #define MANUAL_Y_HOME_POS 0
+  #define MANUAL_Z_HOME_POS 0
+//#define MANUAL_Y_HOME_POS Y_MAX_POS
+#endif
+
+#if SYSTEM_SECTION == SUBSECTION(HOMING, 4)
+  #define HOMING_BUMP_DIVISOR { 5, 5, 5 }  // Re-Bump Speed Divisor (Divides the Homing Feedrate)
+#endif
+
 #if SYSTEM_SECTION == SUBSECTION(MOTION, 1)
   #undef  DEFAULT_AXIS_STEPS_PER_UNIT
   #undef  DEFAULT_MAX_FEEDRATE
@@ -139,7 +161,7 @@
   #undef  INVERT_Y_DIR
 
   #define INVERT_X_DIR true
-  #define INVERT_Y_DIR false
+  #define INVERT_Y_DIR true
 #endif
 
 #define ADVANCED_PAUSE_FEATURE
@@ -194,7 +216,7 @@
   #define PREHEAT_2_TEMP_BED     95
 #endif
 
-#if SYSTEM_SECTION == LCD
+#if SYSTEM_SECTION == SUBSECTION(LCD, 1)
   #undef  SDSUPPORT
   #undef  SPI_SPEED
   #undef  SD_CHECK_AND_RETRY
@@ -204,6 +226,22 @@
   #define SPI_SPEED SPI_QUARTER_SPEED
   #define SD_CHECK_AND_RETRY
   #define VIKI2
+#endif
+
+#define ULTRA_LCD  //general LCD support, also 16x2
+    #define DOGLCD  // Support for SPI LCD 128x64 (Controller ST7565R graphic Display Family)
+    #define ULTIMAKERCONTROLLER 
+      #define LCD_CONTRAST_MIN       0
+      #define LCD_CONTRAST_MAX     75//255
+      #define DEFAULT_LCD_CONTRAST 35//140
+
+#if SYSTEM_SECTION == SUBSECTION(LCD, 2)
+  #if ENABLED(ULTIPANEL)
+ //   #undef  MANUAL_FEEDRATE
+ //   #define MANUAL_FEEDRATE {10*60, 10*60, 4*60, 60} // Feedrates for manual moves along X, Y, Z, E from panel
+  
+    #define ULTIPANEL_FEEDMULTIPLY  // Comment to disable setting feedrate multiplier via encoder
+  #endif
 #endif
 
 #if SYSTEM_SECTION == AZTEEG_X3_PRO
@@ -219,7 +257,7 @@
 
   #define TEMP_0_PIN          4   // Analog Input
   #define TEMP_1_PIN          5   // Analog Input
-  #define TEMP_BED_PIN        3   // Analog Input
+  #define TEMP_BED_PIN        14   // Analog Input
 
 /*
 #define VIKI2 true 
@@ -252,7 +290,7 @@
     #define THERMAL_PROTECTION_BED_PERIOD 60      // Seconds
     #define THERMAL_PROTECTION_BED_HYSTERESIS 15  // Degrees Celsius
   #endif
-
+  
   #undef  TEMP_SENSOR_AD595_GAIN
   #define TEMP_SENSOR_AD595_GAIN 2.0
 
@@ -333,11 +371,11 @@
   #define E1_ENABLE_PIN      42
 
 
-  #undef  Y_MAX_PIN
+  #define X_MAX_PIN         -1
   #define Y_MAX_PIN         63
 
   #undef  BEEPER_PIN
-  #define BEEPER_PIN 33         
+  #define BEEPER_PIN        33         
   
   // Pins for DOGM SPI LCD Support
   #define DOGLCD_A0         44
@@ -367,4 +405,15 @@
   #define DIGIPOT_I2C_MOTOR_CURRENTS  { 2.0, 2.0, 2.0, 1.68, 1.68, 1.8, 1.8 }  //  AZTEEG_X3_PRO
 #endif
 
+
+#if SYSTEM_SECTION == SUBSECTION(HIDDEN, 1)
+  #undef  BLOCK_BUFFER_SIZE
+  #define BLOCK_BUFFER_SIZE 32
+#endif
+
+
+#if SYSTEM_SECTION == SUBSECTION(SERIA_BUFL, 1)
+  #undef  BUFSIZE
+  #define BUFSIZE 8
+#endif
 
