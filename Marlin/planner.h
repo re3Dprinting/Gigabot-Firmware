@@ -36,11 +36,11 @@
 #include "enum.h"
 #include "Marlin.h"
 
-#if HAS_ABL
+#if ABL_PLANAR
   #include "vector_3.h"
 #endif
 
-enum BlockFlagBit {
+enum BlockFlagBit : char {
   // Recalculate trapezoids on entry junction. For optimization.
   BLOCK_BIT_RECALCULATE,
 
@@ -49,22 +49,22 @@ enum BlockFlagBit {
   // from a safe speed (in consideration of jerking from zero speed).
   BLOCK_BIT_NOMINAL_LENGTH,
 
-  // Start from a halt at the start of this block, respecting the maximum allowed jerk.
-  BLOCK_BIT_START_FROM_FULL_HALT,
-
   // The block is busy
   BLOCK_BIT_BUSY,
 
   // The block is segment 2+ of a longer move
-  BLOCK_BIT_CONTINUED
+  BLOCK_BIT_CONTINUED,
+
+  // Sync the stepper counts from the block
+  BLOCK_BIT_SYNC_POSITION
 };
 
-enum BlockFlag {
+enum BlockFlag : char {
   BLOCK_FLAG_RECALCULATE          = _BV(BLOCK_BIT_RECALCULATE),
   BLOCK_FLAG_NOMINAL_LENGTH       = _BV(BLOCK_BIT_NOMINAL_LENGTH),
-  BLOCK_FLAG_START_FROM_FULL_HALT = _BV(BLOCK_BIT_START_FROM_FULL_HALT),
   BLOCK_FLAG_BUSY                 = _BV(BLOCK_BIT_BUSY),
-  BLOCK_FLAG_CONTINUED            = _BV(BLOCK_BIT_CONTINUED)
+  BLOCK_FLAG_CONTINUED            = _BV(BLOCK_BIT_CONTINUED),
+  BLOCK_FLAG_SYNC_POSITION        = _BV(BLOCK_BIT_SYNC_POSITION)
 };
 
 /**
@@ -99,7 +99,10 @@ typedef struct {
   // Advance extrusion
   #if ENABLED(LIN_ADVANCE)
     bool use_advance_lead;
-    uint32_t abs_adv_steps_multiplier8; // Factorised by 2^8 to avoid float
+    uint16_t advance_speed,                 // Timer value for extruder speed offset
+             max_adv_steps,                 // max. advance steps to get cruising speed pressure (not always nominal_speed!)
+             final_adv_steps;               // advance steps due to exit speed
+    float e_D_ratio;
   #endif
 
   // Fields used by the motion planner to manage acceleration
@@ -126,6 +129,8 @@ typedef struct {
   uint32_t segment_time_us;
 
 } block_t;
+
+#define HAS_POSITION_FLOAT (ENABLED(LIN_ADVANCE) || ENABLED(SCARA_FEEDRATE_SCALING))
 
 #define BLOCK_MOD(n) ((n)&(BLOCK_BUFFER_SIZE-1))
 
@@ -191,9 +196,11 @@ class Planner {
     #endif
 
     #if ENABLED(LIN_ADVANCE)
-      static float extruder_advance_k, advance_ed_ratio,
-                   position_float[XYZE],
-                   lin_dist_xy, lin_dist_e;
+      static float extruder_advance_K;
+    #endif
+
+    #if HAS_POSITION_FLOAT
+      static float position_float[XYZE];
     #endif
 
     #if ENABLED(SKEW_CORRECTION)
@@ -292,6 +299,8 @@ class Planner {
      * Number of moves currently in the planner
      */
     FORCE_INLINE static uint8_t movesplanned() { return BLOCK_MOD(block_buffer_head - block_buffer_tail + BLOCK_BUFFER_SIZE); }
+
+    FORCE_INLINE static void clear_block_buffer() { block_buffer_head = block_buffer_tail = 0; }
 
     FORCE_INLINE static bool is_full() { return block_buffer_tail == next_block_index(block_buffer_head); }
 
@@ -404,6 +413,20 @@ class Planner {
 
     #endif
 
+
+    /**
+     * Planner::get_next_free_block
+     *
+     * - Get the next head index (passed by reference)
+     * - Wait for a space to open up in the planner
+     * - Return the head block
+     */
+    FORCE_INLINE static block_t* get_next_free_block(uint8_t &next_buffer_head) {
+      next_buffer_head = next_block_index(block_buffer_head);
+      while (block_buffer_tail == next_buffer_head) idle(); // while (is_full)
+      return &block_buffer[block_buffer_head];
+    }
+
     /**
      * Planner::_buffer_steps
      *
@@ -412,8 +435,20 @@ class Planner {
      *  target      - target position in steps units
      *  fr_mm_s     - (target) speed of the move
      *  extruder    - target extruder
+     *  millimeters - the length of the movement, if known
      */
-    static void _buffer_steps(const int32_t (&target)[XYZE], float fr_mm_s, const uint8_t extruder);
+    static void _buffer_steps(const int32_t (&target)[XYZE]
+      #if HAS_POSITION_FLOAT
+        , const float (&target_float)[XYZE]
+      #endif
+      , float fr_mm_s, const uint8_t extruder, const float &millimeters=0.0
+    );
+
+    /**
+     * Planner::buffer_sync_block
+     * Add a block to the buffer that just updates the position
+     */
+    static void buffer_sync_block();
 
     /**
      * Planner::buffer_segment
@@ -422,11 +457,12 @@ class Planner {
      *
      * Leveling and kinematics should be applied ahead of calling this.
      *
-     *  a,b,c,e   - target positions in mm and/or degrees
-     *  fr_mm_s   - (target) speed of the move
-     *  extruder  - target extruder
+     *  a,b,c,e     - target positions in mm and/or degrees
+     *  fr_mm_s     - (target) speed of the move
+     *  extruder    - target extruder
+     *  millimeters - the length of the movement, if known
      */
-    static void buffer_segment(const float &a, const float &b, const float &c, const float &e, const float &fr_mm_s, const uint8_t extruder);
+    static void buffer_segment(const float &a, const float &b, const float &c, const float &e, const float &fr_mm_s, const uint8_t extruder, const float &millimeters=0.0);
 
     static void _set_position_mm(const float &a, const float &b, const float &c, const float &e);
 
@@ -441,12 +477,13 @@ class Planner {
      *  rx,ry,rz,e   - target position in mm or degrees
      *  fr_mm_s      - (target) speed of the move (mm/s)
      *  extruder     - target extruder
+     *  millimeters  - the length of the movement, if known
      */
-    FORCE_INLINE static void buffer_line(ARG_X, ARG_Y, ARG_Z, const float &e, const float &fr_mm_s, const uint8_t extruder) {
+    FORCE_INLINE static void buffer_line(ARG_X, ARG_Y, ARG_Z, const float &e, const float &fr_mm_s, const uint8_t extruder, const float millimeters = 0.0) {
       #if PLANNER_LEVELING && IS_CARTESIAN
         apply_leveling(rx, ry, rz);
       #endif
-      buffer_segment(rx, ry, rz, e, fr_mm_s, extruder);
+      buffer_segment(rx, ry, rz, e, fr_mm_s, extruder, millimeters);
     }
 
     /**
@@ -454,11 +491,12 @@ class Planner {
      * The target is cartesian, it's translated to delta/scara if
      * needed.
      *
-     *  cart     - x,y,z,e CARTESIAN target in mm
-     *  fr_mm_s  - (target) speed of the move (mm/s)
-     *  extruder - target extruder
+     *  cart         - x,y,z,e CARTESIAN target in mm
+     *  fr_mm_s      - (target) speed of the move (mm/s)
+     *  extruder     - target extruder
+     *  millimeters  - the length of the movement, if known
      */
-    FORCE_INLINE static void buffer_line_kinematic(const float (&cart)[XYZE], const float &fr_mm_s, const uint8_t extruder) {
+    FORCE_INLINE static void buffer_line_kinematic(const float (&cart)[XYZE], const float &fr_mm_s, const uint8_t extruder, const float millimeters = 0.0) {
       #if PLANNER_LEVELING
         float raw[XYZ] = { cart[X_AXIS], cart[Y_AXIS], cart[Z_AXIS] };
         apply_leveling(raw);
@@ -467,9 +505,9 @@ class Planner {
       #endif
       #if IS_KINEMATIC
         inverse_kinematics(raw);
-        buffer_segment(delta[A_AXIS], delta[B_AXIS], delta[C_AXIS], cart[E_AXIS], fr_mm_s, extruder);
+        buffer_segment(delta[A_AXIS], delta[B_AXIS], delta[C_AXIS], cart[E_AXIS], fr_mm_s, extruder, millimeters);
       #else
-        buffer_segment(raw[X_AXIS], raw[Y_AXIS], raw[Z_AXIS], cart[E_AXIS], fr_mm_s, extruder);
+        buffer_segment(raw[X_AXIS], raw[Y_AXIS], raw[Z_AXIS], cart[E_AXIS], fr_mm_s, extruder, millimeters);
       #endif
     }
 
@@ -491,7 +529,7 @@ class Planner {
     static void set_position_mm_kinematic(const float (&cart)[XYZE]);
     static void set_position_mm(const AxisEnum axis, const float &v);
     FORCE_INLINE static void set_z_position_mm(const float &z) { set_position_mm(Z_AXIS, z); }
-    FORCE_INLINE static void set_e_position_mm(const float &e) { set_position_mm(AxisEnum(E_AXIS), e); }
+    FORCE_INLINE static void set_e_position_mm(const float &e) { set_position_mm(E_AXIS, e); }
 
     /**
      * Sync from the stepper positions. (e.g., after an interrupted move)
@@ -501,14 +539,14 @@ class Planner {
     /**
      * Does the buffer have any blocks queued?
      */
-    static bool blocks_queued() { return (block_buffer_head != block_buffer_tail); }
+    FORCE_INLINE static bool has_blocks_queued() { return (block_buffer_head != block_buffer_tail); }
 
     /**
      * "Discard" the block and "release" the memory.
      * Called when the current block is no longer needed.
      */
     FORCE_INLINE static void discard_current_block() {
-      if (blocks_queued())
+      if (has_blocks_queued())
         block_buffer_tail = BLOCK_MOD(block_buffer_tail + 1);
     }
 
@@ -517,7 +555,7 @@ class Planner {
      * Called after an interrupted move to throw away the rest of the move.
      */
     FORCE_INLINE static bool discard_continued_block() {
-      const bool discard = blocks_queued() && TEST(block_buffer[block_buffer_tail].flag, BLOCK_BIT_CONTINUED);
+      const bool discard = has_blocks_queued() && TEST(block_buffer[block_buffer_tail].flag, BLOCK_BIT_CONTINUED);
       if (discard) discard_current_block();
       return discard;
     }
@@ -528,8 +566,18 @@ class Planner {
      * WARNING: Called from Stepper ISR context!
      */
     static block_t* get_current_block() {
-      if (blocks_queued()) {
+      if (has_blocks_queued()) {
         block_t * const block = &block_buffer[block_buffer_tail];
+
+        // If the block has no trapezoid calculated, it's unsafe to execute.
+        if (movesplanned() > 1) {
+          const block_t * const next = &block_buffer[next_block_index(block_buffer_tail)];
+          if (TEST(block->flag, BLOCK_BIT_RECALCULATE) || TEST(next->flag, BLOCK_BIT_RECALCULATE))
+            return NULL;
+        }
+        else if (TEST(block->flag, BLOCK_BIT_RECALCULATE))
+          return NULL;
+
         #if ENABLED(ULTRA_LCD)
           block_buffer_runtime_us -= block->segment_time_us; // We can't be sure how long an active block will take, so don't count it.
         #endif
@@ -559,7 +607,7 @@ class Planner {
         return bbru;
       }
 
-      static void clear_block_buffer_runtime(){
+      static void clear_block_buffer_runtime() {
         CRITICAL_SECTION_START
           block_buffer_runtime_us = 0;
         CRITICAL_SECTION_END
