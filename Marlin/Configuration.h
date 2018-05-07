@@ -99,15 +99,13 @@
 // Enable to show the bitmap in Marlin/_Bootscreen.h on startup.
 //#define SHOW_CUSTOM_BOOTSCREEN
 
-<<<<<<< HEAD
+// Enable to show the bitmap in Marlin/_Statusscreen.h on the status screen.
+//#define CUSTOM_STATUS_SCREEN_IMAGE
+
 #include SYSTEM_SETTINGS
 
 #undef  SYSTEM_SECTION
 #define SYSTEM_SECTION SUBSECTION(MACHINE, 1)
-=======
-// Enable to show the bitmap in Marlin/_Statusscreen.h on the status screen.
-//#define CUSTOM_STATUS_SCREEN_IMAGE
->>>>>>> origin/bugfix-1.1.x
 
 // @section machine
 
@@ -387,12 +385,8 @@
 #define PIDTEMP
 #define BANG_MAX 255     // Limits current to nozzle while in bang-bang mode; 255=full current
 #define PID_MAX BANG_MAX // Limits current to nozzle while PID is active (see PID_FUNCTIONAL_RANGE below); 255=full current
-<<<<<<< HEAD
-#define PID_K1 0.95      // Smoothing factor within the PID
-
-=======
 #define PID_K1 0.95      // Smoothing factor within any PID loop
->>>>>>> origin/bugfix-1.1.x
+
 #if ENABLED(PIDTEMP)
   //#define PID_AUTOTUNE_MENU // Add PID Autotune to the LCD "Temperature" menu to run M303 and apply the result.
   //#define PID_DEBUG // Sends debug data to the serial port.

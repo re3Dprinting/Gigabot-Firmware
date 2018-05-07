@@ -6968,7 +6968,6 @@ inline void gcode_M17() {
       lcd_advanced_pause_show_message(ADVANCED_PAUSE_MESSAGE_RESUME);
     #endif
 
-<<<<<<< HEAD
     #if ENABLED(HOME_AFTER_FILAMENT_CHANGE)
       if (axis_unhomed_error())
       {
@@ -6977,10 +6976,6 @@ inline void gcode_M17() {
       }
     #endif
 
-    // Set extruder to saved position
-    destination[E_AXIS] = current_position[E_AXIS] = resume_position[E_AXIS];
-    planner.set_e_position_mm(current_position[E_AXIS]);
-=======
     // Intelligent resuming
     #if ENABLED(FWRETRACT)
       // If retracted before goto pause
@@ -6990,7 +6985,6 @@ inline void gcode_M17() {
 
     // If resume_position is negative
     if (resume_position[E_AXIS] < 0) do_pause_e_move(resume_position[E_AXIS], PAUSE_PARK_RETRACT_FEEDRATE);
->>>>>>> origin/bugfix-1.1.x
 
     // Move XY to starting position, then Z
     do_blocking_move_to_xy(resume_position[X_AXIS], resume_position[Y_AXIS], NOZZLE_PARK_XY_FEEDRATE);
@@ -13254,11 +13248,7 @@ void set_current_from_steppers_for_axis(const AxisEnum axis) {
         //*/
         oldA = delta[A_AXIS]; oldB = delta[B_AXIS];
       #else
-<<<<<<< HEAD
-        planner.buffer_line(delta[A_AXIS], delta[B_AXIS], delta[C_AXIS], raw[E_AXIS], _feedrate_mm_s, active_extruder);
-=======
         planner.buffer_line(delta[A_AXIS], delta[B_AXIS], delta[C_AXIS], raw[E_AXIS], _feedrate_mm_s, active_extruder, cartesian_segment_mm);
->>>>>>> origin/bugfix-1.1.x
       #endif
     }
 
@@ -13865,22 +13855,11 @@ void disable_all_steppers() {
  *  - Check if cooling fan needs to be switched on
  *  - Check if an idle but hot extruder needs filament extruded (EXTRUDER_RUNOUT_PREVENT)
  */
-<<<<<<< HEAD
  
-void manage_inactivity(bool ignore_stepper_queue/*=false*/) {
-  #if ENABLED(FILAMENT_RUNOUT_SENSOR)
-//     if (READ(FIL_RUNOUT_PIN) == FIL_RUNOUT_INVERTING) SERIAL_ECHOLNPGM("+++ detected");
-    if (/*(IS_SD_PRINTING || print_job_timer.isRunning()) &&*/ (READ(FIL_RUNOUT_PIN) == FIL_RUNOUT_INVERTING))
-    {
-//      SERIAL_ECHOLNPGM("+++ detected");
-      handle_filament_runout();
-    }
-=======
 void manage_inactivity(const bool ignore_stepper_queue/*=false*/) {
 
   #if ENABLED(FILAMENT_RUNOUT_SENSOR)
     runout.run();
->>>>>>> origin/bugfix-1.1.x
   #endif
 
   if (commands_in_queue < BUFSIZE) get_available_commands();

@@ -960,7 +960,6 @@ float Temperature::analog2temp(const int raw, const uint8_t e) {
   );
 }
 
-<<<<<<< HEAD
 #undef  SYSTEM_SECTION
 #define SYSTEM_SECTION SUBSECTION(TEMPERATURE, 5)
 
@@ -968,10 +967,7 @@ float Temperature::analog2temp(const int raw, const uint8_t e) {
 
 #ifndef SECTION_OVERRIDE
 
-#if HAS_TEMP_BED
-=======
 #if HAS_HEATED_BED
->>>>>>> origin/bugfix-1.1.x
   // Derived from RepRap FiveD extruder::getTemperature()
   // For bed temperature measurement.
   float Temperature::analog2tempBed(const int raw) {
@@ -1039,12 +1035,7 @@ float Temperature::analog2temp(const int raw, const uint8_t e) {
 
     #endif
   }
-<<<<<<< HEAD
-  
-#endif // HAS_TEMP_BED
-=======
 #endif // HAS_TEMP_CHAMBER
->>>>>>> origin/bugfix-1.1.x
 
 #undef    SECTION_OVERRIDE
 #endif // SECTION_OVERRIDE
