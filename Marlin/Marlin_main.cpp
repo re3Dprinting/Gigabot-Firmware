@@ -6969,10 +6969,13 @@ inline void gcode_M17() {
     #endif
 
     #if ENABLED(HOME_AFTER_FILAMENT_CHANGE)
-      if (axis_unhomed_error())
+  //    if (axis_unhomed_error())
       {
-        homeaxis(X_AXIS);
-        homeaxis(Y_AXIS);
+        gcode_G28(false);
+        //_enqueuecommand("G28 X Y");
+ //           do_blocking_move_to_xy(-1000, -1000, NOZZLE_PARK_XY_FEEDRATE);
+  //      HOMEAXIS(X);
+ //      HOMEAXIS(Y);
       }
     #endif
 
@@ -10557,6 +10560,11 @@ inline void gcode_M502() {
 
     if (pause_print(retract, park_point, unload_length, true)) {
       wait_for_filament_reload(beep_count);
+    #if ENABLED(HOME_AFTER_FILAMENT_CHANGE)
+      // Don't allow resume without homing first
+    //  HOMEAXIS(X);
+    //  HOMEAXIS(Y);
+    #endif
       resume_print(slow_load_length, fast_load_length, ADVANCED_PAUSE_PURGE_LENGTH, beep_count);
     }
 

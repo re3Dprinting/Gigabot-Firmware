@@ -963,7 +963,7 @@ float Temperature::analog2temp(const int raw, const uint8_t e) {
 #undef  SYSTEM_SECTION
 #define SYSTEM_SECTION SUBSECTION(TEMPERATURE, 5)
 
-#include SYSTEM_CODE
+//#include SYSTEM_CODE
 
 #ifndef SECTION_OVERRIDE
 
@@ -989,10 +989,14 @@ float Temperature::analog2temp(const int raw, const uint8_t e) {
 
       // Thermocouple with amplifier ADC interface
       return (raw *
-        #if ENABLED(CHAMBER_USES_AD595)
+        #if ENABLED(BED_USES_AD595)
           5.0 * 100.0 / 1024.0 / (OVERSAMPLENR) * (TEMP_SENSOR_AD595_GAIN) + TEMP_SENSOR_AD595_OFFSET
-        #elif ENABLED(CHAMBER_USES_AD8495)
-          660.0 / 1024.0 / (OVERSAMPLENR) * (TEMP_SENSOR_AD8495_GAIN) + TEMP_SENSOR_AD8495_OFFSET
+        #elif ENABLED(BED_USES_AD8495)
+          #if defined(AD8495_FORMULA)
+            AD8495_FORMULA
+          #else
+            660.0 / 1024.0 / (OVERSAMPLENR) * (TEMP_SENSOR_AD8495_GAIN) + TEMP_SENSOR_AD8495_OFFSET
+          #endif
         #else
           0
         #endif

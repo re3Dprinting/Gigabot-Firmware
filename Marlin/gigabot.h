@@ -47,7 +47,7 @@
   #define TEMP_SENSOR_2    0
   #define TEMP_SENSOR_3    0
   #define TEMP_SENSOR_4    0
-  #define TEMP_SENSOR_BED -1
+  #define TEMP_SENSOR_BED -4
 
   #undef  TEMP_RESIDENCY_TIME
   #define TEMP_RESIDENCY_TIME 5   // (seconds)
@@ -190,6 +190,12 @@
 #undef  FIL_RUNOUT_PIN
 #define FIL_RUNOUT_PIN 47
 
+#undef  FIL_RUNOUT2_PIN
+#define FIL_RUNOUT2_PIN 12
+
+#undef  NUM_RUNOUT_SENSORS
+#define NUM_RUNOUT_SENSORS  2
+
 //#define PINS_DEBUGGING
 
 #if SYSTEM_SECTION == SUBSECTION(EXTRAS, 1)
@@ -257,7 +263,7 @@
 
   #define TEMP_0_PIN          4   // Analog Input
   #define TEMP_1_PIN          5   // Analog Input
-  #define TEMP_BED_PIN        14   // Analog Input
+  #define TEMP_BED_PIN        3   // Analog Input
 
 /*
 #define VIKI2 true 
@@ -298,6 +304,8 @@
 
   #undef  TEMP_SENSOR_AD8495_GAIN 
   #define TEMP_SENSOR_AD8495_GAIN 2.0 
+
+  #define AD8495_FORMULA (5.0 * 100.0) / 1024.0 / (OVERSAMPLENR) * (TEMP_SENSOR_AD8495_GAIN) + TEMP_SENSOR_AD8495_OFFSET
 #endif
 
 #if SYSTEM_SECTION == SUBSECTION(EXTRUDER, 5)
@@ -307,7 +315,7 @@
   #define E1_AUTO_FAN_PIN 16
 #endif
 
-#if SYSTEM_SECTION == SUBSECTION(EXTRAS, 3)
+//#if SYSTEM_SECTION == SUBSECTION(EXTRAS, 3)
   #undef  Y_DUAL_STEPPER_DRIVERS
   #undef  Z_DUAL_STEPPER_DRIVERS
 
@@ -325,7 +333,7 @@
       #define Y_DUAL_ENDSTOPS_ADJUSTMENT  0
     #endif
   #endif
-#endif
+//#endif
 
 //#if SYSTEM_SECTION == PINS
 

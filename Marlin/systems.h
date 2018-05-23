@@ -43,6 +43,7 @@
 #define PINS            11
 #define HIDDEN          12
 #define SERIAL_BUF      13
+#define CONDITIONALS    14
 
 #define SYSTEM_SECTION SYSTEM_UNKNOWN
 
