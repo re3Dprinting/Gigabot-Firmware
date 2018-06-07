@@ -91,6 +91,11 @@
   #endif
 #endif
 
+#if SYSTEM_SECTION == SUBSECTION(EXTRUDER, 2)
+  #undef  EXTRUDE_MINTEMP
+  #define EXTRUDE_MINTEMP 120
+#endif
+
 #if SYSTEM_SECTION == SUBSECTION(HOMING, 1)
   #undef  USE_XMIN_PLUG
   #undef  USE_YMIN_PLUG
@@ -124,7 +129,8 @@
 #endif
 
 #if SYSTEM_SECTION == SUBSECTION(HOMING, 2)
-  #define Y_HOME_DIR -1
+  #undef Y_HOME_DIR
+  #define Y_HOME_DIR 1
 #endif
 
 #if SYSTEM_SECTION == SUBSECTION(HOMING, 3)
@@ -176,6 +182,8 @@
   #define Y_BED_SIZE   610
   #define Z_MAX_POS    609
 
+  #undef FILAMENT_RUNOUT_SENSOR 
+
   #define ADVANCED_PAUSE_FEATURE
   #define NOZZLE_PARK_FEATURE
   #define FILAMENT_RUNOUT_SENSOR
@@ -216,10 +224,13 @@
   #undef  PREHEAT_2_TEMP_HOTEND
   #undef  PREHEAT_2_TEMP_BED
 
-  #define PREHEAT_1_TEMP_HOTEND 160
+  #define PREHEAT_1_TEMP_HOTEND 200
   #define PREHEAT_1_TEMP_BED     60
-  #define PREHEAT_2_TEMP_HOTEND 220
-  #define PREHEAT_2_TEMP_BED     95
+  #define PREHEAT_2_TEMP_HOTEND 250
+  #define PREHEAT_2_TEMP_BED     115
+  #if ENABLED(NOZZLE_PARK_FEATURE)
+    #define NOZZLE_PARK_POINT { (X_MIN_POS + 500), (Y_MAX_POS - 10), 20 }
+  #endif
 #endif
 
 #if SYSTEM_SECTION == SUBSECTION(LCD, 1)
@@ -232,6 +243,16 @@
   #define SPI_SPEED SPI_QUARTER_SPEED
   #define SD_CHECK_AND_RETRY
   #define VIKI2
+
+  #if ENABLED(SDSUPPORT)
+    #define SDCARD_RATHERRECENTFIRST
+ //#define SDCARD_SORT_ALPHA
+    #if ENABLED(SDCARD_SORT_ALPHA)
+      #define SDSORT_LIMIT       40
+    #endif
+  #endif //sdsupport
+  
+  #define LIN_ADVANCE
 #endif
 
 #define ULTRA_LCD  //general LCD support, also 16x2
@@ -240,6 +261,16 @@
       #define LCD_CONTRAST_MIN       0
       #define LCD_CONTRAST_MAX     75//255
       #define DEFAULT_LCD_CONTRAST 35//140
+
+#if SYSTEM_SECTION == SUBSECTION(SERIAL_BUF, 1)
+  #undef FILAMENT_CHANGE_UNLOAD_FEEDRATE
+  #undef ADVANCED_PAUSE_PURGE_FEEDRATE
+  #undef PAUSE_PARK_NOZZLE_TIMEOUT 
+
+  #define FILAMENT_CHANGE_UNLOAD_FEEDRATE     15  // (mm/s) Unload filament feedrate. This can be pretty fast.
+ #define ADVANCED_PAUSE_PURGE_FEEDRATE        1.5  // (mm/s) Extrude feedrate (after loading). Should be slower than load feedrate.
+ #define PAUSE_PARK_NOZZLE_TIMEOUT           180  // (seconds) Time limit before the nozzle is turned off for safety.
+#endif
 
 #if SYSTEM_SECTION == SUBSECTION(LCD, 2)
   #if ENABLED(ULTIPANEL)
@@ -308,12 +339,22 @@
   #define AD8495_FORMULA (5.0 * 100.0) / 1024.0 / (OVERSAMPLENR) * (TEMP_SENSOR_AD8495_GAIN) + TEMP_SENSOR_AD8495_OFFSET
 #endif
 
+#if SYSTEM_SECTION == SUBSECTION(EXTRUDER, 4)
+  #undef  INVERT_E0_DIR 
+  #undef  INVERT_E1_DIR
+  
+  #define INVERT_E0_DIR true
+  #define INVERT_E1_DIR false
+#endif
+
 #if SYSTEM_SECTION == SUBSECTION(EXTRUDER, 5)
   #undef  E0_AUTO_FAN_PIN 
   #undef  E1_AUTO_FAN_PIN 
   #define E0_AUTO_FAN_PIN 16
   #define E1_AUTO_FAN_PIN 16
 #endif
+
+#define ENDSTOPS_ALWAYS_ON_DEFAULT
 
 //#if SYSTEM_SECTION == SUBSECTION(EXTRAS, 3)
   #undef  Y_DUAL_STEPPER_DRIVERS
@@ -380,7 +421,8 @@
 
 
   #define X_MAX_PIN         -1
-  #define Y_MAX_PIN         63
+  #define Y_MAX_PIN         15
+  #define Y_MIN_PIN         14
 
   #undef  BEEPER_PIN
   #define BEEPER_PIN        33         

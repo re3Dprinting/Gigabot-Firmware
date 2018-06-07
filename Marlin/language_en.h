@@ -74,13 +74,16 @@
   #define MSG_PROGRESS_BAR_TEST               _UxGT("Progress Bar Test")
 #endif
 #ifndef MSG_AUTO_HOME
-  #define MSG_AUTO_HOME                       _UxGT("Auto home")
+  #define MSG_AUTO_HOME                       _UxGT("Home All")
 #endif
 #ifndef MSG_AUTO_HOME_X
   #define MSG_AUTO_HOME_X                     _UxGT("Home X")
 #endif
 #ifndef MSG_AUTO_HOME_Y
   #define MSG_AUTO_HOME_Y                     _UxGT("Home Y")
+#endif
+#ifndef MSG_AUTO_HOME_XY
+  #define MSG_AUTO_HOME_XY                     _UxGT("Home XY")
 #endif
 #ifndef MSG_AUTO_HOME_Z
   #define MSG_AUTO_HOME_Z                     _UxGT("Home Z")
