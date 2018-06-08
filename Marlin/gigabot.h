@@ -27,7 +27,10 @@
   #undef  TEMP_HYSTERESIS
 
   #define TEMP_HYSTERESIS 4       // (degC) range of +/- temperatures considered "close" to the target one
-#endif
+
+  #undef  WATCH_BED_TEMP_PERIOD
+  #define WATCH_BED_TEMP_PERIOD 125            // Seconds
+ #endif
 
 #if SYSTEM_SECTION == SUBSECTION(EXTRUDER, 1)
   #undef  EXTRUDERS
@@ -228,6 +231,9 @@
   #define PREHEAT_1_TEMP_BED     60
   #define PREHEAT_2_TEMP_HOTEND 250
   #define PREHEAT_2_TEMP_BED     115
+  
+  #define PRINTCOUNTER
+  
   #if ENABLED(NOZZLE_PARK_FEATURE)
     #define NOZZLE_PARK_POINT { (X_MIN_POS + 500), (Y_MAX_POS - 10), 20 }
   #endif
