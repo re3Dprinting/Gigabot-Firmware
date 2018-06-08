@@ -4035,7 +4035,7 @@ inline void gcode_G4() {
  *  Z   Home to the Z endstop
  *
  */
-inline void gcode_G28(const bool always_home_all) {
+inline void gcode_G28(const bool always_home_all, bool override_x=false, bool override_y=false) {
 
   #if ENABLED(DEBUG_LEVELING_FEATURE)
     if (DEBUGGING(LEVELING)) {
@@ -4089,8 +4089,8 @@ inline void gcode_G28(const bool always_home_all) {
 
   #else // NOT DELTA
 
-    const bool homeX = always_home_all || parser.seen('X'),
-               homeY = always_home_all || parser.seen('Y'),
+    const bool homeX = always_home_all || parser.seen('X') || override_x,
+               homeY = always_home_all || parser.seen('Y') || override_y,
                homeZ = always_home_all || parser.seen('Z'),
                home_all = (!homeX && !homeY && !homeZ) || (homeX && homeY && homeZ);
 
