@@ -6971,7 +6971,7 @@ inline void gcode_M17() {
     #if ENABLED(HOME_AFTER_FILAMENT_CHANGE)
   //    if (axis_unhomed_error())
       {
-        gcode_G28(false);
+        gcode_G28(false,true,true);
         //_enqueuecommand("G28 X Y");
  //           do_blocking_move_to_xy(-1000, -1000, NOZZLE_PARK_XY_FEEDRATE);
   //      HOMEAXIS(X);

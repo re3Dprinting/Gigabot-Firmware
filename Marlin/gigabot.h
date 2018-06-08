@@ -439,7 +439,7 @@
 
   #define E1_STEP_PIN        27//43
   #define E1_DIR_PIN         29//37
-  #define E1_ENABLE_PIN      31//42
+  #define E1_ENABLE_PIN      41//42
 
 
   #define X_MAX_PIN         -1
