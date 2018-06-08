@@ -3844,6 +3844,13 @@ void lcd_quick_feedback(const bool clear_buttons) {
       MENU_ITEM(submenu, MSG_STEPS_PER_MM, lcd_control_motion_steps_per_mm_menu);
 
     #endif // !SLIM_LCD_MENUS
+	
+    //Hotend Offset Control in LCD Menu
+    #if EXTRUDERS > 1
+      MENU_ITEM_EDIT(float52, "T1X Offset", &hotend_offset[X_AXIS][1], -60, 60);
+      MENU_ITEM_EDIT(float52, "T1Y Offset", &hotend_offset[Y_AXIS][1], -5, 5);
+    #endif // EXTRUDERS > 1
+
 
     // M540 S - Abort on endstop hit when SD printing
     #if ENABLED(ABORT_ON_ENDSTOP_HIT_FEATURE_ENABLED)
