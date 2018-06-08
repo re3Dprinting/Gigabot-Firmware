@@ -1114,6 +1114,10 @@ void lcd_quick_feedback(const bool clear_buttons) {
     }
     MENU_ITEM(submenu, MSG_CONTROL, lcd_control_menu);
 
+	#if ENABLED(LCD_INFO_MENU)
+      MENU_ITEM(submenu, MSG_INFO_MENU, lcd_info_menu);
+    #endif
+
     #if ENABLED(SDSUPPORT)
       if (card.cardOK) {
         if (card.isFileOpen()) {
@@ -1138,9 +1142,6 @@ void lcd_quick_feedback(const bool clear_buttons) {
       }
     #endif // SDSUPPORT
 
-    #if ENABLED(LCD_INFO_MENU)
-      MENU_ITEM(submenu, MSG_INFO_MENU, lcd_info_menu);
-    #endif
 
     #if ENABLED(LED_CONTROL_MENU)
       MENU_ITEM(submenu, MSG_LED_CONTROL, lcd_led_menu);
@@ -4187,12 +4188,14 @@ void lcd_quick_feedback(const bool clear_buttons) {
     void lcd_info_printer_menu() {
       if (use_click()) { return lcd_goto_previous_menu(); }
       START_SCREEN();
-      STATIC_ITEM(MSG_MARLIN, true, true);                             // Marlin
-      STATIC_ITEM(SHORT_BUILD_VERSION, true);                          // x.x.x-Branch
-      STATIC_ITEM(STRING_DISTRIBUTION_DATE, true);                     // YYYY-MM-DD HH:MM
-      STATIC_ITEM(MACHINE_NAME, true);                                 // My3DPrinter
+      //STATIC_ITEM(MSG_MARLIN, true, true);                             // Marlin
+      STATIC_ITEM(MSG_GIGABOT3, true, true);
+	  //STATIC_ITEM(SHORT_BUILD_VERSION, true);                          // x.x.x-Branch
+      STATIC_ITEM(GIGA_BUILD_VERSION, true);
+	  STATIC_ITEM(STRING_DISTRIBUTION_DATE, true);                     // YYYY-MM-DD HH:MM
+      //STATIC_ITEM(MACHINE_NAME, true);                                 // My3DPrinter
       STATIC_ITEM(WEBSITE_URL, true);                                  // www.my3dprinter.com
-      STATIC_ITEM(MSG_INFO_EXTRUDERS ": " STRINGIFY(EXTRUDERS), true); // Extruders: 2
+      //STATIC_ITEM(MSG_INFO_EXTRUDERS ": " STRINGIFY(EXTRUDERS), true); // Extruders: 2
       #if ENABLED(AUTO_BED_LEVELING_3POINT)
         STATIC_ITEM(MSG_3POINT_LEVELING, true);                        // 3-Point Leveling
       #elif ENABLED(AUTO_BED_LEVELING_LINEAR)

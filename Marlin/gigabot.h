@@ -4,6 +4,13 @@
 // separating them into sections
 //
 
+#define MSG_GIGABOT3 "Gigabot 3+"
+#define GIGA_BUILD_VERSION "4.2.0"
+#undef STRING_DISTRIBUTION_DATE
+#define STRING_DISTRIBUTION_DATE "2018-06-11"
+#undef WEBSITE_URL
+#define WEBSITE_URL "https://re3d.org"
+
 #if SYSTEM_SECTION == INFO
   #undef  STRING_CONFIG_H_AUTHOR
 //  #define STRING_CONFIG_H_AUTHOR "(GB3 V4.x.x - Marlin 1.1.8)"
@@ -258,6 +265,8 @@
     #endif
   #endif //sdsupport
   
+  #define LCD_INFO_MENU
+  #define LCD_TIMEOUT_TO_STATUS 120000  
   #define LIN_ADVANCE
 #endif
 
@@ -265,8 +274,8 @@
     #define DOGLCD  // Support for SPI LCD 128x64 (Controller ST7565R graphic Display Family)
     #define ULTIMAKERCONTROLLER 
       #define LCD_CONTRAST_MIN       0
-      #define LCD_CONTRAST_MAX     75//255
-      #define DEFAULT_LCD_CONTRAST 35//140
+      #define LCD_CONTRAST_MAX     255
+      #define DEFAULT_LCD_CONTRAST 140
 
 #if SYSTEM_SECTION == SUBSECTION(SERIAL_BUF, 1)
   #undef FILAMENT_CHANGE_UNLOAD_FEEDRATE
@@ -275,7 +284,7 @@
 
   #define FILAMENT_CHANGE_UNLOAD_FEEDRATE     15  // (mm/s) Unload filament feedrate. This can be pretty fast.
  #define ADVANCED_PAUSE_PURGE_FEEDRATE        1.5  // (mm/s) Extrude feedrate (after loading). Should be slower than load feedrate.
- #define PAUSE_PARK_NOZZLE_TIMEOUT           180  // (seconds) Time limit before the nozzle is turned off for safety.
+ #define PAUSE_PARK_NOZZLE_TIMEOUT           240  // (seconds) Time limit before the nozzle is turned off for safety.
 #endif
 
 #if SYSTEM_SECTION == SUBSECTION(LCD, 2)

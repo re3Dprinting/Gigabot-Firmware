@@ -148,9 +148,9 @@ uint8_t u8g_dev_st7565_64128n_2x_VIKI_fn(u8g_t *u8g, u8g_dev_t *dev, uint8_t msg
       ST7565_NCS();                     /* enable chip */
 
       ST7565_WRITE_BYTE(0x0A2);         /* 0x0A2: LCD bias 1/9 (according to Displaytech 64128N datasheet) */
-      ST7565_WRITE_BYTE(0x0A0);         /* Normal ADC Select (according to Displaytech 64128N datasheet) */
+      ST7565_WRITE_BYTE(0x0A1);         /* Normal ADC Select (according to Displaytech 64128N datasheet) */
 
-      ST7565_WRITE_BYTE(0x0C8);         /* common output mode: set scan direction normal operation/SHL Select; 0x0C0 --> SHL = 0; normal; 0x0C8 --> SHL = 1 */
+      ST7565_WRITE_BYTE(0x0C0);         /* common output mode: set scan direction normal operation/SHL Select; 0x0C0 --> SHL = 0; normal; 0x0C8 --> SHL = 1 */
       ST7565_WRITE_BYTE(0x040);         /* Display start line for Displaytech 64128N */
 
       ST7565_WRITE_BYTE(0x028 | 0x04);  /* power control: turn on voltage converter */
