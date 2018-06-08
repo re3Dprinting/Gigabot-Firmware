@@ -42,6 +42,8 @@
 #if SYSTEM_SECTION == SUBSECTION(EXTRUDER, 1)
   #undef  EXTRUDERS
   #define EXTRUDERS 2
+  #define HOTEND_OFFSET_X {0.0, 55.00} // (in mm) for each extruder, offset of the hotend on the X axis
+  #define HOTEND_OFFSET_Y {0.0, 0.00}  // (in mm) for each extruder, offset of the hotend on the Y axis
 #endif
 
 #if SYSTEM_SECTION == SUBSECTION(TEMPERATURE, 1)
@@ -119,7 +121,7 @@
   #define USE_ZMIN_PLUG true
   #define USE_XMAX_PLUG false
   #define USE_YMAX_PLUG true
-  #define USE_ZMAX_PLUG false
+  #define USE_ZMAX_PLUG true
 
   #undef  X_MIN_ENDSTOP_INVERTING
   #undef  Y_MIN_ENDSTOP_INVERTING
@@ -145,13 +147,16 @@
 
 #if SYSTEM_SECTION == SUBSECTION(HOMING, 3)
   #define MANUAL_X_HOME_POS 0
-  #define MANUAL_Y_HOME_POS 0
+  //#define MANUAL_Y_HOME_POS 0
   #define MANUAL_Z_HOME_POS 0
-//#define MANUAL_Y_HOME_POS Y_MAX_POS
+  #define MANUAL_Y_HOME_POS Y_MAX_POS
 #endif
 
 #if SYSTEM_SECTION == SUBSECTION(HOMING, 4)
-  #define HOMING_BUMP_DIVISOR { 5, 5, 5 }  // Re-Bump Speed Divisor (Divides the Homing Feedrate)
+  #define X_HOME_BUMP_MM 5
+  #define Y_HOME_BUMP_MM 5
+  #undef HOMING_BUMP_DIVISOR
+  #define HOMING_BUMP_DIVISOR { 20, 20, 5 }  // Re-Bump Speed Divisor (Divides the Homing Feedrate)
 #endif
 
 #if SYSTEM_SECTION == SUBSECTION(MOTION, 1)
@@ -165,7 +170,7 @@
 
   #define DEFAULT_AXIS_STEPS_PER_UNIT   { 118.52, 118.52, 4031.5, 1000 }
   #define DEFAULT_MAX_FEEDRATE          { 150, 150, 4, 60 }
-  #define DEFAULT_MAX_ACCELERATION      { 3000, 3000, 100, 1000 }
+  #define DEFAULT_MAX_ACCELERATION      { 3000, 3000, 100, 10000 }
   #define DEFAULT_ACCELERATION          2000    // X, Y, Z and E acceleration for printing moves
   #define DEFAULT_RETRACT_ACCELERATION  1500  
   #define DEFAULT_XJERK                 15.0
@@ -177,7 +182,7 @@
   #undef  INVERT_Y_DIR
 
   #define INVERT_X_DIR true
-  #define INVERT_Y_DIR true
+  #define INVERT_Y_DIR false
 #endif
 
 #define ADVANCED_PAUSE_FEATURE
@@ -256,6 +261,7 @@
   #define SPI_SPEED SPI_QUARTER_SPEED
   #define SD_CHECK_AND_RETRY
   #define VIKI2
+  #define INDIVIDUAL_AXIS_HOMING_MENU
 
   #if ENABLED(SDSUPPORT)
     #define SDCARD_RATHERRECENTFIRST
@@ -382,10 +388,11 @@
 
   #define Y_DUAL_STEPPER_DRIVERS
   #if ENABLED(Y_DUAL_STEPPER_DRIVERS)
+	#undef INVERT_Y2_VS_Y_DIR
     #define INVERT_Y2_VS_Y_DIR true   // Set 'true' if Y motors should rotate in opposite directions
     #define Y_DUAL_ENDSTOPS
     #if ENABLED(Y_DUAL_ENDSTOPS)
-      #define Y2_USE_ENDSTOP _YMAX_
+      #define Y2_USE_ENDSTOP _YMIN_
       #define Y_DUAL_ENDSTOPS_ADJUSTMENT  0
     #endif
   #endif
@@ -430,9 +437,9 @@
   #undef  E1_DIR_PIN
   #undef  E1_ENABLE_PIN
 
-  #define E1_STEP_PIN        43
-  #define E1_DIR_PIN         37
-  #define E1_ENABLE_PIN      42
+  #define E1_STEP_PIN        27//43
+  #define E1_DIR_PIN         29//37
+  #define E1_ENABLE_PIN      31//42
 
 
   #define X_MAX_PIN         -1
