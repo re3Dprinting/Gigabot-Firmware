@@ -36,7 +36,7 @@
   #define TEMP_HYSTERESIS 4       // (degC) range of +/- temperatures considered "close" to the target one
 
   #undef  WATCH_BED_TEMP_PERIOD
-  #define WATCH_BED_TEMP_PERIOD 125            // Seconds
+  #define WATCH_BED_TEMP_PERIOD 145            // Seconds
  #endif
 
 #if SYSTEM_SECTION == SUBSECTION(EXTRUDER, 1)
@@ -290,7 +290,7 @@
 
   #define FILAMENT_CHANGE_UNLOAD_FEEDRATE     15  // (mm/s) Unload filament feedrate. This can be pretty fast.
  #define ADVANCED_PAUSE_PURGE_FEEDRATE        1.5  // (mm/s) Extrude feedrate (after loading). Should be slower than load feedrate.
- #define PAUSE_PARK_NOZZLE_TIMEOUT           240  // (seconds) Time limit before the nozzle is turned off for safety.
+ #define PAUSE_PARK_NOZZLE_TIMEOUT           360  // (seconds) Time limit before the nozzle is turned off for safety.
 #endif
 
 #if SYSTEM_SECTION == SUBSECTION(LCD, 2)
@@ -474,7 +474,7 @@
   #undef  DIGIPOT_I2C_NUM_CHANNELS
   #define DIGIPOT_I2C_NUM_CHANNELS    7 // AZTEEG_X3_PRO: 8 (Not sure why this was set to 7 at some point)
   #undef  DIGIPOT_I2C_MOTOR_CURRENTS
-  #define DIGIPOT_I2C_MOTOR_CURRENTS  { 2.0, 2.0, 2.0, 1.68, 1.68, 1.8, 1.8 }  //  AZTEEG_X3_PRO
+  #define DIGIPOT_I2C_MOTOR_CURRENTS  { 2.2, 2.2, 2.0, 1.68, 1.68, 1.8, 1.8 }  //  AZTEEG_X3_PRO
 #endif
 
 
