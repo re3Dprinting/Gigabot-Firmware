@@ -10513,7 +10513,7 @@ inline void gcode_M502() {
 
     #if ENABLED(HOME_BEFORE_FILAMENT_CHANGE)
       // Don't allow filament change without homing first
-      if (axis_unhomed_error()) gcode_g28(false,true,true);
+      if (axis_unhomed_error()) gcode_G28(false,true,true);
     #endif
 
     #if EXTRUDERS > 1
