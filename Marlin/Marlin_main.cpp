@@ -4069,7 +4069,9 @@ inline void gcode_G28(const bool always_home_all, bool override_x=false, bool ov
     #if DISABLED(DELTA) || ENABLED(DELTA_HOME_TO_SAFE_ZONE)
       const uint8_t old_tool_index = active_extruder;
     #endif
-    tool_change(0, 0, true);
+	if(old_tool_index != 0){
+		tool_change(0, 0, true);
+	}
   #endif
 
   #if ENABLED(DUAL_X_CARRIAGE) || ENABLED(DUAL_NOZZLE_DUPLICATION_MODE)
@@ -4217,7 +4219,10 @@ inline void gcode_G28(const bool always_home_all, bool override_x=false, bool ov
     #else
       #define NO_FETCH true
     #endif
-    tool_change(old_tool_index, 0, NO_FETCH);
+	if(active_extruder != old_tool_index){
+		tool_change(old_tool_index,0, NO_FETCH);
+		//active_extruder = old_tool_index;
+	}
   #endif
 
   lcd_refresh();
@@ -10508,7 +10513,7 @@ inline void gcode_M502() {
 
     #if ENABLED(HOME_BEFORE_FILAMENT_CHANGE)
       // Don't allow filament change without homing first
-      if (axis_unhomed_error()) home_all_axes();
+      if (axis_unhomed_error()) gcode_g28(false,true,true);
     #endif
 
     #if EXTRUDERS > 1
@@ -10567,7 +10572,7 @@ inline void gcode_M502() {
     #endif
       resume_print(slow_load_length, fast_load_length, ADVANCED_PAUSE_PURGE_LENGTH, beep_count);
     }
-
+	
     #if EXTRUDERS > 1
       // Restore toolhead if it was changed
       if (active_extruder_before_filament_change != active_extruder)
@@ -11849,7 +11854,7 @@ void tool_change(const uint8_t tmp_extruder, const float fr_mm_s/*=0.0*/, bool n
           #endif
 
           const float xdiff = hotend_offset[X_AXIS][tmp_extruder] - hotend_offset[X_AXIS][active_extruder],
-                      ydiff = hotend_offset[Y_AXIS][tmp_extruder] - hotend_offset[Y_AXIS][active_extruder];
+                    ydiff = hotend_offset[Y_AXIS][tmp_extruder] - hotend_offset[Y_AXIS][active_extruder];
 
           #if ENABLED(DEBUG_LEVELING_FEATURE)
             if (DEBUGGING(LEVELING)) {
@@ -11899,7 +11904,11 @@ void tool_change(const uint8_t tmp_extruder, const float fr_mm_s/*=0.0*/, bool n
             if (DEBUGGING(LEVELING)) DEBUG_POS("Move back", destination);
           #endif
           // Move back to the original (or tweaked) position
-          do_blocking_move_to(destination[X_AXIS], destination[Y_AXIS], destination[Z_AXIS]);
+		  //active_extruder == 0 || (active_extruder == 1 && current_position[X_AXIS] > hotend_offset[X_AXIS][active_extruder]
+		  if(READ(X_MIN_PIN)){
+			do_blocking_move_to(destination[X_AXIS], destination[Y_AXIS], destination[Z_AXIS]);
+		  }
+		  do_blocking_move_to_z(destination[Z_AXIS]);
         }
         #if ENABLED(SWITCHING_NOZZLE)
           else {

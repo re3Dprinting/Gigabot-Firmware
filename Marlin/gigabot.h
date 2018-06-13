@@ -36,7 +36,7 @@
   #define TEMP_HYSTERESIS 4       // (degC) range of +/- temperatures considered "close" to the target one
 
   #undef  WATCH_BED_TEMP_PERIOD
-  #define WATCH_BED_TEMP_PERIOD 145            // Seconds
+  #define WATCH_BED_TEMP_PERIOD 180            // Seconds
  #endif
 
 #if SYSTEM_SECTION == SUBSECTION(EXTRUDER, 1)
@@ -157,6 +157,8 @@
   #define Y_HOME_BUMP_MM 5
   #undef HOMING_BUMP_DIVISOR
   #define HOMING_BUMP_DIVISOR { 20, 20, 5 }  // Re-Bump Speed Divisor (Divides the Homing Feedrate)
+  
+  #define DUAL_NOZZLE_DUPLICATION_MODE
 #endif
 
 #if SYSTEM_SECTION == SUBSECTION(MOTION, 1)
@@ -170,11 +172,11 @@
 
   #define DEFAULT_AXIS_STEPS_PER_UNIT   { 118.52, 118.52, 4031.5, 1000 }
   #define DEFAULT_MAX_FEEDRATE          { 150, 150, 4, 60 }
-  #define DEFAULT_MAX_ACCELERATION      { 3000, 3000, 100, 10000 }
-  #define DEFAULT_ACCELERATION          2000    // X, Y, Z and E acceleration for printing moves
+  #define DEFAULT_MAX_ACCELERATION      { 2000, 2000, 100, 10000 }
+  #define DEFAULT_ACCELERATION          1000    // X, Y, Z and E acceleration for printing moves
   #define DEFAULT_RETRACT_ACCELERATION  1500  
-  #define DEFAULT_XJERK                 15.0
-  #define DEFAULT_YJERK                 15.0
+  #define DEFAULT_XJERK                 9.0
+  #define DEFAULT_YJERK                 9.0
 #endif
 
 #if SYSTEM_SECTION == SUBSECTION(MACHINE, 4)
@@ -291,6 +293,7 @@
   #define FILAMENT_CHANGE_UNLOAD_FEEDRATE     15  // (mm/s) Unload filament feedrate. This can be pretty fast.
  #define ADVANCED_PAUSE_PURGE_FEEDRATE        1.5  // (mm/s) Extrude feedrate (after loading). Should be slower than load feedrate.
  #define PAUSE_PARK_NOZZLE_TIMEOUT           360  // (seconds) Time limit before the nozzle is turned off for safety.
+ #define HOME_BEFORE_FILAMENT_CHANGE
 #endif
 
 #if SYSTEM_SECTION == SUBSECTION(LCD, 2)

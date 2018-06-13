@@ -20,7 +20,7 @@
   #undef  Z_MAX_POS
 
   #define X_BED_SIZE   590
-  #define Y_BED_SIZE   772
-  #define Z_MAX_POS    602
+  #define Y_BED_SIZE   760
+  #define Z_MAX_POS    900
 #endif
 
