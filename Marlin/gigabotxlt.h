@@ -4,7 +4,7 @@
 // separating them into sections
 //
 
-#include "gigabot.h"
+#include "gigabotxl.h"
 
 #if SYSTEM_SECTION == INFO
   #undef  STRING_CONFIG_H_AUTHOR
@@ -21,6 +21,6 @@
 
   #define X_BED_SIZE   590
   #define Y_BED_SIZE   760
-  #define Z_MAX_POS    609//900
+  #define Z_MAX_POS    900
 #endif
 
