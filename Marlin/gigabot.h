@@ -7,7 +7,7 @@
 #define MSG_GIGABOT3 "Gigabot 3+"
 #define GIGA_BUILD_VERSION "4.2.0"
 #undef STRING_DISTRIBUTION_DATE
-#define STRING_DISTRIBUTION_DATE "2018-06-11"
+#define STRING_DISTRIBUTION_DATE __DATE__ " " __TIME__
 #undef WEBSITE_URL
 #define WEBSITE_URL "https://re3d.org"
 
