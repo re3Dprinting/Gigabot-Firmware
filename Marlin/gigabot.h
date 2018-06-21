@@ -208,7 +208,7 @@
   #if ENABLED(FILAMENT_RUNOUT_SENSOR)
     #define FIL_RUNOUT_INVERTING      true  // set to true to invert the logic of the sensor.
     #define FIL_RUNOUT_PULLUP               // Uncomment to use internal pullup for filament runout pins if the sensor is defined.
-    #define FILAMENT_RUNOUT_SCRIPT    "M600"
+    #define FILAMENT_RUNOUT_SCRIPT    "M601"
   #endif
 #endif
 

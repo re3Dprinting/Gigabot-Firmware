@@ -6601,7 +6601,7 @@ inline void gcode_M17() {
    * Returns 'true' if load was completed, 'false' for abort
    */
   static bool load_filament(const float &slow_load_length=0, const float &fast_load_length=0, const float &purge_length=0, const int8_t max_beep_count=0,
-                            const bool show_lcd=false, const bool pause_for_user=false,
+                            const bool show_lcd=false, const bool pause_for_user=false, const bool pauseoverride = false,
                             const AdvancedPauseMode mode=ADVANCED_PAUSE_MODE_PAUSE_PRINT
   ) {
     #if DISABLED(ULTIPANEL)
@@ -6678,7 +6678,7 @@ inline void gcode_M17() {
 
     #else
 
-      do {
+      if(pauseoverride){
         if (purge_length > 0) {
           // "Wait for filament purge"
           #if ENABLED(ULTIPANEL)
@@ -6689,26 +6689,41 @@ inline void gcode_M17() {
           // Extrude filament to get into hotend
           do_pause_e_move(purge_length, ADVANCED_PAUSE_PURGE_FEEDRATE);
         }
+	  }
+	  
+	  else{
+		  do {
+			if (purge_length > 0) {
+			  // "Wait for filament purge"
+			  #if ENABLED(ULTIPANEL)
+				if (show_lcd)
+				  lcd_advanced_pause_show_message(ADVANCED_PAUSE_MESSAGE_PURGE, mode);
+			  #endif
 
-        // Show "Purge More" / "Resume" menu and wait for reply
-        #if ENABLED(ULTIPANEL)
-          if (show_lcd) {
-            KEEPALIVE_STATE(PAUSED_FOR_USER);
-            wait_for_user = false;
-            lcd_advanced_pause_show_message(ADVANCED_PAUSE_MESSAGE_OPTION, mode);
-            while (advanced_pause_menu_response == ADVANCED_PAUSE_RESPONSE_WAIT_FOR) idle(true);
-            KEEPALIVE_STATE(IN_HANDLER);
-          }
-        #endif
+			  // Extrude filament to get into hotend
+			  do_pause_e_move(purge_length, ADVANCED_PAUSE_PURGE_FEEDRATE);
+			}
 
-        // Keep looping if "Purge More" was selected
-      } while (
-        #if ENABLED(ULTIPANEL)
-          show_lcd && advanced_pause_menu_response == ADVANCED_PAUSE_RESPONSE_EXTRUDE_MORE
-        #else
-          0
-        #endif
-      );
+			// Show "Purge More" / "Resume" menu and wait for reply
+			#if ENABLED(ULTIPANEL)
+			  if (show_lcd) {
+				KEEPALIVE_STATE(PAUSED_FOR_USER);
+				wait_for_user = false;
+				lcd_advanced_pause_show_message(ADVANCED_PAUSE_MESSAGE_OPTION, mode);
+				while (advanced_pause_menu_response == ADVANCED_PAUSE_RESPONSE_WAIT_FOR) idle(true);
+				KEEPALIVE_STATE(IN_HANDLER);
+			  }
+			#endif
+
+			// Keep looping if "Purge More" was selected
+		  } while (
+			#if ENABLED(ULTIPANEL)
+			  show_lcd && advanced_pause_menu_response == ADVANCED_PAUSE_RESPONSE_EXTRUDE_MORE
+			#else
+			  0
+			#endif
+			);
+		}
 
     #endif
 
@@ -6953,7 +6968,7 @@ inline void gcode_M17() {
    * - Send host action for resume, if configured
    * - Resume the current SD print job, if any
    */
-  static void resume_print(const float &slow_load_length=0, const float &fast_load_length=0, const float &purge_length=ADVANCED_PAUSE_PURGE_LENGTH, const int8_t max_beep_count=0) {
+  static void resume_print(const float &slow_load_length=0, const float &fast_load_length=0, const float &purge_length=ADVANCED_PAUSE_PURGE_LENGTH, const int8_t max_beep_count=0, const bool pauseoverride = false) {
     if (!did_pause_print) return;
 
     // Re-enable the heaters if they timed out
@@ -6965,7 +6980,7 @@ inline void gcode_M17() {
 
     if (nozzle_timed_out || thermalManager.hotEnoughToExtrude(active_extruder)) {
       // Load the new filament
-      load_filament(slow_load_length, fast_load_length, purge_length, max_beep_count, true, nozzle_timed_out);
+      load_filament(slow_load_length, fast_load_length, purge_length, max_beep_count, true, nozzle_timed_out, pauseoverride);
     }
 
     #if ENABLED(ULTIPANEL)
@@ -10582,7 +10597,100 @@ inline void gcode_M502() {
     // Resume the print job timer if it was running
     if (job_running) print_job_timer.start();
   }
+  
+  /**
+   * M601: Continuous Printing After Filament Runout
+   *
+   *  Default values are used for omitted arguments.
+   */
+   
+   inline void gcode_M601() {
+	   point_t park_point = NOZZLE_PARK_POINT;
+	   
+	   const int16_t temp = thermalManager.target_temperature[active_extruder];
+	   
+	   if (get_target_extruder_from_command(601)) return;
+	   
+	   //SERIAL_ECHOLNPGM("HOTEND TEMPERATURE: ", temp);
+		
+		#if HOTENDS > 1 && DISABLED(DUAL_X_CARRIAGE) && DISABLED(DELTA)
+		  park_point.x += (active_extruder ? hotend_offset[X_AXIS][active_extruder] : 0);
+		  park_point.y += (active_extruder ? hotend_offset[Y_AXIS][active_extruder] : 0);
+		#endif
 
+		// Unload filament
+		const float unload_length = -FABS(parser.seen('U') ? parser.value_axis_units(E_AXIS) :
+															 filament_change_unload_length[active_extruder]);
+
+		// Slow load filament
+		constexpr float slow_load_length = FILAMENT_CHANGE_SLOW_LOAD_LENGTH;
+
+		// Fast load filament
+		const float fast_load_length = FABS(parser.seen('L') ? parser.value_axis_units(E_AXIS) :
+														  filament_change_load_length[active_extruder]);
+
+		const int beep_count = parser.intval('B',
+		  #ifdef FILAMENT_CHANGE_ALERT_BEEPS
+			FILAMENT_CHANGE_ALERT_BEEPS
+		  #else
+			-1
+		  #endif
+		);
+	   
+	   const bool job_running = print_job_timer.isRunning();
+	   
+		// Indicate that the printer is paused
+		++did_pause_print;
+
+		// Pause the print job and timer
+		#if ENABLED(SDSUPPORT)
+		  if (card.sdprinting) {
+			card.pauseSDPrint();
+			++did_pause_print; // Indicate SD pause also
+		  }
+		#endif
+		print_job_timer.pause();
+	   
+	   COPY(resume_position, current_position);
+	   
+	   stepper.synchronize();
+	   
+	   const float retract1 = -3;
+	   // Initial retract before move to filament change position
+		if (retract1 && thermalManager.hotEnoughToExtrude(active_extruder))
+			do_pause_e_move(retract1, PAUSE_PARK_RETRACT_FEEDRATE);
+		
+	   Nozzle::park(2, park_point);
+	   
+		if (unload_length)
+			unload_filament(unload_length, true);
+	   
+	   thermalManager.setTargetHotend( temp-50 , active_extruder);
+	   
+	   const int8_t nexttool = (active_extruder ? 0 : 1);
+	   
+	   tool_change(nexttool, 0 , true);
+	   
+	   thermalManager.setTargetHotend(temp, active_extruder);
+	   
+	   while( thermalManager.isHeatingHotend(active_extruder)) ;
+	   
+	   resume_print(slow_load_length, fast_load_length, ADVANCED_PAUSE_PURGE_LENGTH, beep_count, true);
+	   
+	   if (job_running) print_job_timer.start();
+	   
+	   //unheat active extruder
+	   
+	   //change toolhead
+	   
+	   //heat active extruder
+	   
+	   //start printing with other tool head. 
+   }
+   
+   
+   
+   
   /**
    * M603: Configure filament change
    *
@@ -12372,6 +12480,7 @@ void process_parsed_command() {
 
       #if ENABLED(ADVANCED_PAUSE_FEATURE)
         case 600: gcode_M600(); break;                            // M600: Pause for Filament Change
+		case 601: gcode_M601(); break;
         case 603: gcode_M603(); break;                            // M603: Configure Filament Change
       #endif
 
