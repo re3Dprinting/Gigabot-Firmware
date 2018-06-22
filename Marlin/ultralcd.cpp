@@ -3868,7 +3868,8 @@ void lcd_quick_feedback(const bool clear_buttons) {
     void lcd_control_filament_menu() {
       START_MENU();
       MENU_BACK(MSG_CONTROL);
-
+	  
+	  
       #if ENABLED(LIN_ADVANCE)
         MENU_ITEM_EDIT(float52, MSG_ADVANCE_K, &planner.extruder_advance_K, 0, 999);
       #endif

@@ -6601,7 +6601,7 @@ inline void gcode_M17() {
    * Returns 'true' if load was completed, 'false' for abort
    */
   static bool load_filament(const float &slow_load_length=0, const float &fast_load_length=0, const float &purge_length=0, const int8_t max_beep_count=0,
-                            const bool show_lcd=false, const bool pause_for_user=false,
+                            const bool show_lcd=false, const bool pause_for_user=false, const bool pauseoverride = false,
                             const AdvancedPauseMode mode=ADVANCED_PAUSE_MODE_PAUSE_PRINT
   ) {
     #if DISABLED(ULTIPANEL)
@@ -6677,37 +6677,50 @@ inline void gcode_M17() {
       wait_for_user = false;
 
     #else
-		  do {
+		if(pauseoverride){
 			if (purge_length > 0) {
 			  // "Wait for filament purge"
 			  #if ENABLED(ULTIPANEL)
 				if (show_lcd)
 				  lcd_advanced_pause_show_message(ADVANCED_PAUSE_MESSAGE_PURGE, mode);
 			  #endif
-
-			  // Extrude filament to get into hotend
+				  // Extrude filament to get into hotend
 			  do_pause_e_move(purge_length, ADVANCED_PAUSE_PURGE_FEEDRATE);
 			}
+		}
+		else{
+			  do {
+				if (purge_length > 0) {
+				  // "Wait for filament purge"
+				  #if ENABLED(ULTIPANEL)
+					if (show_lcd)
+					  lcd_advanced_pause_show_message(ADVANCED_PAUSE_MESSAGE_PURGE, mode);
+				  #endif
 
-			// Show "Purge More" / "Resume" menu and wait for reply
-			#if ENABLED(ULTIPANEL)
-			  if (show_lcd) {
-				KEEPALIVE_STATE(PAUSED_FOR_USER);
-				wait_for_user = false;
-				lcd_advanced_pause_show_message(ADVANCED_PAUSE_MESSAGE_OPTION, mode);
-				while (advanced_pause_menu_response == ADVANCED_PAUSE_RESPONSE_WAIT_FOR) idle(true);
-				KEEPALIVE_STATE(IN_HANDLER);
-			  }
-			#endif
+				  // Extrude filament to get into hotend
+				  do_pause_e_move(purge_length, ADVANCED_PAUSE_PURGE_FEEDRATE);
+				}
 
-			// Keep looping if "Purge More" was selected
-		  } while (
-			#if ENABLED(ULTIPANEL)
-			  show_lcd && advanced_pause_menu_response == ADVANCED_PAUSE_RESPONSE_EXTRUDE_MORE
-			#else
-			  0
-			#endif
-			);
+				// Show "Purge More" / "Resume" menu and wait for reply
+				#if ENABLED(ULTIPANEL)
+				  if (show_lcd) {
+					KEEPALIVE_STATE(PAUSED_FOR_USER);
+					wait_for_user = false;
+					lcd_advanced_pause_show_message(ADVANCED_PAUSE_MESSAGE_OPTION, mode);
+					while (advanced_pause_menu_response == ADVANCED_PAUSE_RESPONSE_WAIT_FOR) idle(true);
+					KEEPALIVE_STATE(IN_HANDLER);
+				  }
+				#endif
+
+				// Keep looping if "Purge More" was selected
+			  } while (
+				#if ENABLED(ULTIPANEL)
+				  show_lcd && advanced_pause_menu_response == ADVANCED_PAUSE_RESPONSE_EXTRUDE_MORE
+				#else
+				  0
+				#endif
+				);
+		}
     #endif
 
     return true;
@@ -6951,7 +6964,7 @@ inline void gcode_M17() {
    * - Send host action for resume, if configured
    * - Resume the current SD print job, if any
    */
-  static void resume_print(const float &slow_load_length=0, const float &fast_load_length=0, const float &purge_length=ADVANCED_PAUSE_PURGE_LENGTH, const int8_t max_beep_count=0) {
+  static void resume_print(const float &slow_load_length=0, const float &fast_load_length=0, const float &purge_length=ADVANCED_PAUSE_PURGE_LENGTH, const int8_t max_beep_count=0, const bool pauseoverride = false) {
     if (!did_pause_print) return;
 
     // Re-enable the heaters if they timed out
@@ -6963,7 +6976,7 @@ inline void gcode_M17() {
 
     if (nozzle_timed_out || thermalManager.hotEnoughToExtrude(active_extruder)) {
       // Load the new filament
-      load_filament(slow_load_length, fast_load_length, purge_length, max_beep_count, true, nozzle_timed_out);
+      load_filament(slow_load_length, fast_load_length, purge_length, max_beep_count, true, nozzle_timed_out, pauseoverride);
     }
 
     #if ENABLED(ULTIPANEL)
@@ -10678,7 +10691,7 @@ inline void gcode_M502() {
 	   
 	   //while( thermalManager.isHeatingHotend(active_extruder)) ;
 	   
-	   resume_print(slow_load_length, fast_load_length, ADVANCED_PAUSE_PURGE_LENGTH, beep_count);
+	   resume_print(slow_load_length, fast_load_length, ADVANCED_PAUSE_PURGE_LENGTH, beep_count, true);
 	   
 	   if (job_running) print_job_timer.start();
 	   
