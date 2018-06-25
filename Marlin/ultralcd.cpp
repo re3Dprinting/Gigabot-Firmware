@@ -1690,10 +1690,10 @@ void lcd_quick_feedback(const bool clear_buttons) {
         #endif
       #else
         #if HAS_HEATED_BED
-          MENU_ITEM(function, MSG_PREHEAT_1_N MSG_H1, lcd_preheat_m1_e0);
-          MENU_ITEM(function, MSG_PREHEAT_1_END " " MSG_E1, lcd_preheat_m1_e0_only);
-          MENU_ITEM(function, MSG_PREHEAT_1_N MSG_H2, lcd_preheat_m1_e1);
-          MENU_ITEM(function, MSG_PREHEAT_1_END " " MSG_E2, lcd_preheat_m1_e1_only);
+          MENU_ITEM(function, MSG_PREHEAT_1_N "HE" MSG_H1, lcd_preheat_m1_e0_only);
+          MENU_ITEM(function, MSG_PREHEAT_1_N "HE" MSG_H1 "+Bed", lcd_preheat_m1_e0);
+          MENU_ITEM(function, MSG_PREHEAT_1_N "HE" MSG_H2, lcd_preheat_m1_e1_only);
+          MENU_ITEM(function, MSG_PREHEAT_1_N "HE" MSG_H2 "+Bed", lcd_preheat_m1_e1);
         #else
           MENU_ITEM(function, MSG_PREHEAT_1_N MSG_H1, lcd_preheat_m1_e0_only);
           MENU_ITEM(function, MSG_PREHEAT_1_N MSG_H2, lcd_preheat_m1_e1_only);
@@ -1742,10 +1742,10 @@ void lcd_quick_feedback(const bool clear_buttons) {
         #endif
       #else
         #if HAS_HEATED_BED
-          MENU_ITEM(function, MSG_PREHEAT_2_N MSG_H1, lcd_preheat_m2_e0);
-          MENU_ITEM(function, MSG_PREHEAT_2_END " " MSG_E1, lcd_preheat_m2_e0_only);
-          MENU_ITEM(function, MSG_PREHEAT_2_N MSG_H2, lcd_preheat_m2_e1);
-          MENU_ITEM(function, MSG_PREHEAT_2_END " " MSG_E2, lcd_preheat_m2_e1_only);
+          MENU_ITEM(function, MSG_PREHEAT_2_N "HE" MSG_H1, lcd_preheat_m2_e0_only);
+          MENU_ITEM(function, MSG_PREHEAT_2_N "HE" MSG_H1 "+Bed", lcd_preheat_m2_e0);
+          MENU_ITEM(function, MSG_PREHEAT_2_N "HE" MSG_H2, lcd_preheat_m2_e1_only);
+          MENU_ITEM(function, MSG_PREHEAT_2_N "HE" MSG_H2 "+Bed", lcd_preheat_m2_e1);
         #else
           MENU_ITEM(function, MSG_PREHEAT_2_N MSG_H1, lcd_preheat_m2_e0_only);
           MENU_ITEM(function, MSG_PREHEAT_2_N MSG_H2, lcd_preheat_m2_e1_only);
@@ -4086,7 +4086,7 @@ void lcd_quick_feedback(const bool clear_buttons) {
         STATIC_ITEM(MSG_INFO_COMPLETED_PRINTS": ", false, false, itostr3left(stats.finishedPrints));   // Completed  : 666
 
         duration_t elapsed = stats.printTime;
-        elapsed.toString(buffer);
+        elapsed.toHours(buffer);
 
         STATIC_ITEM(MSG_INFO_PRINT_TIME ": ", false, false);                                           // Total print Time:
         STATIC_ITEM("", false, false, buffer);                                                         // 99y 364d 23h 59m 59s
