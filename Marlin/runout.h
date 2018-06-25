@@ -36,10 +36,12 @@
 
 #define FIL_RUNOUT_THRESHOLD 5
 
+
 class FilamentRunoutSensor {
   public:
     FilamentRunoutSensor() {}
-
+    
+	static uint8_t runoutscript;
     static void setup();
 
     FORCE_INLINE static void reset() { runout_count = 0; filament_ran_out = false; }
@@ -47,10 +49,18 @@ class FilamentRunoutSensor {
     FORCE_INLINE static void run() {
       if ((IS_SD_PRINTING || print_job_timer.isRunning()) && check() && !filament_ran_out) {
         filament_ran_out = true;
-        enqueue_and_echo_commands_P(PSTR(FILAMENT_RUNOUT_SCRIPT));
+        if(runoutscript==1){
+			enqueue_and_echo_commands_P(PSTR("M601"));
+		}
+        else {
+			enqueue_and_echo_commands_P(PSTR("M600"));
+		}
         stepper.synchronize();
       }
     }
+	FORCE_INLINE static void setscript(uint8_t i){
+		runoutscript = i;
+	}
   private:
     static bool filament_ran_out;
     static uint8_t runout_count;

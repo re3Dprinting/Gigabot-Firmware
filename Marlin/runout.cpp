@@ -34,6 +34,7 @@ FilamentRunoutSensor runout;
 
 bool FilamentRunoutSensor::filament_ran_out; // = false
 uint8_t FilamentRunoutSensor::runout_count; // = 0
+uint8_t FilamentRunoutSensor::runoutscript;
 
 void FilamentRunoutSensor::setup() {
 
@@ -57,5 +58,4 @@ void FilamentRunoutSensor::setup() {
     #endif
   #endif
 }
-
 #endif // FILAMENT_RUNOUT_SENSOR

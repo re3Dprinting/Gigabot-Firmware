@@ -29,6 +29,7 @@
 #include "language.h"
 #include "cardreader.h"
 #include "temperature.h"
+#include "runout.h"
 #include "planner.h"
 #include "stepper.h"
 #include "configuration_store.h"
@@ -3858,7 +3859,23 @@ void lcd_quick_feedback(const bool clear_buttons) {
 
     END_MENU();
   }
-
+void selectM600(){
+	runout.setscript(0);
+	lcd_return_to_status();
+}
+void selectM601(){
+  runout.setscript(1);
+	lcd_return_to_status();
+}  
+void lcd_filament_runout_menu() {
+	START_MENU();
+	//MENU_BACK(MSG_FILAMENT);
+	STATIC_ITEM(MSG_RUNOUT_OPTION_HEADER1, true, false);
+	STATIC_ITEM(MSG_RUNOUT_OPTION_HEADER2, true, false);
+	MENU_ITEM(function, MSG_FILAMENT_M600, selectM600);
+	MENU_ITEM(function, MSG_FILAMENT_M601, selectM601);
+	END_MENU();
+}
   #if DISABLED(NO_VOLUMETRICS) || ENABLED(ADVANCED_PAUSE_FEATURE)
     /**
      *
@@ -3868,7 +3885,11 @@ void lcd_quick_feedback(const bool clear_buttons) {
     void lcd_control_filament_menu() {
       START_MENU();
       MENU_BACK(MSG_CONTROL);
-
+	  
+	  #if ENABLED(CONTINUOUS_PRINTING_AFTER_FILAMENT_RUNOUT)
+		MENU_ITEM(submenu, MSG_FILAMENT_RUNOUT, lcd_filament_runout_menu);
+	  #endif
+	  
       #if ENABLED(LIN_ADVANCE)
         MENU_ITEM_EDIT(float52, MSG_ADVANCE_K, &planner.extruder_advance_K, 0, 999);
       #endif
@@ -3943,6 +3964,7 @@ void lcd_quick_feedback(const bool clear_buttons) {
       END_MENU();
     }
   #endif // !NO_VOLUMETRICS || ADVANCED_PAUSE_FEATURE
+  
 
   /**
    *

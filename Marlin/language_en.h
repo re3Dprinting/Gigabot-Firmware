@@ -633,6 +633,21 @@
 #ifndef MSG_ADVANCE_K
   #define MSG_ADVANCE_K                       _UxGT("Advance K")
 #endif
+#ifndef MSG_FILAMENT_RUNOUT
+  #define MSG_FILAMENT_RUNOUT				  _UxGT("Filament Runout")
+#endif
+#ifndef MSG_FILAMENT_M600
+  #define MSG_FILAMENT_M600					  _UxGT("Pause for change")
+#endif
+#ifndef MSG_FILAMENT_M601
+  #define MSG_FILAMENT_M601					  _UxGT("Continuous printing")
+#endif
+#ifndef MSG_RUNOUT_OPTION_HEADER1
+  #define MSG_RUNOUT_OPTION_HEADER1			  _UxGT("Select a Filament")
+#endif
+#ifndef MSG_RUNOUT_OPTION_HEADER2
+  #define MSG_RUNOUT_OPTION_HEADER2			  _UxGT("Runout Feature")
+#endif
 #ifndef MSG_CONTRAST
   #define MSG_CONTRAST                        _UxGT("LCD contrast")
 #endif

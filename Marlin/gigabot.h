@@ -36,7 +36,7 @@
   #define TEMP_HYSTERESIS 4       // (degC) range of +/- temperatures considered "close" to the target one
 
   #undef  WATCH_BED_TEMP_PERIOD
-  #define WATCH_BED_TEMP_PERIOD 180            // Seconds
+  #define WATCH_BED_TEMP_PERIOD 145            // Seconds
  #endif
 
 #if SYSTEM_SECTION == SUBSECTION(EXTRUDER, 1)
@@ -204,11 +204,13 @@
   #define ADVANCED_PAUSE_FEATURE
   #define NOZZLE_PARK_FEATURE
   #define FILAMENT_RUNOUT_SENSOR
+  #define CONTINUOUS_PRINTING_AFTER_FILAMENT_RUNOUT
+  
   
   #if ENABLED(FILAMENT_RUNOUT_SENSOR)
     #define FIL_RUNOUT_INVERTING      true  // set to true to invert the logic of the sensor.
     #define FIL_RUNOUT_PULLUP               // Uncomment to use internal pullup for filament runout pins if the sensor is defined.
-    #define FILAMENT_RUNOUT_SCRIPT    "M600"
+    #define FILAMENT_RUNOUT_SCRIPT    "M601"
   #endif
 #endif
 
@@ -274,7 +276,7 @@
   #endif //sdsupport
   
   #define LCD_INFO_MENU
-  #define LCD_TIMEOUT_TO_STATUS 120000  
+  #define LCD_TIMEOUT_TO_STATUS 120000
   #define LIN_ADVANCE
 #endif
 
