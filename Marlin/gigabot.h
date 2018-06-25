@@ -204,6 +204,8 @@
   #define ADVANCED_PAUSE_FEATURE
   #define NOZZLE_PARK_FEATURE
   #define FILAMENT_RUNOUT_SENSOR
+  #define CONTINUOUS_PRINTING_AFTER_FILAMENT_RUNOUT
+  
   
   #if ENABLED(FILAMENT_RUNOUT_SENSOR)
     #define FIL_RUNOUT_INVERTING      true  // set to true to invert the logic of the sensor.

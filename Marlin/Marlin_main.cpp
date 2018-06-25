@@ -10597,6 +10597,12 @@ inline void gcode_M502() {
   /**
    * M601: Continuous Printing After Filament Runout
    *
+   * Once filament detector is triggered, retract, and move to parked position
+   * Retract, wait for cool, then unload filament
+   * Cool nozzle down by 50 degrees, tool change to the other nozzle and heat nozzle up
+   * Wait for nozzle to reach safe temperature and purge filament
+   * Resume print automatically
+   *
    *  Default values are used for omitted arguments.
    */
    
