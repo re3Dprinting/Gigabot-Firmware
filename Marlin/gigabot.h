@@ -276,7 +276,7 @@
   #endif //sdsupport
   
   #define LCD_INFO_MENU
-  #define LCD_TIMEOUT_TO_STATUS 120000  
+  #define LCD_TIMEOUT_TO_STATUS 120000
   #define LIN_ADVANCE
 #endif
 

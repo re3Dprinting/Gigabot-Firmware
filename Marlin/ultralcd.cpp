@@ -29,6 +29,7 @@
 #include "language.h"
 #include "cardreader.h"
 #include "temperature.h"
+#include "runout.h"
 #include "planner.h"
 #include "stepper.h"
 #include "configuration_store.h"
@@ -3859,13 +3860,11 @@ void lcd_quick_feedback(const bool clear_buttons) {
     END_MENU();
   }
 void selectM600(){
-	#undef FILAMENT_RUNOUT_SCRIPT 
-	#define FILAMENT_RUNOUT_SCRIPT  "M600"
+	runout.setscript(0);
 	lcd_return_to_status();
 }
 void selectM601(){
-	#undef FILAMENT_RUNOUT_SCRIPT
-	#define FILAMENT_RUNOUT_SCRIPT  "M601"
+  runout.setscript(1);
 	lcd_return_to_status();
 }  
 void lcd_filament_runout_menu() {
