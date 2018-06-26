@@ -1,3 +1,5 @@
+#include <Wire.h>
+
 // gigabot.h
 //
 // This include file is intended to isolate configuration settings for Marlin by 
@@ -273,7 +275,7 @@
 	  #define BABYSTEP_INVERT_Z false    // Change if Z babysteps should go the other way
 	  #define BABYSTEP_MULTIPLICATOR 2   // Babysteps are very small. Increase for faster motion.
 	  //#define BABYSTEP_ZPROBE_OFFSET   // Enable to combine M851 and Babystepping
-	  //#define DOUBLECLICK_FOR_Z_BABYSTEPPING // Double-click on the Status Screen for Z Babystepping.
+	  #define DOUBLECLICK_FOR_Z_BABYSTEPPING // Double-click on the Status Screen for Z Babystepping.
 	  #define DOUBLECLICK_MAX_INTERVAL 1250 // Maximum interval between clicks, in milliseconds.
 											// Note: Extra time may be added to mitigate controller latency.
 	  //#define BABYSTEP_ZPROBE_GFX_OVERLAY // Enable graphical overlay on Z-offset editor
@@ -492,10 +494,11 @@
 //#endif
 
 #if SYSTEM_SECTION == SUBSECTION(EXTRAS, 4)
+  #define DIGIPOT_I2C
   #undef  DIGIPOT_I2C_NUM_CHANNELS
   #define DIGIPOT_I2C_NUM_CHANNELS    7 // AZTEEG_X3_PRO: 8 (Not sure why this was set to 7 at some point)
   #undef  DIGIPOT_I2C_MOTOR_CURRENTS
-  #define DIGIPOT_I2C_MOTOR_CURRENTS  { 2.2, 2.2, 2.0, 1.68, 1.68, 1.8, 1.8 }  //  AZTEEG_X3_PRO
+  #define DIGIPOT_I2C_MOTOR_CURRENTS  { 2.2, 2.2, 2.2, 1.68, 1.68, 1.8, 1.8 }  //  AZTEEG_X3_PRO
 #endif
 
 
