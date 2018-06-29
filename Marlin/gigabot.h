@@ -281,9 +281,10 @@
 	  //#define BABYSTEP_ZPROBE_GFX_OVERLAY // Enable graphical overlay on Z-offset editor
   #endif
   
+  //#define POWER_LOSS_RECOVERY
+  
   #if ENABLED(SDSUPPORT)
     #define SDCARD_RATHERRECENTFIRST
-    //#define POWER_LOSS_RECOVERY
  //#define SDCARD_SORT_ALPHA
     #if ENABLED(SDCARD_SORT_ALPHA)
       #define SDSORT_LIMIT       40
