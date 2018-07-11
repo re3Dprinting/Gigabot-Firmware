@@ -37,6 +37,9 @@
 
   #define TEMP_HYSTERESIS 4       // (degC) range of +/- temperatures considered "close" to the target one
 
+   #undef  WATCH_TEMP_PERIOD
+   #define WATCH_TEMP_PERIOD 80                // Seconds
+
   #undef  WATCH_BED_TEMP_PERIOD
   #define WATCH_BED_TEMP_PERIOD 145            // Seconds
  #endif
@@ -245,9 +248,9 @@
   #undef  PREHEAT_2_TEMP_HOTEND
   #undef  PREHEAT_2_TEMP_BED
 
-  #define PREHEAT_1_TEMP_HOTEND 165
+  #define PREHEAT_1_TEMP_HOTEND 180
   #define PREHEAT_1_TEMP_BED     60
-  #define PREHEAT_2_TEMP_HOTEND 225
+  #define PREHEAT_2_TEMP_HOTEND 240
   #define PREHEAT_2_TEMP_BED     115
   
   #define PRINTCOUNTER
@@ -273,7 +276,7 @@
   #if ENABLED(BABYSTEPPING)
 	  //#define BABYSTEP_XY              // Also enable X/Y Babystepping. Not supported on DELTA!
 	  #define BABYSTEP_INVERT_Z false    // Change if Z babysteps should go the other way
-	  #define BABYSTEP_MULTIPLICATOR 2   // Babysteps are very small. Increase for faster motion.
+	  #define BABYSTEP_MULTIPLICATOR 2.5   // Babysteps are very small. Increase for faster motion.
 	  //#define BABYSTEP_ZPROBE_OFFSET   // Enable to combine M851 and Babystepping
 	  #define DOUBLECLICK_FOR_Z_BABYSTEPPING // Double-click on the Status Screen for Z Babystepping.
 	  #define DOUBLECLICK_MAX_INTERVAL 1250 // Maximum interval between clicks, in milliseconds.
@@ -312,8 +315,8 @@
   #undef ADVANCED_PAUSE_PURGE_FEEDRATE
   #undef PAUSE_PARK_NOZZLE_TIMEOUT 
 
-  #define FILAMENT_CHANGE_UNLOAD_FEEDRATE     15  // (mm/s) Unload filament feedrate. This can be pretty fast.
- #define ADVANCED_PAUSE_PURGE_FEEDRATE        1.5  // (mm/s) Extrude feedrate (after loading). Should be slower than load feedrate.
+  #define FILAMENT_CHANGE_UNLOAD_FEEDRATE     10  // (mm/s) Unload filament feedrate. This can be pretty fast.
+ #define ADVANCED_PAUSE_PURGE_FEEDRATE        1  // (mm/s) Extrude feedrate (after loading). Should be slower than load feedrate.
  #define PAUSE_PARK_NOZZLE_TIMEOUT           360  // (seconds) Time limit before the nozzle is turned off for safety.
  #define HOME_BEFORE_FILAMENT_CHANGE
 #endif
