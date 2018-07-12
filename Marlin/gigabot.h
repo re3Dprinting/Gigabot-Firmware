@@ -33,8 +33,12 @@
 #endif
 
 #if SYSTEM_SECTION == SUBSECTION(TEMPERATURE, 3)
+  #undef  THERMAL_PROTECTION_PERIOD
+  #define THERMAL_PROTECTION_PERIOD 80        // Seconds
+  #undef  THERMAL_PROTECTION_HYSTERESIS 
+  #define THERMAL_PROTECTION_HYSTERESIS 8
+  
   #undef  TEMP_HYSTERESIS
-
   #define TEMP_HYSTERESIS 4       // (degC) range of +/- temperatures considered "close" to the target one
 
    #undef  WATCH_TEMP_PERIOD
