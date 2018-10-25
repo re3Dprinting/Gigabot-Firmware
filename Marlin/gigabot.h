@@ -7,7 +7,7 @@
 //
 
 #define MSG_GIGABOT3 "Gigabot 3+"
-#define GIGA_BUILD_VERSION "4.2.0"
+#define GIGA_BUILD_VERSION "4.2.1- debug firmware"
 #undef STRING_DISTRIBUTION_DATE
 #define STRING_DISTRIBUTION_DATE __DATE__ " " __TIME__
 #undef WEBSITE_URL
@@ -167,7 +167,7 @@
   #undef HOMING_BUMP_DIVISOR
   #define HOMING_BUMP_DIVISOR { 20, 20, 5 }  // Re-Bump Speed Divisor (Divides the Homing Feedrate)
   
-  #define DUAL_NOZZLE_DUPLICATION_MODE
+  #undef DUAL_NOZZLE_DUPLICATION_MODE
 #endif
 
 #if SYSTEM_SECTION == SUBSECTION(MOTION, 1)
@@ -213,13 +213,13 @@
   #define ADVANCED_PAUSE_FEATURE
   #define NOZZLE_PARK_FEATURE
   #define FILAMENT_RUNOUT_SENSOR
-  #define CONTINUOUS_PRINTING_AFTER_FILAMENT_RUNOUT
+  //#define CONTINUOUS_PRINTING_AFTER_FILAMENT_RUNOUT
   
   
   #if ENABLED(FILAMENT_RUNOUT_SENSOR)
     #define FIL_RUNOUT_INVERTING      true  // set to true to invert the logic of the sensor.
     #define FIL_RUNOUT_PULLUP               // Uncomment to use internal pullup for filament runout pins if the sensor is defined.
-    #define FILAMENT_RUNOUT_SCRIPT    "M601"
+    #define FILAMENT_RUNOUT_SCRIPT    "M600"
   #endif
 #endif
 
@@ -276,7 +276,7 @@
   #define VIKI2
   #define INDIVIDUAL_AXIS_HOMING_MENU
   
-  #define BABYSTEPPING
+  //#define BABYSTEPPING
   #if ENABLED(BABYSTEPPING)
 	  //#define BABYSTEP_XY              // Also enable X/Y Babystepping. Not supported on DELTA!
 	  #define BABYSTEP_INVERT_Z false    // Change if Z babysteps should go the other way
@@ -507,7 +507,7 @@
   #undef  DIGIPOT_I2C_NUM_CHANNELS
   #define DIGIPOT_I2C_NUM_CHANNELS    7 // AZTEEG_X3_PRO: 8 (Not sure why this was set to 7 at some point)
   #undef  DIGIPOT_I2C_MOTOR_CURRENTS
-  #define DIGIPOT_I2C_MOTOR_CURRENTS  { 2.2, 2.2, 2.2, 1.68, 1.68, 1.8, 1.8 }  //  AZTEEG_X3_PRO
+  #define DIGIPOT_I2C_MOTOR_CURRENTS  { 2.0, 2.0, 2.0, 1.68, 1.68, 1.8, 1.8 }  //  AZTEEG_X3_PRO
 #endif
 
 
