@@ -7,7 +7,7 @@
 //
 
 #define MSG_GIGABOT3 "Gigabot 3+"
-#define GIGA_BUILD_VERSION "4.2.1- debug firmware"
+#define GIGA_BUILD_VERSION "4.2.1 Build 2"
 #undef STRING_DISTRIBUTION_DATE
 #define STRING_DISTRIBUTION_DATE __DATE__ " " __TIME__
 #undef WEBSITE_URL
@@ -34,9 +34,9 @@
 
 #if SYSTEM_SECTION == SUBSECTION(TEMPERATURE, 3)
   #undef  THERMAL_PROTECTION_PERIOD
-  #define THERMAL_PROTECTION_PERIOD 80        // Seconds
+  #define THERMAL_PROTECTION_PERIOD 120        // was 80 Seconds
   #undef  THERMAL_PROTECTION_HYSTERESIS 
-  #define THERMAL_PROTECTION_HYSTERESIS 8
+  #define THERMAL_PROTECTION_HYSTERESIS 10  	// was 8 deg
   
   #undef  TEMP_HYSTERESIS
   #define TEMP_HYSTERESIS 4       // (degC) range of +/- temperatures considered "close" to the target one
@@ -88,7 +88,7 @@
   #define HEATER_2_MAXTEMP 255
   #define HEATER_3_MAXTEMP 255
   #define HEATER_4_MAXTEMP 255
-  #define BED_MAXTEMP      150
+  #define BED_MAXTEMP      140 	//was 150
 
   #if ENABLED(PIDTEMP)
     #undef  DEFAULT_Kp
@@ -165,9 +165,9 @@
   #define X_HOME_BUMP_MM 5
   #define Y_HOME_BUMP_MM 5
   #undef HOMING_BUMP_DIVISOR
-  #define HOMING_BUMP_DIVISOR { 20, 20, 5 }  // Re-Bump Speed Divisor (Divides the Homing Feedrate)
+  #define HOMING_BUMP_DIVISOR { 40, 40, 5 }  // Re-Bump Speed Divisor (Divides the Homing Feedrate) was 20,20,5
   
-  #undef DUAL_NOZZLE_DUPLICATION_MODE
+  #define DUAL_NOZZLE_DUPLICATION_MODE
 #endif
 
 #if SYSTEM_SECTION == SUBSECTION(MOTION, 1)
@@ -184,8 +184,8 @@
   #define DEFAULT_MAX_ACCELERATION      { 2000, 2000, 100, 10000 }
   #define DEFAULT_ACCELERATION          1000    // X, Y, Z and E acceleration for printing moves
   #define DEFAULT_RETRACT_ACCELERATION  1500  
-  #define DEFAULT_XJERK                 9.0
-  #define DEFAULT_YJERK                 9.0
+  #define DEFAULT_XJERK                 7.0 // was 9
+  #define DEFAULT_YJERK                 7.0 // was 9
 #endif
 
 #if SYSTEM_SECTION == SUBSECTION(MACHINE, 4)
@@ -213,13 +213,13 @@
   #define ADVANCED_PAUSE_FEATURE
   #define NOZZLE_PARK_FEATURE
   #define FILAMENT_RUNOUT_SENSOR
-  //#define CONTINUOUS_PRINTING_AFTER_FILAMENT_RUNOUT
+  #define CONTINUOUS_PRINTING_AFTER_FILAMENT_RUNOUT
   
   
   #if ENABLED(FILAMENT_RUNOUT_SENSOR)
     #define FIL_RUNOUT_INVERTING      true  // set to true to invert the logic of the sensor.
     #define FIL_RUNOUT_PULLUP               // Uncomment to use internal pullup for filament runout pins if the sensor is defined.
-    #define FILAMENT_RUNOUT_SCRIPT    "M600"
+    #define FILAMENT_RUNOUT_SCRIPT    "M601"
   #endif
 #endif
 
@@ -254,7 +254,7 @@
 
   #define PREHEAT_1_TEMP_HOTEND 180
   #define PREHEAT_1_TEMP_BED     60
-  #define PREHEAT_2_TEMP_HOTEND 240
+  #define PREHEAT_2_TEMP_HOTEND 215  // was 240
   #define PREHEAT_2_TEMP_BED     115
   
   #define PRINTCOUNTER
@@ -275,12 +275,13 @@
   #define SD_CHECK_AND_RETRY
   #define VIKI2
   #define INDIVIDUAL_AXIS_HOMING_MENU
+  #define SCROLL_LONG_FILENAMES
   
-  //#define BABYSTEPPING
+  #define BABYSTEPPING
   #if ENABLED(BABYSTEPPING)
 	  //#define BABYSTEP_XY              // Also enable X/Y Babystepping. Not supported on DELTA!
 	  #define BABYSTEP_INVERT_Z false    // Change if Z babysteps should go the other way
-	  #define BABYSTEP_MULTIPLICATOR 2.5   // Babysteps are very small. Increase for faster motion.
+	  #define BABYSTEP_MULTIPLICATOR 5   // Babysteps are very small. Increase for faster motion. was 2.5
 	  //#define BABYSTEP_ZPROBE_OFFSET   // Enable to combine M851 and Babystepping
 	  #define DOUBLECLICK_FOR_Z_BABYSTEPPING // Double-click on the Status Screen for Z Babystepping.
 	  #define DOUBLECLICK_MAX_INTERVAL 1250 // Maximum interval between clicks, in milliseconds.
@@ -318,10 +319,12 @@
   #undef FILAMENT_CHANGE_UNLOAD_FEEDRATE
   #undef ADVANCED_PAUSE_PURGE_FEEDRATE
   #undef PAUSE_PARK_NOZZLE_TIMEOUT 
+  #undef FILAMENT_CHANGE_UNLOAD_LENGTH
 
   #define FILAMENT_CHANGE_UNLOAD_FEEDRATE     10  // (mm/s) Unload filament feedrate. This can be pretty fast.
- #define ADVANCED_PAUSE_PURGE_FEEDRATE        1  // (mm/s) Extrude feedrate (after loading). Should be slower than load feedrate.
+ #define ADVANCED_PAUSE_PURGE_FEEDRATE        0.5  // (mm/s) Extrude feedrate (after loading). Should be slower than load feedrate. was 1
  #define PAUSE_PARK_NOZZLE_TIMEOUT           360  // (seconds) Time limit before the nozzle is turned off for safety.
+ #define FILAMENT_CHANGE_UNLOAD_LENGTH      80
  #define HOME_BEFORE_FILAMENT_CHANGE
 #endif
 
@@ -369,7 +372,7 @@
     #undef THERMAL_PROTECTION_PERIOD
     #undef THERMAL_PROTECTION_HYSTERESIS
     
-    #define THERMAL_PROTECTION_PERIOD 60          // Seconds
+    #define THERMAL_PROTECTION_PERIOD 120          // was 60 Seconds
     #define THERMAL_PROTECTION_HYSTERESIS 15      // Degrees Celsius
   #endif
 
