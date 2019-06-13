@@ -18,9 +18,9 @@
 
  //#define SYSTEM gigabotxl
 
-//#define SYSTEM gigabotxlt
+#define SYSTEM gigabotxlt
 
-#define SYSTEM giga_terabot
+//#define SYSTEM giga_terabot
 
 #define SYSTEM_SETTINGS     CONCAT(SYSTEM,.h)
 #define SYSTEM_SETTINGS_ADV CONCAT(SYSTEM,_adv.h)

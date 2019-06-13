@@ -166,7 +166,7 @@
   #define X_HOME_BUMP_MM 5
   #define Y_HOME_BUMP_MM 5
   #undef HOMING_BUMP_DIVISOR
-  #define HOMING_BUMP_DIVISOR { 40, 40, 5 }  // Re-Bump Speed Divisor (Divides the Homing Feedrate) was 20,20,5
+  #define HOMING_BUMP_DIVISOR { 5, 5, 5 }  // Re-Bump Speed Divisor (Divides the Homing Feedrate) was 20,20,5
   
   #define DUAL_NOZZLE_DUPLICATION_MODE
 #endif
@@ -525,4 +525,3 @@
   #undef  BUFSIZE
   #define BUFSIZE 8
 #endif
-
