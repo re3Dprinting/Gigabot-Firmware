@@ -857,6 +857,7 @@ void lcd_quick_feedback(const bool clear_buttons) {
       wait_for_heatup = wait_for_user = false;
       abort_sd_printing = true;
       lcd_setstatusPGM(PSTR(MSG_PRINT_ABORTED), -1);
+      stepper.cleaning_buffer_counter = 1; // The command will fire from the Stepper ISR
       lcd_return_to_status();
 
       #if ENABLED(POWER_LOSS_RECOVERY)
