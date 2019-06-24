@@ -317,7 +317,7 @@
   #define TEMP_HYSTERESIS 4       // (degC) range of +/- temperatures considered "close" to the target one
 
    #undef  WATCH_TEMP_PERIOD
-   #define WATCH_TEMP_PERIOD 80                // Seconds
+   #define WATCH_TEMP_PERIOD 120                // Seconds
 
   #undef  WATCH_BED_TEMP_PERIOD
   #define WATCH_BED_TEMP_PERIOD 145            // Seconds
@@ -426,9 +426,9 @@
   #undef FILAMENT_CHANGE_UNLOAD_LENGTH
 
   #define FILAMENT_CHANGE_UNLOAD_FEEDRATE     10  // (mm/s) Unload filament feedrate. This can be pretty fast.
-  #define ADVANCED_PAUSE_PURGE_FEEDRATE        0.25  // (mm/s) Extrude feedrate (after loading). Should be slower than load feedrate. was 1
-  #define PAUSE_PARK_NOZZLE_TIMEOUT           360  // (seconds) Time limit before the nozzle is turned off for safety.
-  #define FILAMENT_CHANGE_UNLOAD_LENGTH      40
+  #define ADVANCED_PAUSE_PURGE_FEEDRATE        0.1  // (mm/s) Extrude feedrate (after loading). Should be slower than load feedrate. was 1
+  #define PAUSE_PARK_NOZZLE_TIMEOUT           500  // (seconds) Time limit before the nozzle is turned off for safety.
+  #define FILAMENT_CHANGE_UNLOAD_LENGTH      25
 
   #define PARK_HEAD_ON_PAUSE
   #define HOME_BEFORE_FILAMENT_CHANGE
