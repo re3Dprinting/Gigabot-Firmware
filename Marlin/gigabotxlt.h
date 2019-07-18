@@ -10,7 +10,7 @@
 #define MSG_GIGABOT3 "Gigabot 3+ XLT"
 #if SYSTEM_SECTION == INFO
   #undef  STRING_CONFIG_H_AUTHOR
-  #define STRING_CONFIG_H_AUTHOR "(GBXL V4.x.x - Marlin 1.1.8)"
+  #define STRING_CONFIG_H_AUTHOR "(GBXLT V4.x.x - Marlin 1.1.8)"
 
   #undef  SHOW_CUSTOM_BOOTSCREEN
   #define SHOW_CUSTOM_BOOTSCREEN
