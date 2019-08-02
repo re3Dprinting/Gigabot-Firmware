@@ -480,6 +480,9 @@
 #ifndef MSG_CONTROL
   #define MSG_CONTROL                         _UxGT("Control")
 #endif
+#ifndef MSG_DUALEXTR
+  #define MSG_DUALEXTR                         _UxGT("Dual Extruder Settings")
+#endif
 #ifndef MSG_MIN
   #define MSG_MIN                             _UxGT(" ") LCD_STR_THERMOMETER _UxGT(" Min")
 #endif
