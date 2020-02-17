@@ -1692,6 +1692,7 @@ void lcd_quick_feedback(const bool clear_buttons) {
         #endif
       #else
         #if HAS_HEATED_BED
+          MENU_ITEM(function, MSG_PREHEAT_1_BEDONLY, lcd_preheat_m1_bedonly);
           MENU_ITEM(function, MSG_PREHEAT_1_N "HE" MSG_H1, lcd_preheat_m1_e0_only);
           MENU_ITEM(function, MSG_PREHEAT_1_N "HE" MSG_H1 "+Bed", lcd_preheat_m1_e0);
           MENU_ITEM(function, MSG_PREHEAT_1_N "HE" MSG_H2, lcd_preheat_m1_e1_only);
@@ -1727,7 +1728,7 @@ void lcd_quick_feedback(const bool clear_buttons) {
         MENU_ITEM(function, MSG_PREHEAT_1_ALL, lcd_preheat_m1_all);
       #endif // HOTENDS > 1
       #if HAS_HEATED_BED
-        MENU_ITEM(function, MSG_PREHEAT_1_BEDONLY, lcd_preheat_m1_bedonly);
+        
       #endif
       END_MENU();
     }
@@ -1744,6 +1745,7 @@ void lcd_quick_feedback(const bool clear_buttons) {
         #endif
       #else
         #if HAS_HEATED_BED
+          MENU_ITEM(function, MSG_PREHEAT_2_BEDONLY, lcd_preheat_m2_bedonly);
           MENU_ITEM(function, MSG_PREHEAT_2_N "HE" MSG_H1, lcd_preheat_m2_e0_only);
           MENU_ITEM(function, MSG_PREHEAT_2_N "HE" MSG_H1 "+Bed", lcd_preheat_m2_e0);
           MENU_ITEM(function, MSG_PREHEAT_2_N "HE" MSG_H2, lcd_preheat_m2_e1_only);
@@ -1779,7 +1781,7 @@ void lcd_quick_feedback(const bool clear_buttons) {
         MENU_ITEM(function, MSG_PREHEAT_2_ALL, lcd_preheat_m2_all);
       #endif // HOTENDS > 1
       #if HAS_HEATED_BED
-        MENU_ITEM(function, MSG_PREHEAT_2_BEDONLY, lcd_preheat_m2_bedonly);
+        
       #endif
       END_MENU();
     }
@@ -4818,7 +4820,7 @@ void lcd_filament_runout_menu() {
       const uint8_t extruder/*=active_extruder*/
     ) {
       advanced_pause_mode = mode;
-      hotend_status_extruder = extruder;
+      hotend_status_extruder = extruder-1;
       const screenFunc_t next_screen = ap_message_screen(message);
       if (next_screen) {
         defer_return_to_status = true;

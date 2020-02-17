@@ -6580,6 +6580,9 @@ inline void gcode_M17() {
       UNUSED(mode);
     #endif
 
+    SERIAL_ECHO_START();
+    SERIAL_ECHOLNPGM(MSG_RE3D_FILAMENT_CHANGE_HEATING);
+
     wait_for_heatup = true; // M108 will clear this
     while (wait_for_heatup && thermalManager.wait_for_heating(active_extruder)) idle();
     const bool status = wait_for_heatup;
@@ -6622,8 +6625,9 @@ inline void gcode_M17() {
         if (show_lcd) // Show "insert filament"
           lcd_advanced_pause_show_message(ADVANCED_PAUSE_MESSAGE_INSERT, mode);
       #endif
+
       SERIAL_ECHO_START();
-      SERIAL_ECHOLNPGM(MSG_FILAMENT_CHANGE_INSERT);
+      SERIAL_ECHOLNPGM(MSG_RE3D_FILAMENT_CHANGE_INSERT);
 
       #if HAS_BUZZER
         filament_change_beep(max_beep_count, true);
@@ -6684,6 +6688,10 @@ inline void gcode_M17() {
 				if (show_lcd)
 				  lcd_advanced_pause_show_message(ADVANCED_PAUSE_MESSAGE_PURGE, mode);
 			  #endif
+
+			  SERIAL_ECHO_START();
+			  SERIAL_ECHOLNPGM(MSG_RE3D_FILAMENT_CHANGE_PURGE);
+				
 				  // Extrude filament to get into hotend
 			  do_pause_e_move(purge_length, ADVANCED_PAUSE_PURGE_FEEDRATE);
 			}
@@ -6697,6 +6705,9 @@ inline void gcode_M17() {
 					  lcd_advanced_pause_show_message(ADVANCED_PAUSE_MESSAGE_PURGE, mode);
 				  #endif
 
+				  SERIAL_ECHO_START();
+				  SERIAL_ECHOLNPGM(MSG_RE3D_FILAMENT_CHANGE_PURGE);
+
 				  // Extrude filament to get into hotend
 				  do_pause_e_move(purge_length, ADVANCED_PAUSE_PURGE_FEEDRATE);
 				}
@@ -6707,7 +6718,14 @@ inline void gcode_M17() {
 					KEEPALIVE_STATE(PAUSED_FOR_USER);
 					wait_for_user = false;
 					lcd_advanced_pause_show_message(ADVANCED_PAUSE_MESSAGE_OPTION, mode);
-					while (advanced_pause_menu_response == ADVANCED_PAUSE_RESPONSE_WAIT_FOR) idle(true);
+
+					SERIAL_ECHO_START();
+					SERIAL_ECHOLNPGM(MSG_RE3D_FILAMENT_CHANGE_CONTINUE);
+
+					// NOTE: Re:3D change from stock Marlin; we enable wait_for_user
+					// so that M108 commands can break the wait here.
+					wait_for_user = true;
+					while (wait_for_user && (advanced_pause_menu_response == ADVANCED_PAUSE_RESPONSE_WAIT_FOR)) idle(true);
 					KEEPALIVE_STATE(IN_HANDLER);
 				  }
 				#endif
@@ -6867,7 +6885,7 @@ inline void gcode_M17() {
       lcd_advanced_pause_show_message(ADVANCED_PAUSE_MESSAGE_INSERT);
     #endif
     SERIAL_ECHO_START();
-    SERIAL_ERRORLNPGM(MSG_FILAMENT_CHANGE_INSERT);
+    SERIAL_ECHOLNPGM(MSG_RE3D_FILAMENT_CHANGE_INSERT);
 
     #if HAS_BUZZER
       filament_change_beep(max_beep_count, true);
@@ -6898,13 +6916,7 @@ inline void gcode_M17() {
           lcd_advanced_pause_show_message(ADVANCED_PAUSE_MESSAGE_CLICK_TO_HEAT_NOZZLE);
         #endif
         SERIAL_ECHO_START();
-        #if ENABLED(ULTIPANEL) && ENABLED(EMERGENCY_PARSER)
-          SERIAL_ERRORLNPGM(MSG_FILAMENT_CHANGE_HEAT);
-        #elif ENABLED(EMERGENCY_PARSER)
-          SERIAL_ERRORLNPGM(MSG_FILAMENT_CHANGE_HEAT_M108);
-        #else
-          SERIAL_ERRORLNPGM(MSG_FILAMENT_CHANGE_HEAT_LCD);
-        #endif
+	SERIAL_ERRORLNPGM(MSG_RE3D_FILAMENT_CHANGE_HEAT);
 
         // Wait for LCD click or M108
         while (wait_for_user) idle(true);
@@ -6918,14 +6930,9 @@ inline void gcode_M17() {
         #if ENABLED(ULTIPANEL)
           lcd_advanced_pause_show_message(ADVANCED_PAUSE_MESSAGE_INSERT);
         #endif
+
         SERIAL_ECHO_START();
-        #if ENABLED(ULTIPANEL) && ENABLED(EMERGENCY_PARSER)
-          SERIAL_ERRORLNPGM(MSG_FILAMENT_CHANGE_INSERT);
-        #elif ENABLED(EMERGENCY_PARSER)
-          SERIAL_ERRORLNPGM(MSG_FILAMENT_CHANGE_INSERT_M108);
-        #else
-          SERIAL_ERRORLNPGM(MSG_FILAMENT_CHANGE_INSERT_LCD);
-        #endif
+	SERIAL_ECHOLNPGM(MSG_RE3D_FILAMENT_CHANGE_INSERT);
 
         // Start the heater idle timers
         const millis_t nozzle_timeout = (millis_t)(PAUSE_PARK_NOZZLE_TIMEOUT) * 1000UL;
@@ -6983,6 +6990,9 @@ inline void gcode_M17() {
       // "Wait for print to resume"
       lcd_advanced_pause_show_message(ADVANCED_PAUSE_MESSAGE_RESUME);
     #endif
+
+    SERIAL_ECHO_START();
+    SERIAL_ECHOLNPGM(MSG_RE3D_FILAMENT_CHANGE_RESUME);
 
     #if ENABLED(HOME_AFTER_FILAMENT_CHANGE)
   //    if (axis_unhomed_error())
@@ -10522,6 +10532,9 @@ inline void gcode_M502() {
       lcd_advanced_pause_show_message(ADVANCED_PAUSE_MESSAGE_INIT, ADVANCED_PAUSE_MODE_PAUSE_PRINT, target_extruder);
     #endif
 
+      SERIAL_ECHO_START();
+      SERIAL_ECHOLNPGM(MSG_RE3D_FILAMENT_CHANGE_INIT);
+
     #if ENABLED(HOME_BEFORE_FILAMENT_CHANGE)
       // Don't allow filament change without homing first
       if (axis_unhomed_error()) gcode_G28(false,true,true);
@@ -10573,8 +10586,8 @@ inline void gcode_M502() {
     );
 
     const bool job_running = print_job_timer.isRunning();
-
     if (pause_print(retract, park_point, unload_length, true)) {
+//  if (pause_print(0.0, park_point, 0.0, true)) { // Don't actually retract (useful for testing).
       wait_for_filament_reload(beep_count);
     #if ENABLED(HOME_AFTER_FILAMENT_CHANGE)
       // Don't allow resume without homing first

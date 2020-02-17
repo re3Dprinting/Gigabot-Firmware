@@ -6,7 +6,7 @@
 //
 
 #define MSG_GIGABOT3 "Gigabot 3+"
-#define GIGA_BUILD_VERSION "4.2.3"
+#define GIGA_BUILD_VERSION "4.2.4 RC3"
 #undef STRING_DISTRIBUTION_DATE
 #define STRING_DISTRIBUTION_DATE __DATE__ " " __TIME__
 
