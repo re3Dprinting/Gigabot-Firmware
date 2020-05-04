@@ -6,6 +6,9 @@
 #ifndef SYSTEMS_H
 #define SYSTEMS_H
 
+#define RE3D
+#define RE3D_CODES 1
+
 #define STRINGIFY_MACRO(x) STR(x)
 #define STR(x) #x
 #define EXPAND(x) x
