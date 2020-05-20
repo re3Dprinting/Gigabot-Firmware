@@ -228,7 +228,7 @@
   #define NOZZLE_PARK_FEATURE
 
   #if ENABLED(NOZZLE_PARK_FEATURE)
-    #define NOZZLE_PARK_POINT { (X_MIN_POS + 500), (Y_MAX_POS - 10), 20 }
+    #define NOZZLE_PARK_POINT { (10), (10), 3 }
     #define NOZZLE_PARK_XY_FEEDRATE 100
     #define NOZZLE_PARK_Z_FEEDRATE 5
   #endif
