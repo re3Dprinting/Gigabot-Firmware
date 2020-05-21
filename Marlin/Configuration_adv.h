@@ -36,6 +36,12 @@
 
 #include "systems.h"
 
+
+
+//*****************************************************************************
+// Section (Temperature, 3) begins here --->
+//
+
 #undef  SYSTEM_SECTION
 #define SYSTEM_SECTION SUBSECTION(TEMPERATURE, 3)
 
@@ -174,6 +180,13 @@
 
 #include SYSTEM_SETTINGS
 
+//
+// <--- Section (Temperature, 3) ends here 
+//*****************************************************************************
+
+
+
+
 // @section extruder
 
 // Extruder runout prevention.
@@ -183,9 +196,17 @@
 #if ENABLED(EXTRUDER_RUNOUT_PREVENT)
   #define EXTRUDER_RUNOUT_MINTEMP 190
   #define EXTRUDER_RUNOUT_SECONDS 30
-  #define EXTRUDER_RUNOUT_SPEED 1500  // mm/m
+
+#define EXTRUDER_RUNOUT_SPEED 1500  // mm/m
   #define EXTRUDER_RUNOUT_EXTRUDE 5   // mm
 #endif
+
+
+
+
+//*****************************************************************************
+// Section (Temperature, 4) begins here --->
+//
 
 #undef  SYSTEM_SECTION
 #define SYSTEM_SECTION SUBSECTION(TEMPERATURE, 4)
@@ -224,6 +245,17 @@
 //#define FAN_MIN_PWM 50
 
 #include SYSTEM_SETTINGS
+
+//
+// <--- Section (Temperature, 4) ends here
+//*****************************************************************************
+
+
+
+
+//*****************************************************************************
+// Section (Extruder, 5) begins here --->
+//
 
 #undef  SYSTEM_SECTION
 #define SYSTEM_SECTION SUBSECTION(EXTRUDER, 5)
@@ -281,6 +313,13 @@
 
 #include SYSTEM_SETTINGS
 
+//
+// <--- Section (Extruder, 5) ends here
+//*****************************************************************************
+
+
+
+
 //===========================================================================
 //============================ Mechanical Settings ==========================
 //===========================================================================
@@ -290,6 +329,13 @@
 // If you want endstops to stay on (by default) even when not homing
 // enable this option. Override at any time with M120, M121.
 //#define ENDSTOPS_ALWAYS_ON_DEFAULT
+
+
+
+
+//*****************************************************************************
+// Section (Extras, 3) begins here --->
+//
 
 #undef  SYSTEM_SECTION
 #define SYSTEM_SECTION SUBSECTION(EXTRAS, 3)
@@ -387,6 +433,17 @@
 
 #include SYSTEM_SETTINGS
 
+//
+// <--- Section (Extras, 3) ends here
+//*****************************************************************************
+
+
+
+
+//*****************************************************************************
+// Section (Homing, 4) begins here --->
+//
+
 #undef  SYSTEM_SECTION
 #define SYSTEM_SECTION SUBSECTION(HOMING, 4)
 
@@ -407,6 +464,14 @@
 
 
 #include SYSTEM_SETTINGS
+
+//
+// <--- Section (Homing, 4) ends here
+//*****************************************************************************
+
+
+
+
 // @section machine
 
 #define AXIS_RELATIVE_MODES {false, false, false, false}
@@ -434,6 +499,14 @@
 
 //#define HOME_AFTER_DEACTIVATE  // Require rehoming after steppers are deactivated
 
+
+
+
+
+//*****************************************************************************
+// Section (LCD, 2) begins here --->
+//
+
 #undef  SYSTEM_SECTION
 #define SYSTEM_SECTION SUBSECTION(LCD, 2)
 
@@ -445,6 +518,17 @@
 #endif
 
 #include SYSTEM_SETTINGS
+
+//
+// <--- Section (LCD, 2) ends here
+//*****************************************************************************
+
+
+
+
+//*****************************************************************************
+// Section (Extras, 4) begins here --->
+//
 
 #undef  SYSTEM_SECTION
 #define SYSTEM_SECTION SUBSECTION(EXTRAS, 4)
@@ -527,6 +611,17 @@
 #define CHDK_DELAY 50 //How long in ms the pin should stay HIGH before going LOW again
 
 #include SYSTEM_SETTINGS
+
+//
+// <--- Section (Extras, 4) ends here
+//*****************************************************************************
+
+
+
+
+//*****************************************************************************
+// Section (LCD) begins here --->
+//
 
 #undef  SYSTEM_SECTION
 #define SYSTEM_SECTION LCD
@@ -730,6 +825,14 @@
 
 #include SYSTEM_SETTINGS
 
+//
+// <--- Section (LCD) ends here
+//*****************************************************************************
+
+
+
+
+
 // @section safety
 
 // The hardware watchdog should reset the microcontroller disabling all outputs,
@@ -742,6 +845,13 @@
   //  However, THIS FEATURE IS UNSAFE!, as it will only work if interrupts are disabled. And the code could hang in an interrupt routine with interrupts disabled.
   //#define WATCHDOG_RESET_MANUAL
 #endif
+
+
+
+
+//*****************************************************************************
+// Section (LCD, 1) begins here --->
+//
 
 #undef  SYSTEM_SECTION
 #define SYSTEM_SECTION SUBSECTION(LCD, 1)
@@ -768,6 +878,13 @@
 #endif
 
 #include SYSTEM_SETTINGS
+
+//
+// <--- Section (LCD, 1) ends here
+//*****************************************************************************
+
+
+
 
 // @section extruder
 
@@ -843,6 +960,13 @@
 //================================= Buffers =================================
 //===========================================================================
 
+
+
+
+//*****************************************************************************
+// Section (Hidden, 1) begins here --->
+//
+
 #undef  SYSTEM_SECTION
 #define SYSTEM_SECTION SUBSECTION(HIDDEN, 1)
 
@@ -857,6 +981,17 @@
 #endif
 
 #include SYSTEM_SETTINGS
+
+//
+// <--- Section (Hidden, 1) ends here
+//*****************************************************************************
+
+
+
+
+//*****************************************************************************
+// Section (Serial Buf, 1) begins here --->
+//
 
 #undef  SYSTEM_SECTION
 #define SYSTEM_SECTION SUBSECTION(SERIAL_BUF, 1)
@@ -914,6 +1049,13 @@
 //#define ADVANCED_OK
 
 #include SYSTEM_SETTINGS
+
+//
+// <--- Section (Serial Buf, 1) ends here
+//*****************************************************************************
+
+
+
 
 // @section extras
 
