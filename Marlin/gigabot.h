@@ -1,4 +1,4 @@
-
+//
 // gigabot.h
 //
 // This include file is intended to isolate configuration settings for Marlin by 
@@ -14,7 +14,8 @@
 //===========================================================================
 //=============================CONFIGUATION.h===========================
 //===========================================================================
-#if SYSTEM_SECTION == INFO
+
+#if SYSTEM_SECTION == SUBSECTION(INFO, 1)
   #undef  STRING_CONFIG_H_AUTHOR
 //  #define STRING_CONFIG_H_AUTHOR "(GB3 V4.x.x - Marlin 1.1.8)"
   #undef WEBSITE_URL
@@ -28,7 +29,6 @@
   #define SHOW_CUSTOM_BOOTSCREEN
 #endif
 
-  
 #if SYSTEM_SECTION == SUBSECTION(MACHINE, 1)
   #undef  MOTHERBOARD
   #define MOTHERBOARD BOARD_AZTEEG_X3_PRO
@@ -39,6 +39,10 @@
   #define EXTRUDERS 2
   #define HOTEND_OFFSET_X {0.0, 55.00} // (in mm) for each extruder, offset of the hotend on the X axis
   #define HOTEND_OFFSET_Y {0.0, 0.00}  // (in mm) for each extruder, offset of the hotend on the Y axis
+#endif
+
+#if SYSTEM_SECTION == SUBSECTION(MACHINE, 2)
+  // No subsection settings.
 #endif
 
 #if SYSTEM_SECTION == SUBSECTION(TEMPERATURE, 1)
@@ -107,6 +111,10 @@
   #define EXTRUDE_MAXLENGTH 20000
 #endif
 
+#if SYSTEM_SECTION == SUBSECTION(MACHINE, 3)
+  // No subsection settings.
+#endif
+
 #if SYSTEM_SECTION == SUBSECTION(HOMING, 1)
   #undef  USE_XMIN_PLUG
   #undef  USE_YMIN_PLUG
@@ -157,6 +165,14 @@
   #define DEFAULT_YJERK                 7.0 // was 9
 #endif
 
+#if SYSTEM_SECTION == SUBSECTION(PROBES, 1)
+  // No section settings.
+#endif
+
+#if SYSTEM_SECTION == SUBSECTION(EXTRUDER, 3)
+  // No subsection settings.
+#endif
+
 #if SYSTEM_SECTION == SUBSECTION(MACHINE, 4)
   #undef  INVERT_X_DIR
   #undef  INVERT_Y_DIR
@@ -202,6 +218,10 @@
   #endif
 #endif
 
+#if SYSTEM_SECTION == SUBSECTION(CALIBRATE, 1)
+  // No subsection settings.
+#endif
+
 #if SYSTEM_SECTION == SUBSECTION(HOMING, 3)
   #define MANUAL_X_HOME_POS 0
   //#define MANUAL_Y_HOME_POS 0
@@ -209,9 +229,16 @@
   #define MANUAL_Y_HOME_POS Y_MAX_POS
 #endif
 
+#if SYSTEM_SECTION == SUBSECTION(CALIBRATE, 2)
+  // No section settings.
+#endif
+
 #if SYSTEM_SECTION == SUBSECTION(EXTRAS, 1)
   #undef  EEPROM_SETTINGS
   #define EEPROM_SETTINGS
+
+  #undef  M100_FREE_MEMORY
+  #define M100_FREE_MEMORY_WATCHER    // Add M100 (Free Memory Watcher) to debug memory usage
 #endif
 
 #if SYSTEM_SECTION == SUBSECTION(TEMPERATURE, 2)
@@ -236,7 +263,7 @@
   #define PRINTCOUNTER
 #endif
 
-#if SYSTEM_SECTION == LCD
+#if SYSTEM_SECTION == SUBSECTION(LCD, 1)
   #undef  SDSUPPORT
   #undef  SPI_SPEED
   #undef  SD_CHECK_AND_RETRY
@@ -275,31 +302,8 @@
 
 #endif
 
-#if SYSTEM_SECTION == SUBSECTION(LCD, 1)  
-  
-  #define BABYSTEPPING
-  #if ENABLED(BABYSTEPPING)
-	  //#define BABYSTEP_XY              // Also enable X/Y Babystepping. Not supported on DELTA!
-	  #define BABYSTEP_INVERT_Z false    // Change if Z babysteps should go the other way
-	  #define BABYSTEP_MULTIPLICATOR 5   // Babysteps are very small. Increase for faster motion. was 2.5
-	  //#define BABYSTEP_ZPROBE_OFFSET   // Enable to combine M851 and Babystepping
-	  #define DOUBLECLICK_FOR_Z_BABYSTEPPING // Double-click on the Status Screen for Z Babystepping.
-	  #define DOUBLECLICK_MAX_INTERVAL 1250 // Maximum interval between clicks, in milliseconds.
-											// Note: Extra time may be added to mitigate controller latency.
-	  //#define BABYSTEP_ZPROBE_GFX_OVERLAY // Enable graphical overlay on Z-offset editor
-  #endif
-
-  #define LIN_ADVANCE
-  #if ENABLED(LIN_ADVANCE)
-	  #define LIN_ADVANCE_K 0.075  // Unit: mm compression per 1mm/s extruder speed
-	  //#define LA_DEBUG          // If enabled, this will generate debug information output over USB.
-	#endif
-  
-#endif
-  
 #if SYSTEM_SECTION == SUBSECTION(EXTRAS, 2)
   #undef  TEMP_STAT_LEDS
-  
   #define TEMP_STAT_LEDS
 #endif
 
@@ -307,6 +311,7 @@
 //===========================================================================
 //=============================CONFIGUATION_ADV.h===========================
 //===========================================================================
+
 #if SYSTEM_SECTION == SUBSECTION(TEMPERATURE, 3)
   #undef  THERMAL_PROTECTION_PERIOD
   #define THERMAL_PROTECTION_PERIOD 120        // was 80 Seconds
@@ -322,6 +327,10 @@
   #undef  WATCH_BED_TEMP_PERIOD
   #define WATCH_BED_TEMP_PERIOD 145            // Seconds
  #endif
+
+#if SYSTEM_SECTION == SUBSECTION(EXTRUDER, 5)
+  // No subsection settings
+#endif
 
 #if SYSTEM_SECTION == SUBSECTION(TEMPERATURE, 4)
   #if ENABLED(THERMAL_PROTECTION_HOTENDS)
@@ -343,6 +352,7 @@
   #undef  TEMP_SENSOR_AD595_GAIN
   #define TEMP_SENSOR_AD595_GAIN 2.0
 
+  #undef  TEMP_SENSOR_AD8495_OFFSET
   #define TEMP_SENSOR_AD8495_OFFSET -250
 
   #undef  TEMP_SENSOR_AD8495_GAIN 
@@ -352,13 +362,17 @@
   #define AD8495_FORMULA (5.0 * 100.0) / 1024.0 / (OVERSAMPLENR) * (TEMP_SENSOR_AD8495_GAIN) + TEMP_SENSOR_AD8495_OFFSET
 #endif
 
-#if SYSTEM_SECTION == SUBSECTION(EXTRUDER, 5)
+#if SYSTEM_SECTION == SUBSECTION(EXTRUDER, 6)
   #undef  E0_AUTO_FAN_PIN 
   #undef  E1_AUTO_FAN_PIN 
   #define E0_AUTO_FAN_PIN 16
   #define E1_AUTO_FAN_PIN 16
 
   #define ENDSTOPS_ALWAYS_ON_DEFAULT
+#endif
+
+#if SYSTEM_SECTION == SUBSECTION(HOMING, 4)
+  // No subsection settings.
 #endif
 
 #if SYSTEM_SECTION == SUBSECTION(EXTRAS, 3)
@@ -375,13 +389,15 @@
     #define INVERT_Y2_VS_Y_DIR true   // Set 'true' if Y motors should rotate in opposite directions
     #define Y_DUAL_ENDSTOPS
     #if ENABLED(Y_DUAL_ENDSTOPS)
+      #undef  Y2_USE_ENDSTOP
+
       #define Y2_USE_ENDSTOP _YMIN_
       #define Y_DUAL_ENDSTOPS_ADJUSTMENT  0
     #endif
   #endif
 #endif
 
-#if SYSTEM_SECTION == SUBSECTION(HOMING, 4)
+#if SYSTEM_SECTION == SUBSECTION(HOMING, 5)
   #define X_HOME_BUMP_MM 5
   #define Y_HOME_BUMP_MM 5
 
@@ -390,6 +406,10 @@
   #define HOMING_BUMP_DIVISOR { 5, 5, 5 }  // Re-Bump Speed Divisor (Divides the Homing Feedrate) was 20,20,5
   
   #define DUAL_NOZZLE_DUPLICATION_MODE
+#endif
+
+#if SYSTEM_SECTION == SUBSECTION(MACHINE, 6)
+  // No subsection settings.
 #endif
 
 #if SYSTEM_SECTION == SUBSECTION(LCD, 2)
@@ -404,10 +424,65 @@
 #if SYSTEM_SECTION == SUBSECTION(EXTRAS, 4)
   #define DIGIPOT_I2C
   #undef  DIGIPOT_I2C_NUM_CHANNELS
-  #define DIGIPOT_I2C_NUM_CHANNELS    7 // AZTEEG_X3_PRO: 8 (Not sure why this was set to 7 at some point)
+// JT NOTE: below line REDEFINED in Configuration_adv.h
+//  #define DIGIPOT_I2C_NUM_CHANNELS    7 // AZTEEG_X3_PRO: 8 (Not sure why this was set to 7 at some point)
   #undef  DIGIPOT_I2C_MOTOR_CURRENTS
-  #define DIGIPOT_I2C_MOTOR_CURRENTS  { 2.0, 2.0, 2.0, 1.68, 1.68, 1.8, 1.8 }  //  AZTEEG_X3_PRO
+// JT NOTE: below line REDEFINED in Configuration_adv.h
+//  #define DIGIPOT_I2C_MOTOR_CURRENTS  { 2.0, 2.0, 2.0, 1.68, 1.68, 1.8, 1.8 }  //  AZTEEG_X3_PRO
 #endif
+
+
+#if SYSTEM_SECTION == SUBSECTION(STEPPER, 1)
+  // No section settings.
+#endif
+
+
+#if SYSTEM_SECTION == SUBSECTION(LCD, 3)
+  // No section settings.
+#endif
+
+
+#if SYSTEM_SECTION == SUBSECTION(SAFETY, 1)
+  // No section settings.
+#endif
+
+#if SYSTEM_SECTION == SUBSECTION(LCD, 4)
+  #define BABYSTEPPING
+  #if ENABLED(BABYSTEPPING)
+    //#define BABYSTEP_XY              // Also enable X/Y Babystepping. Not supported on DELTA!
+    #define BABYSTEP_INVERT_Z false    // Change if Z babysteps should go the other way
+    #define BABYSTEP_MULTIPLICATOR 5   // Babysteps are very small. Increase for faster motion. was 2.5
+    //#define BABYSTEP_ZPROBE_OFFSET   // Enable to combine M851 and Babystepping
+    #define DOUBLECLICK_FOR_Z_BABYSTEPPING // Double-click on the Status Screen for Z Babystepping.
+    #define DOUBLECLICK_MAX_INTERVAL 1250 // Maximum interval between clicks, in milliseconds.
+                                          // Note: Extra time may be added to mitigate controller latency.
+    //#define BABYSTEP_ZPROBE_GFX_OVERLAY // Enable graphical overlay on Z-offset editor
+  #endif
+#endif
+
+#if SYSTEM_SECTION == SUBSECTION(EXTRUDER, 7)
+  #define LIN_ADVANCE
+  #if ENABLED(LIN_ADVANCE)
+    #define LIN_ADVANCE_K 0.075  // Unit: mm compression per 1mm/s extruder speed
+    //#define LA_DEBUG           // If enabled, this will generate debug information output over USB.
+  #endif
+#endif
+
+
+#if SYSTEM_SECTION == SUBSECTION(LEVELING, 1)
+  // No section settings.
+#endif
+
+
+#if SYSTEM_SECTION == SUBSECTION(EXTRAS, 5)
+  // No section settings.
+#endif
+
+
+#if SYSTEM_SECTION == SUBSECTION(TEMPERATURE, 5)
+  // No section settings.
+#endif
+
 
 #if SYSTEM_SECTION == SUBSECTION(HIDDEN, 1)
   #undef  BLOCK_BUFFER_SIZE
@@ -422,13 +497,16 @@
 
   #undef FILAMENT_CHANGE_UNLOAD_FEEDRATE
   #undef ADVANCED_PAUSE_PURGE_FEEDRATE
-  #undef PAUSE_PARK_NOZZLE_TIMEOUT  --> check
+  #undef PAUSE_PARK_NOZZLE_TIMEOUT
   #undef FILAMENT_CHANGE_UNLOAD_LENGTH
 
   #define FILAMENT_CHANGE_UNLOAD_FEEDRATE     10  // (mm/s) Unload filament feedrate. This can be pretty fast.
-  #define ADVANCED_PAUSE_PURGE_FEEDRATE        0.1  // (mm/s) Extrude feedrate (after loading). Should be slower than load feedrate. was 1
-  #define PAUSE_PARK_NOZZLE_TIMEOUT           500  // (seconds) Time limit before the nozzle is turned off for safety.
-  #define FILAMENT_CHANGE_UNLOAD_LENGTH      25
+// JT NOTE: below line REDEFINED in Configuration_adv.h
+//  #define ADVANCED_PAUSE_PURGE_FEEDRATE        0.1  // (mm/s) Extrude feedrate (after loading). Should be slower than load feedrate. was 1
+// JT NOTE: below line REDEFINED in Configuration_adv.h
+//  #define PAUSE_PARK_NOZZLE_TIMEOUT           500  // (seconds) Time limit before the nozzle is turned off for safety.
+// JT NOTE: below line REDEFINED in Configuration_adv.h
+//  #define FILAMENT_CHANGE_UNLOAD_LENGTH      25
 
   #define PARK_HEAD_ON_PAUSE
   #define HOME_BEFORE_FILAMENT_CHANGE
@@ -449,16 +527,10 @@
 
 
 
-#if SYSTEM_SECTION == AZTEEG_X3_PRO
-  #undef  HEATER_BED_PIN
-  #undef  TEMP_BED_PIN
-  #undef  FAN_PIN
-
+#if SYSTEM_SECTION == SECTION(PINS_TEMPERATURE)
   #undef  TEMP_0_PIN
   #undef  TEMP_1_PIN
-
-  #define HEATER_BED_PIN      8
-  #define FAN_PIN             17 // Part Cooling System
+  #undef  TEMP_BED_PIN
 
   #define TEMP_0_PIN          4   // Analog Input
   #define TEMP_1_PIN          5   // Analog Input
@@ -477,71 +549,100 @@
   */
 #endif
 
+//#if SYSTEM_SECTION == SECTION(PINS_HEATERS_FANS)
+#if SYSTEM_SECTION == SECTION(AZTEEG_X3_PRO)
+  #undef  HEATER_BED_PIN
+  #undef  FAN_PIN
 
-#define Y_STEP_PIN         60
-#define Y_DIR_PIN          61
-#define Y_ENABLE_PIN       56
-#define Y_CS_PIN           49
-
-#define Y2_STEP_PIN        46
-#define Y2_DIR_PIN         48
-#define Y2_ENABLE_PIN      62
-
-#undef  Z_STEP_PIN
-#undef  Z_DIR_PIN
-#undef  Z_ENABLE_PIN
-
-#define Z_STEP_PIN         26
-#define Z_DIR_PIN          28
-#define Z_ENABLE_PIN       24
-
-#undef  Z2_STEP_PIN
-#undef  Z2_DIR_PIN
-#undef  Z2_ENABLE_PIN
-
-#define Z2_STEP_PIN        36
-#define Z2_DIR_PIN         34
-#define Z2_ENABLE_PIN      30
-
-#undef  E0_STEP_PIN
-#undef  E0_DIR_PIN
-#undef  E0_ENABLE_PIN
-
-#define E0_STEP_PIN        23 
-#define E0_DIR_PIN         25
-#define E0_ENABLE_PIN      40
-
-#undef  E1_STEP_PIN
-#undef  E1_DIR_PIN
-#undef  E1_ENABLE_PIN
-
-#define E1_STEP_PIN        27//43
-#define E1_DIR_PIN         29//37
-#define E1_ENABLE_PIN      41//42
+  #define HEATER_BED_PIN      8
+  #define FAN_PIN             17  // Part Cooling System
+#endif
 
 
-#define X_MAX_PIN         -1
-#define Y_MAX_PIN         15
-#define Y_MIN_PIN         14
+#if SYSTEM_SECTION == SECTION(PINS_LIMITS)
+  #undef  X_MAX_PIN
+  #undef  Y_MAX_PIN
+  #undef  Y_MIN_PIN
 
-#undef  BEEPER_PIN
-#define BEEPER_PIN        33         
+  #define X_MAX_PIN         -1 //changed
+  #define Y_MAX_PIN         15 //same
+  #define Y_MIN_PIN         14 //same
+#endif
 
-// Pins for DOGM SPI LCD Support
-#define DOGLCD_A0         44
-#define DOGLCD_CS         45
-#define LCD_SCREEN_ROT_180
-      
-// The encoder and click button
-#define BTN_EN1           22
-#define BTN_EN2           7
-#define BTN_ENC           39  //the click switch
 
-#undef  SD_DETECT_PIN
-#define SD_DETECT_PIN     -1
+#if SYSTEM_SECTION == SECTION(PINS_STEPPERS)
+  #undef  Y_STEP_PIN
+  #undef  Y_DIR_PIN
+  #undef  Y_ENABLE_PIN
+  #undef  Y_CS_PIN
 
-#undef  STAT_LED_RED_PIN
-#undef  STAT_LED_BLUE_PIN
+  #define Y_STEP_PIN         60 //same
+  #define Y_DIR_PIN          61 //same
+  #define Y_ENABLE_PIN       56 //same
+  #define Y_CS_PIN           49 //same
 
-#define STAT_LED_RED_PIN  32
-#define STAT_LED_BLUE_PIN 35
+  #undef  Y2_STEP_PIN
+  #undef  Y2_DIR_PIN
+  #undef  Y2_ENABLE_PIN
+
+  #define Y2_STEP_PIN        46 //new
+  #define Y2_DIR_PIN         48 //new
+  #define Y2_ENABLE_PIN      62 //new
+
+  #undef  Z_STEP_PIN
+  #undef  Z_DIR_PIN
+  #undef  Z_ENABLE_PIN
+
+  #define Z_STEP_PIN         26 //changed
+  #define Z_DIR_PIN          28 //changed
+  #define Z_ENABLE_PIN       24 //changed
+
+  #undef  Z2_STEP_PIN
+  #undef  Z2_DIR_PIN
+  #undef  Z2_ENABLE_PIN
+
+  #define Z2_STEP_PIN        36 //new
+  #define Z2_DIR_PIN         34 //new
+  #define Z2_ENABLE_PIN      30 //new
+
+  #undef  E0_STEP_PIN
+  #undef  E0_DIR_PIN
+  #undef  E0_ENABLE_PIN
+
+  #define E0_STEP_PIN        23 //changed
+  #define E0_DIR_PIN         25 //changed
+  #define E0_ENABLE_PIN      40 //changed
+
+  #undef  E1_STEP_PIN
+  #undef  E1_DIR_PIN
+  #undef  E1_ENABLE_PIN
+
+  #define E1_STEP_PIN        27//43 //changed
+  #define E1_DIR_PIN         29//37 //changed
+  #define E1_ENABLE_PIN      41//42 //changed
+#endif
+
+
+#if SYSTEM_SECTION == SECTION(PINS_LCD)
+  // Pins for DOGM SPI LCD Support
+  #define DOGLCD_A0         44 //same
+  #define DOGLCD_CS         45 //same
+  #define LCD_SCREEN_ROT_180 //same
+
+  // The encoder and click button
+  #define BTN_EN1           22 //same
+  #define BTN_EN2           7 //same
+  #define BTN_ENC           39 //same
+#endif
+
+#if SYSTEM_SECTION ==  SECTION(AZTEEG_X3_PRO)
+  #undef STAT_LED_RED_PIN
+  #undef STAT_LED_BLUE_PIN
+  #undef SD_DETECT_PIN
+  #undef BEEPER_PIN
+
+  #define STAT_LED_RED_PIN  32 //changed
+  #define STAT_LED_BLUE_PIN 35 //changed
+  #define SD_DETECT_PIN     -1 //same
+  #define BEEPER_PIN        33 //same
+#endif

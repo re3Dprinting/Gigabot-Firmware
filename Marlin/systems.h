@@ -36,6 +36,7 @@
 
 #define SYSTEM_UNKNOWN -1
 
+// These are for overriding definitions found in Configuration.h and Configuration_adv.h
 
 #define INFO            1
 #define MACHINE         2
@@ -51,6 +52,16 @@
 #define HIDDEN          12
 #define SERIAL_BUF      13
 #define CONDITIONALS    14
+
+// These are for overriding definitions found in pins_RAMPS.h
+
+#define PINS_LIMITS       101
+#define PINS_STEPPERS     102
+#define PINS_TEMPERATURE  103
+#define PINS_HEATERS_FANS 104
+#define PINS_LCD          105
+
+// For --unknown-- sections. Never actually used.
 
 #define SYSTEM_SECTION SYSTEM_UNKNOWN
 

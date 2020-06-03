@@ -45,7 +45,7 @@
 #undef  SYSTEM_SECTION
 #define SYSTEM_SECTION SUBSECTION(TEMPERATURE, 3)
 
-// @section temperature
+// @section temperature 3
 
 //===========================================================================
 //=============================Thermal Settings  ============================
@@ -187,7 +187,14 @@
 
 
 
-// @section extruder
+//*****************************************************************************
+// Section (Extruder, 5) begins here --->
+//
+
+#undef  SYSTEM_SECTION
+#define SYSTEM_SECTION SUBSECTION(EXTRUDER, 5)
+
+// @section extruder 5
 
 // Extruder runout prevention.
 // If the machine is idle and the temperature over MINTEMP
@@ -201,6 +208,12 @@
   #define EXTRUDER_RUNOUT_EXTRUDE 5   // mm
 #endif
 
+#include SYSTEM_SETTINGS
+
+//
+// <--- Section (Extruder, 5) ends here 
+//*****************************************************************************
+
 
 
 
@@ -211,7 +224,7 @@
 #undef  SYSTEM_SECTION
 #define SYSTEM_SECTION SUBSECTION(TEMPERATURE, 4)
 
-// @section temperature
+// @section temperature 4
 
 // Calibration for AD595 / AD8495 sensor to adjust temperature measurements.
 // The final temperature is calculated as (measuredTemp * GAIN) + OFFSET.
@@ -254,13 +267,13 @@
 
 
 //*****************************************************************************
-// Section (Extruder, 5) begins here --->
+// Section (Extruder, 6) begins here --->
 //
 
 #undef  SYSTEM_SECTION
-#define SYSTEM_SECTION SUBSECTION(EXTRUDER, 5)
+#define SYSTEM_SECTION SUBSECTION(EXTRUDER, 6)
 
-// @section extruder
+// @section extruder 6
 
 /**
  * Extruder cooling fans
@@ -320,15 +333,28 @@
 
 
 
+//*****************************************************************************
+// Section (Homing, 4) begins here --->
+//
+
+#undef  SYSTEM_SECTION
+#define SYSTEM_SECTION SUBSECTION(HOMING, 4)
+
 //===========================================================================
 //============================ Mechanical Settings ==========================
 //===========================================================================
 
-// @section homing
+// @section homing 4
 
 // If you want endstops to stay on (by default) even when not homing
 // enable this option. Override at any time with M120, M121.
 //#define ENDSTOPS_ALWAYS_ON_DEFAULT
+
+#include SYSTEM_SETTINGS
+
+//
+// <--- Section (Homing, 4) ends here
+//*****************************************************************************
 
 
 
@@ -340,7 +366,7 @@
 #undef  SYSTEM_SECTION
 #define SYSTEM_SECTION SUBSECTION(EXTRAS, 3)
 
-// @section extras
+// @section extras 3
 
 //#define Z_LATE_ENABLE // Enable Z the last moment. Needed if your Z driver overheats.
 
@@ -441,13 +467,13 @@
 
 
 //*****************************************************************************
-// Section (Homing, 4) begins here --->
+// Section (Homing, 5) begins here --->
 //
 
 #undef  SYSTEM_SECTION
-#define SYSTEM_SECTION SUBSECTION(HOMING, 4)
+#define SYSTEM_SECTION SUBSECTION(HOMING, 5)
 
-// @section homing
+// @section homing 5
 
 // Homing hits each endstop, retracts by these distances, then does a slower bump.
 #define X_HOME_BUMP_MM 5
@@ -462,17 +488,23 @@
 // Enable this if X or Y can't home without homing the other axis first.
 //#define CODEPENDENT_XY_HOMING
 
-
 #include SYSTEM_SETTINGS
 
 //
-// <--- Section (Homing, 4) ends here
+// <--- Section (Homing, 5) ends here
 //*****************************************************************************
 
 
 
 
-// @section machine
+//*****************************************************************************
+// Section (Machine, 6) begins here --->
+//
+
+#undef  SYSTEM_SECTION
+#define SYSTEM_SECTION SUBSECTION(MACHINE, 6)
+
+// @section machine 6
 
 #define AXIS_RELATIVE_MODES {false, false, false, false}
 
@@ -499,6 +531,11 @@
 
 //#define HOME_AFTER_DEACTIVATE  // Require rehoming after steppers are deactivated
 
+#include SYSTEM_SETTINGS
+
+//
+// <--- Section (Machine, 6) ends here
+//*****************************************************************************
 
 
 
@@ -510,7 +547,7 @@
 #undef  SYSTEM_SECTION
 #define SYSTEM_SECTION SUBSECTION(LCD, 2)
 
-// @section lcd
+// @section lcd 2
 
 #if ENABLED(ULTIPANEL)
   #define MANUAL_FEEDRATE {50*60, 50*60, 4*60, 60} // Feedrates for manual moves along X, Y, Z, E from panel
@@ -533,7 +570,7 @@
 #undef  SYSTEM_SECTION
 #define SYSTEM_SECTION SUBSECTION(EXTRAS, 4)
 
-// @section extras
+// @section extras 4
 
 // minimum time in microseconds that a movement needs to take if the buffer is emptied.
 #define DEFAULT_MINSEGMENTTIME        20000
@@ -553,6 +590,23 @@
 
 // Microstep setting (Only functional when stepper driver microstep pins are connected to MCU.
 #define MICROSTEP_MODES {16,16,16,16,16} // [1,2,4,8,16]
+
+#include SYSTEM_SETTINGS
+
+//
+// <--- Section (Extras, 4) ends here
+//*****************************************************************************
+
+
+
+
+
+//*****************************************************************************
+// Section (Stepper, 1) begins here --->
+//
+
+#undef  SYSTEM_SECTION
+#define SYSTEM_SECTION SUBSECTION(STEPPER, 1)
 
 /**
  *  @section  stepper motor current
@@ -590,7 +644,8 @@
    * MIGHTYBOARD_REVE  0x2F (0x5E)                         MCP4018
    */
   #define DIGIPOT_I2C_ADDRESS_A 0x2C  // unshifted slave address for first DIGIPOT
-  #define DIGIPOT_I2C_ADDRESS_B 0x2D  // unshifted slave address for second DIGIPOT
+// JT NOTE: below line REDEFINED in Configuration_adv.h
+//  #define DIGIPOT_I2C_ADDRESS_B 0x2D  // unshifted slave address for second DIGIPOT
 #endif
 
 //#define DIGIPOT_MCP4018          // Requires library from https://github.com/stawel/SlowSoftI2CMaster
@@ -613,20 +668,20 @@
 #include SYSTEM_SETTINGS
 
 //
-// <--- Section (Extras, 4) ends here
+// <--- Section (Stepper, 1) ends here
 //*****************************************************************************
 
 
 
 
 //*****************************************************************************
-// Section (LCD) begins here --->
+// Section (LCD, 3) begins here --->
 //
 
 #undef  SYSTEM_SECTION
-#define SYSTEM_SECTION LCD
+#define SYSTEM_SECTION SUBSECTION(LCD, 3)
 
-// @section lcd
+// @section lcd 3
 
 // Include a page of printer information in the LCD Main Menu
 //#define LCD_INFO_MENU
@@ -826,14 +881,21 @@
 #include SYSTEM_SETTINGS
 
 //
-// <--- Section (LCD) ends here
+// <--- Section (LCD, 3) ends here
 //*****************************************************************************
 
 
 
 
 
-// @section safety
+//*****************************************************************************
+// Section (SAFETY, 1) begins here --->
+//
+
+#undef  SYSTEM_SECTION
+#define SYSTEM_SECTION SUBSECTION(SAFETY, 1)
+
+// @section safety 1
 
 // The hardware watchdog should reset the microcontroller disabling all outputs,
 // in case the firmware gets stuck and doesn't do temperature regulation.
@@ -846,17 +908,23 @@
   //#define WATCHDOG_RESET_MANUAL
 #endif
 
+#include SYSTEM_SETTINGS
+
+//
+// <--- Section (SAFETY, 1) ends here
+//*****************************************************************************
+
 
 
 
 //*****************************************************************************
-// Section (LCD, 1) begins here --->
+// Section (LCD, 4) begins here --->
 //
 
 #undef  SYSTEM_SECTION
-#define SYSTEM_SECTION SUBSECTION(LCD, 1)
+#define SYSTEM_SECTION SUBSECTION(LCD, 4)
 
-// @section lcd
+// @section lcd 4
 
 /**
  * Babystepping enables movement of the axes by tiny increments without changing
@@ -880,47 +948,86 @@
 #include SYSTEM_SETTINGS
 
 //
-// <--- Section (LCD, 1) ends here
+// <--- Section (LCD, 2) ends here
 //*****************************************************************************
 
 
 
 
-// @section extruder
+//*****************************************************************************
+// Section (Extruder, 7) begins here --->
+//
 
-/**
- * Linear Pressure Control v1.5
- *
- * Assumption: advance [steps] = k * (delta velocity [steps/s])
- * K=0 means advance disabled.
- *
- * NOTE: K values for LIN_ADVANCE 1.5 differ from earlier versions!
- *
- * Set K around 0.22 for 3mm PLA Direct Drive with ~6.5cm between the drive gear and heatbreak.
- * Larger K values will be needed for flexible filament and greater distances.
- * If this algorithm produces a higher speed offset than the extruder can handle (compared to E jerk)
- * print acceleration will be reduced during the affected moves to keep within the limit.
- *
- * See http://marlinfw.org/docs/features/lin_advance.html for full instructions.
- * Mention @Sebastianv650 on GitHub to alert the author of any issues.
- */
-//#define LIN_ADVANCE
-#if ENABLED(LIN_ADVANCE)
-  #define LIN_ADVANCE_K 0.22  // Unit: mm compression per 1mm/s extruder speed
-  //#define LA_DEBUG          // If enabled, this will generate debug information output over USB.
-#endif
+#undef  SYSTEM_SECTION
+#define SYSTEM_SECTION SUBSECTION(EXTRUDER, 7)
 
-// @section leveling
+// @section extruder 7
 
-#if ENABLED(MESH_BED_LEVELING) || ENABLED(AUTO_BED_LEVELING_UBL)
-  // Override the mesh area if the automatic (max) area is too large
-  //#define MESH_MIN_X MESH_INSET
-  //#define MESH_MIN_Y MESH_INSET
-  //#define MESH_MAX_X X_BED_SIZE - (MESH_INSET)
-  //#define MESH_MAX_Y Y_BED_SIZE - (MESH_INSET)
-#endif
+  /**
+   * Linear Pressure Control v1.5
+   *
+   * Assumption: advance [steps] = k * (delta velocity [steps/s])
+   * K=0 means advance disabled.
+   *
+   * NOTE: K values for LIN_ADVANCE 1.5 differ from earlier versions!
+   *
+   * Set K around 0.22 for 3mm PLA Direct Drive with ~6.5cm between the drive gear and heatbreak.
+   * Larger K values will be needed for flexible filament and greater distances.
+   * If this algorithm produces a higher speed offset than the extruder can handle (compared to E jerk)
+   * print acceleration will be reduced during the affected moves to keep within the limit.
+   *
+   * See http://marlinfw.org/docs/features/lin_advance.html for full instructions.
+   * Mention @Sebastianv650 on GitHub to alert the author of any issues.
+   */
+  //#define LIN_ADVANCE
+  #if ENABLED(LIN_ADVANCE)
+    #define LIN_ADVANCE_K 0.22  // Unit: mm compression per 1mm/s extruder speed
+    //#define LA_DEBUG          // If enabled, this will generate debug information output over USB.
+  #endif
 
-// @section extras
+#include SYSTEM_SETTINGS
+
+//
+// <--- Section (Extruder, 7 ) ends here
+//*****************************************************************************
+
+
+
+
+//*****************************************************************************
+// Section (Leveling, 1) begins here --->
+//
+
+#undef  SYSTEM_SECTION
+#define SYSTEM_SECTION SUBSECTION(LEVELING, 1)
+
+// @section leveling 1
+
+  #if ENABLED(MESH_BED_LEVELING) || ENABLED(AUTO_BED_LEVELING_UBL)
+    // Override the mesh area if the automatic (max) area is too large
+    //#define MESH_MIN_X MESH_INSET
+    //#define MESH_MIN_Y MESH_INSET
+    //#define MESH_MAX_X X_BED_SIZE - (MESH_INSET)
+    //#define MESH_MAX_Y Y_BED_SIZE - (MESH_INSET)
+  #endif
+
+#include SYSTEM_SETTINGS
+
+//
+// <--- Section (Leveling, 1 ) ends here
+//*****************************************************************************
+
+
+
+
+//*****************************************************************************
+// Section (Extras, 5) begins here --->
+//
+
+#undef  SYSTEM_SECTION
+#define SYSTEM_SECTION SUBSECTION(EXTRAS, 5)
+
+// @section extras 5
 
 //
 // G2/G3 Arc Support
@@ -951,7 +1058,23 @@
 // 0 is OK for AVR, 0 is OK for A4989 drivers, 2 is needed for DRV8825 drivers
 #define MINIMUM_STEPPER_PULSE 2
 
-// @section temperature
+#include SYSTEM_SETTINGS
+
+//
+// <--- Section (Extras, 5) ends here
+//*****************************************************************************
+
+
+
+
+//*****************************************************************************
+// Section (Temperature, 5) begins here --->
+//
+
+#undef  SYSTEM_SECTION
+#define SYSTEM_SECTION SUBSECTION(TEMPERATURE, 5)
+
+// @section temperature 5
 
 // Control heater 0 and heater 1 in parallel.
 //#define HEATERS_PARALLEL
@@ -959,6 +1082,12 @@
 //===========================================================================
 //================================= Buffers =================================
 //===========================================================================
+
+#include SYSTEM_SETTINGS
+
+//
+// <--- Section (Temperature, 5) ends here
+//*****************************************************************************
 
 
 
@@ -970,7 +1099,7 @@
 #undef  SYSTEM_SECTION
 #define SYSTEM_SECTION SUBSECTION(HIDDEN, 1)
 
-// @section hidden
+// @section hidden 1
 
 // The number of linear motions that can be in the plan at any give time.
 // THE BLOCK_BUFFER_SIZE NEEDS TO BE A POWER OF 2 (e.g. 8, 16, 32) because shifts and ors are used to do the ring-buffering.
@@ -996,7 +1125,7 @@
 #undef  SYSTEM_SECTION
 #define SYSTEM_SECTION SUBSECTION(SERIAL_BUF, 1)
 
-// @section serial
+// @section serial_buf 1
 
 // The ASCII buffer for serial input
 #define MAX_CMD_SIZE 96
@@ -1217,7 +1346,7 @@
 
 #endif
 
-// @section tmc_smart
+// @section tmc_smartxo
 
 /**
  * Enable this for SilentStepStick Trinamic TMC2130 SPI-configurable stepper drivers.
@@ -1681,7 +1810,7 @@
   #define USER_GCODE_1 "G28\nG29 W"
 
   #define USER_DESC_2 "Preheat for PLA"
-  #define USER_GCODE_2 "M140 S" STRINGIFY(PREHEAT_1_TEMP_BED) "\nM104 S" STRINGIFY(PREHEAT_1_TEMP_HOTEND)
+78  #define USER_GCODE_2 "M140 S" STRINGIFY(PREHEAT_1_TEMP_BED) "\nM104 S" STRINGIFY(PREHEAT_1_TEMP_HOTEND)
 
   #define USER_DESC_3 "Preheat for ABS"
   #define USER_GCODE_3 "M140 S" STRINGIFY(PREHEAT_2_TEMP_BED) "\nM104 S" STRINGIFY(PREHEAT_2_TEMP_HOTEND)
@@ -1832,5 +1961,19 @@
   //#define NANODLP_ALL_AXIS  // Enables "Z_move_comp" output on any axis move.
                               // Default behaviour is limited to Z axis only.
 #endif
+
+
+//*****************************************************************************
+// Section (Azteeg X3 Pro, 1) begins here --->
+//
+
+// @section azteeg x3 pro 1
+
+//
+// <--- Section (Azteeg X3 Pro, 1) ends here
+//*****************************************************************************
+
+
+
 
 #endif // CONFIGURATION_ADV_H
