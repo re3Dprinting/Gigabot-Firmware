@@ -5,15 +5,24 @@
 // separating them into sections
 //
 
-#define MSG_GIGABOT3 "Gigabot 3+"
-#define GIGA_BUILD_VERSION "4.2.4 RC3"
-#undef STRING_DISTRIBUTION_DATE
-#define STRING_DISTRIBUTION_DATE __DATE__ " " __TIME__
+#if !defined(SYSTEM_SECTION)
+#error SYSTEM_SECTION is not defined!
+#endif
+
+#if SYSTEM_SECTION == 0
+#error SYSTEM_SECTION should not be zero!
+#endif
 
 
 //===========================================================================
 //=============================CONFIGUATION.h===========================
 //===========================================================================
+
+#define MSG_GIGABOT3 "Gigabot 3+"
+#define GIGA_BUILD_VERSION "4.2.4 RC3"
+#undef STRING_DISTRIBUTION_DATE
+#define STRING_DISTRIBUTION_DATE __DATE__ " " __TIME__
+
 
 #if SYSTEM_SECTION == SUBSECTION(INFO, 1)
   #undef  STRING_CONFIG_H_AUTHOR
@@ -422,18 +431,15 @@
 #endif
 
 #if SYSTEM_SECTION == SUBSECTION(EXTRAS, 4)
-  #define DIGIPOT_I2C
-  #undef  DIGIPOT_I2C_NUM_CHANNELS
-// JT NOTE: below line REDEFINED in Configuration_adv.h
-//  #define DIGIPOT_I2C_NUM_CHANNELS    7 // AZTEEG_X3_PRO: 8 (Not sure why this was set to 7 at some point)
-  #undef  DIGIPOT_I2C_MOTOR_CURRENTS
-// JT NOTE: below line REDEFINED in Configuration_adv.h
-//  #define DIGIPOT_I2C_MOTOR_CURRENTS  { 2.0, 2.0, 2.0, 1.68, 1.68, 1.8, 1.8 }  //  AZTEEG_X3_PRO
+  // No section settings.
 #endif
 
-
 #if SYSTEM_SECTION == SUBSECTION(STEPPER, 1)
-  // No section settings.
+  #define DIGIPOT_I2C
+  #undef  DIGIPOT_I2C_NUM_CHANNELS
+  #define DIGIPOT_I2C_NUM_CHANNELS    7 // AZTEEG_X3_PRO: 8 (Not sure why this was set to 7 at some point)
+  #undef  DIGIPOT_I2C_MOTOR_CURRENTS
+  #define DIGIPOT_I2C_MOTOR_CURRENTS  { 2.0, 2.0, 2.0, 1.68, 1.68, 1.8, 1.8 }  //  AZTEEG_X3_PRO 
 #endif
 
 
@@ -536,17 +542,16 @@
   #define TEMP_1_PIN          5   // Analog Input
   #define TEMP_BED_PIN        3   // Analog Input
 
-  /*
-  #if ENABLED(VIKI2) || ENABLED(miniVIKI)
-    #undef SD_DETECT_PIN
-    #define SD_DETECT_PIN    49   // For easy adapter board
-    #undef BEEPER_PIN
-    #define  BEEPER_PIN      12   // 33 isn't physically available to the LCD display
-  #else
-    #define STAT_LED_RED_PIN 32
-    #define STAT_LED_BLUE_PIN 35
-  #endif
-  */
+  // #if ENABLED(VIKI2) || ENABLED(miniVIKI)
+  //   #undef SD_DETECT_PIN
+  //   #define SD_DETECT_PIN    49   // For easy adapter board
+  //   #undef BEEPER_PIN
+  //   #define  BEEPER_PIN      12   // 33 isn't physically available to the LCD display
+  // #else
+  //   #define STAT_LED_RED_PIN 32
+  //   #define STAT_LED_BLUE_PIN 35
+  // #endif
+
 #endif
 
 //#if SYSTEM_SECTION == SECTION(PINS_HEATERS_FANS)
