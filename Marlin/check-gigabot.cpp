@@ -11,9 +11,9 @@
 //
 //    a. Copy the compile line from the IDE
 //
-//    b. Replace -g with -E
+//    b. Replace '-c -g' with '-E'
 //
-//    c. Replace -o check-gigabot.cpp with check-gigabot.pp
+//    c. Replace '-o check-gigabot.cpp' with '-o check-gigabot.pp'
 //
 // 5. In each build dir, use grep to remove preprocessor line-number tags:
 //    grep -v '^#.*' check-gigabot.pp > check-gigabot.ppg
@@ -23,14 +23,6 @@
 // The output of step 6 should be empty. Any differences in the diff
 // indicate definitions (#define) that differ between the two
 // projects. These can be tracked down and resolved.
-//
-// NOTE: If the Arduino IDE is set to show 'Default' warnings, then
-// when building the old project, you WILL see warnings. The recent
-// work is to fix these errors, but in a way that uses the @section
-// philosophy in gigabot.h. When building the new project, you should
-// see NO warnings, in particular those that would occur when one
-// #define overrides a previous #define of the same macro (without an
-// intervening #undef of the macro0.
 
 #include "Marlin.h"
 #include "Sd2Card.h"
