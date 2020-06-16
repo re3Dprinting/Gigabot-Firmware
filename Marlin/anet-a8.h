@@ -195,7 +195,7 @@
 
 #endif
 
-#if SYSTEM_SECTION = SECTION(PROBES)
+#if SYSTEM_SECTION == SECTION(PROBES)
   // Not using probes on the A8.
 #endif
 
@@ -296,6 +296,10 @@
   #define PREHEAT_1_TEMP_BED     60
   #define PREHEAT_1_FAN_SPEED     0 // Value from 0 to 255
 
+  #define PREHEAT_2_TEMP_HOTEND 210
+  #define PREHEAT_2_TEMP_BED     60
+  #define PREHEAT_2_FAN_SPEED     0 // Value from 0 to 255
+
   #undef  NOZZLE_PARK_FEATURE
   #undef  NOZZLE_PARK_POINT
   #undef  NOZZLE_PARK_XY_FEEDRATE
@@ -334,7 +338,9 @@
                                           // Note: Extra time may be added to mitigate controller latency.
     //#define BABYSTEP_ZPROBE_GFX_OVERLAY // Enable graphical overlay on Z-offset editor
   #endif
+#endif
 
+#if SYSTEM_SECTION == SUBSECTION(EXTRUDER, 7)
   #define LIN_ADVANCE
   #if ENABLED(LIN_ADVANCE)
     #define LIN_ADVANCE_K 0.20  // Unit: mm compression per 1mm/s extruder speed
@@ -462,7 +468,7 @@
 
   #undef FILAMENT_CHANGE_UNLOAD_FEEDRATE
   #undef ADVANCED_PAUSE_PURGE_FEEDRATE
-  #undef PAUSE_PARK_NOZZLE_TIMEOUT  --> check
+  #undef PAUSE_PARK_NOZZLE_TIMEOUT
   #undef FILAMENT_CHANGE_UNLOAD_LENGTH
 
   #undef PARK_HEAD_ON_PAUSE
@@ -470,7 +476,22 @@
 #endif
 
 
+#if SYSTEM_SECTION == SECTION(PINS_LCD)
+  // Pins for DOGM SPI LCD Support
+  /* #define DOGLCD_A0         44 //same */
+  /* #define DOGLCD_CS         45 //same */
+  /* #define LCD_SCREEN_ROT_180 //same */
+
+  // The encoder and click button
+  #define BTN_EN1           -1
+  #define BTN_EN2           -1
+  #define BTN_ENC           -1
+#endif
+
 #undef  FIL_RUNOUT_PIN
+#define FIL_RUNOUT_PIN -1
+
 #undef  FIL_RUNOUT2_PIN
+#define FIL_RUNOUT2_PIN -1
 
 #undef  NUM_RUNOUT_SENSORS

@@ -1879,8 +1879,9 @@ const int _temp_bed_residency_time = TEMP_BED_RESIDENCY_TIME;
 const int _temp_bed_hysteresis = TEMP_BED_HYSTERESIS;
 const int _temp_bed_window     = TEMP_BED_WINDOW    ;
 const int _heater_0_mintemp = HEATER_0_MINTEMP;
-const int _heater_1_mintemp = HEATER_1_MINTEMP;
-
+#if defined(HEATER_1_MINTEMP)
+  const int _heater_1_mintemp = HEATER_1_MINTEMP;
+#endif
 #if defined(HEATER_2_MINTEMP)
   const int _heater_2_mintemp = HEATER_2_MINTEMP;
 #endif
@@ -1895,7 +1896,9 @@ const int _heater_1_mintemp = HEATER_1_MINTEMP;
 
 const int _bed_mintemp = BED_MINTEMP;
 const int _heater_0_maxtemp = HEATER_0_MAXTEMP;
-const int _heater_1_maxtemp = HEATER_1_MAXTEMP;
+#if defined(HEATER_1_MAXTEMP)
+  const int _heater_1_maxtemp = HEATER_1_MAXTEMP;
+#endif
 
 #if defined(HEATER_2_MINTEMP)
   const int _heater_2_maxtemp = HEATER_2_MAXTEMP;
@@ -2052,9 +2055,15 @@ const int _z_max_pos = Z_MAX_POS;
 #if defined(Z_PROBE_END_SCRIPT)
   const char *_z_probe_end_script = Z_PROBE_END_SCRIPT;
 #endif
-const int _manual_x_home_pos = MANUAL_X_HOME_POS;
-const int _manual_y_home_pos = MANUAL_Y_HOME_POS;
-const int _manual_z_home_pos = MANUAL_Z_HOME_POS;
+#if defined(MANUAL_X_HOME_POS)
+  const int _manual_x_home_pos = MANUAL_X_HOME_POS;
+#endif
+#if defined(MANUAL_Y_HOME_POS)
+  const int _manual_y_home_pos = MANUAL_Y_HOME_POS;
+#endif
+#if defined(MANUAL_Z_HOME_POS)
+  const int _manual_z_home_pos = MANUAL_Z_HOME_POS;
+#endif
 #if ENABLED(Z_SAFE_HOMING)
   const float _z_safe_homing_x_point = Z_SAFE_HOMING_X_POINT;
   const float _z_safe_homing_y_point = Z_SAFE_HOMING_Y_POINT;
@@ -2080,9 +2089,15 @@ const int _default_keepalive_interval = DEFAULT_KEEPALIVE_INTERVAL;
 const int _preheat_1_temp_hotend = PREHEAT_1_TEMP_HOTEND;
 const int _preheat_1_temp_bed     = PREHEAT_1_TEMP_BED    ;
 const int _preheat_1_fan_speed     = PREHEAT_1_FAN_SPEED    ;
-const int _preheat_2_temp_hotend = PREHEAT_2_TEMP_HOTEND;
-const int _preheat_2_temp_bed    = PREHEAT_2_TEMP_BED   ;
-const int _preheat_2_fan_speed     = PREHEAT_2_FAN_SPEED    ;
+#if defined(PREHEAT_2_TEMP_HOTEND)
+  const int _preheat_2_temp_hotend = PREHEAT_2_TEMP_HOTEND;
+#endif
+#if defined(PREHEAT_2_TEMP_BED   )
+  const int _preheat_2_temp_bed    = PREHEAT_2_TEMP_BED   ;
+#endif
+#if defined(PREHEAT_2_FAN_SPEED    )
+  const int _preheat_2_fan_speed     = PREHEAT_2_FAN_SPEED    ;
+#endif
 #if ENABLED(NOZZLE_PARK_FEATURE)
   const int _nozzle_park_point[] = NOZZLE_PARK_POINT;
   const int _nozzle_park_xy_feedrate = NOZZLE_PARK_XY_FEEDRATE;
